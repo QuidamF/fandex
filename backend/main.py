@@ -4,6 +4,7 @@ from flask_cors import CORS
 from db.init_db import init_db
 from modules.users.routes import user_router
 from modules.items.routes import item_router
+from modules.collection.routes import collection_router
 
 init_db()
 
@@ -13,6 +14,7 @@ CORS(app)
 
 app.register_blueprint(user_router, url_prefix="/api/users")
 app.register_blueprint(item_router, url_prefix="/api/items")
+app.register_blueprint(collection_router, url_prefix="/api/collection")
 
 @app.route("/api/health")
 def health():
