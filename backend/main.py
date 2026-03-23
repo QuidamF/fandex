@@ -13,6 +13,12 @@ app = Flask(__name__)
 
 CORS(app)
 
+CORS(app, resources={
+    r"/" : {
+        "origins" : "*"
+    }
+})
+
 app.register_blueprint(user_router, url_prefix="/api/users")
 app.register_blueprint(item_router, url_prefix="/api/items")
 app.register_blueprint(collection_router, url_prefix="/api/collection")

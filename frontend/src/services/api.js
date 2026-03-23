@@ -18,7 +18,7 @@ export async function getItems() {
 }
 
 export async function collectItem(user_id, item_id) {
-    const res = await fetch(`${API_URL}/collection`, {
+    const res = await fetch(`${API_URL}/collection/`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
