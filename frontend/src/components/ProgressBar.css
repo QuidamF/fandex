@@ -1,0 +1,22 @@
+.progress-container {
+    width: 100%;
+    background: #334155;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 20px 0;
+    position: relative;
+}
+
+.progress-bar {
+    height: 20px;
+    background: #22c55e;
+    transition: width 0.3s ease;
+}
+
+.progress-container span {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+}

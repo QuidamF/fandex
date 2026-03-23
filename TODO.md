@@ -79,16 +79,16 @@ Focus: simplicity, clarity, and hackathon-ready implementation.
 ### 🎨 Base UI
 
 * [x] Setup React project
-* [ ] Create layout (header + main view)
-* [ ] Create item grid
+* [x] Create layout (header + main view)
+* [x] Create item grid
 
 ---
 
 ### 🎮 Core UX
 
-* [ ] Display items
-* [ ] Mark item as collected
-* [ ] Visual feedback (state change)
+* [x] Display items
+* [x] Mark item as collected
+* [x] Visual feedback (state change)
 
 ---
 
