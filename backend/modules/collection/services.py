@@ -1,4 +1,4 @@
-from .repository import add_user_item, get_user_items
+from .repository import add_user_item, get_user_items, get_total_items, get_user_collected_count
 
 
 def collect_item(data):
@@ -29,3 +29,18 @@ def list_user_collection(user_id):
         })
 
     return result
+
+def get_progress(user_id):
+    total = get_total_items()
+    collected = get_user_collected_count(user_id)
+
+    if total == 0:
+        percentage = 0
+    else:
+        percentage = int((collected / total) * 100)
+
+    return {
+        "collected": collected,
+        "total": total,
+        "percentage": percentage
+    }

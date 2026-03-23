@@ -33,3 +33,28 @@ def get_user_items(user_id):
     conn.close()
 
     return items
+
+def get_total_items():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT COUNT(*) as total FROM items")
+    total = cursor.fetchone()["total"]
+
+    conn.close()
+    return total
+
+
+def get_user_collected_count(user_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT COUNT(*) as total FROM user_items WHERE user_id = ?",
+        (user_id,)
+    )
+
+    total = cursor.fetchone()["total"]
+
+    conn.close()
+    return total

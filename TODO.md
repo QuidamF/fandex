@@ -41,11 +41,11 @@ Focus: simplicity, clarity, and hackathon-ready implementation.
 
 #### User Collection
 
-* [ ] Mark item as collected
-* [ ] Store in user_items
-* [ ] Prevent duplicates
-* [ ] Endpoint: POST /collection
-* [ ] Endpoint: GET /collection
+* [x] Mark item as collected
+* [x] Store in user_items
+* [x] Prevent duplicates
+* [x] Endpoint: POST /collection
+* [x] Endpoint: GET /collection
 
 ---
 
