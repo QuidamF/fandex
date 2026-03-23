@@ -2,11 +2,13 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 
 from db.init_db import init_db
+from modules.users.routes import user_router
 
 init_db()
 
 app = Flask(__name__)
 CORS(app)
+app.register_blueprint(user_router, url_prefix="/api/users")
 
 @app.route("/api/health")
 def health():
