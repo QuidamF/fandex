@@ -60,17 +60,17 @@ Focus: simplicity, clarity, and hackathon-ready implementation.
 
 ### 🏆 Achievements System (KEY FEATURE)
 
-* [ ] Create achievements table
-* [ ] Define achievement types:
+* [x] Create achievements table
+* [x] Define achievement types:
 
   * total_items
   * progress
   * tag_complete
   * rarity_count
-* [ ] Implement evaluation logic (simple conditions)
-* [ ] Trigger evaluation when collecting item
-* [ ] Store unlocked achievements
-* [ ] Endpoint: GET /achievements
+* [x] Implement evaluation logic (simple conditions)
+* [x] Trigger evaluation when collecting item
+* [x] Store unlocked achievements
+* [x] Endpoint: GET /achievements
 
 ---
 
@@ -123,6 +123,6 @@ Focus: simplicity, clarity, and hackathon-ready implementation.
 
 ## 🚀 Milestones
 
-* [ ] Backend MVP ready
+* [x] Backend MVP ready
 * [ ] Frontend MVP ready
 * [ ] Full demo ready
