@@ -132,6 +132,18 @@ def init_db():
     cursor.execute("INSERT OR IGNORE INTO item_tags (item_id, tag_id) VALUES (1, 1)")
     cursor.execute("INSERT OR IGNORE INTO item_tags (item_id, tag_id) VALUES (2, 2)")
 
+    cursor.execute("""
+    INSERT OR IGNORE INTO achievements 
+    (id, name, description, condition_type, condition_value)
+    VALUES (1, 'First Item', 'Collect your first item', 'total_items', 1)
+    """)
+
+    cursor.execute("""
+    INSERT OR IGNORE INTO achievements 
+    (id, name, description, condition_type, condition_value)
+    VALUES (2, 'Halfway There', 'Reach 50% progress', 'progress', 50)
+    """)
+
     conn.commit()
     conn.close()
 

@@ -51,10 +51,10 @@ Focus: simplicity, clarity, and hackathon-ready implementation.
 
 #### Progress System
 
-* [ ] Calculate total items
-* [ ] Calculate collected items
-* [ ] Calculate progress %
-* [ ] Endpoint: GET /progress
+* [x] Calculate total items
+* [x] Calculate collected items
+* [x] Calculate progress %
+* [x] Endpoint: GET /progress
 
 ---
 

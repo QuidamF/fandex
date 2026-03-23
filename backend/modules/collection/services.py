@@ -1,7 +1,8 @@
 from .repository import add_user_item, get_user_items, get_total_items, get_user_collected_count
 
-
 def collect_item(data):
+    from modules.achievements.services import evaluate_achievements
+
     user_id = data.get("user_id")
     item_id = data.get("item_id")
 
@@ -12,6 +13,8 @@ def collect_item(data):
 
     if not success:
         return {"status": False, "message": "Item already collected"}
+
+    evaluate_achievements(user_id)
 
     return {"status": True, "message": "Item collected"}
 
