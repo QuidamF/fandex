@@ -60,7 +60,8 @@ def init_db():
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS item_tags (
         item_id INTEGER,
-        tag_id INTEGER
+        tag_id INTEGER,
+        UNIQUE(item_id, tag_id)
     )
     """)
 
@@ -100,6 +101,36 @@ def init_db():
     cursor.execute("INSERT OR IGNORE INTO roles (id, name) VALUES (1, 'admin')")
     cursor.execute("INSERT OR IGNORE INTO roles (id, name) VALUES (2, 'moderator')")
     cursor.execute("INSERT OR IGNORE INTO roles (id, name) VALUES (3, 'user')")
+
+    
+
+
+
+
+    # Seed collection
+    cursor.execute("""
+    INSERT OR IGNORE INTO collections (id, name, description)
+    VALUES (1, 'How to Train Your Dragon', 'Demo collection')
+    """)
+
+    # Seed tags
+    cursor.execute("INSERT OR IGNORE INTO tags (id, name, collection_id) VALUES (1, 'Posters', 1)")
+    cursor.execute("INSERT OR IGNORE INTO tags (id, name, collection_id) VALUES (2, 'Figures', 1)")
+
+    # Seed items
+    cursor.execute("""
+    INSERT OR IGNORE INTO items (id, name, description, image, rarity, collection_id)
+    VALUES (1, 'Toothless Poster', 'Movie poster', '', 'common', 1)
+    """)
+
+    cursor.execute("""
+    INSERT OR IGNORE INTO items (id, name, description, image, rarity, collection_id)
+    VALUES (2, 'Toothless Figure', 'Collectible figure', '', 'rare', 1)
+    """)
+
+    # Assign tags
+    cursor.execute("INSERT OR IGNORE INTO item_tags (item_id, tag_id) VALUES (1, 1)")
+    cursor.execute("INSERT OR IGNORE INTO item_tags (item_id, tag_id) VALUES (2, 2)")
 
     conn.commit()
     conn.close()

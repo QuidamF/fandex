@@ -14,7 +14,7 @@ Focus: simplicity, clarity, and hackathon-ready implementation.
 * [x] Setup SQLite connection (sqlite3)
 * [x] Create database initialization script
 * [x] Define basic schema (users, items, achievements, etc.)
-* [ ] Add simple auth system (no JWT, simple token)
+* [x] Add simple auth system (no JWT, simple token)
 
 ---
 
@@ -22,20 +22,20 @@ Focus: simplicity, clarity, and hackathon-ready implementation.
 
 #### Users
 
-* [ ] Register user (username + password)
-* [ ] Login user
-* [ ] Hash password (sha256)
-* [ ] Generate simple token
+* [x] Register user (username + password)
+* [x] Login user
+* [x] Hash password (sha256)
+* [x] Generate simple token
 
 ---
 
 #### Collections & Items
 
-* [ ] Create collections table
-* [ ] Create items table
-* [ ] Create tags system
-* [ ] Assign tags to items
-* [ ] Endpoint: GET /items
+* [x] Create collections table
+* [x] Create items table
+* [x] Create tags system
+* [x] Assign tags to items
+* [x] Endpoint: GET /items
 
 ---
 
