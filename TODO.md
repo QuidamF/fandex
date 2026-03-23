@@ -9,7 +9,8 @@ Focus: simplicity, clarity, and hackathon-ready implementation.
 
 ### 🏗️ Base Setup
 
-* [ ] Initialize Flask project structure
+* [x] Initialize Flask project structure
+* [x] Add .gitignore file
 * [ ] Setup SQLite connection (sqlite3)
 * [ ] Create database initialization script
 * [ ] Define basic schema (users, items, achievements, etc.)
