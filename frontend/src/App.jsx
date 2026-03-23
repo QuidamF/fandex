@@ -1,14 +1,17 @@
 import './styles/global.css'
-import { useEffect } from "react";
-import { getItems } from "./services/api";
+
+import { useState } from "react";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
+  const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    getItems().then(data => console.log(data));
-  }, []);
+  if (!user) {
+    return <Login onLogin={setUser} />;
+  }
 
-  return <h1>FanDex</h1>;
+  return <Dashboard user={user} />;
 }
 
 export default App;
