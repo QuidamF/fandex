@@ -1,14 +1,22 @@
 import "./ItemCard.css";
 
-function ItemCard({ item, onCollect }) {
+function ItemCard({ item, onCollect, onClick }) {
     return (
-        <div className={`card ${item.collected ? "collected" : ""}`}>
+        <div
+            className={`card ${item.collected ? "collected" : ""}`}
+            onClick={onClick}
+        >
             <h3>{item.name}</h3>
             <p className={`rarity ${item.rarity}`}>
                 {item.rarity}
             </p>
 
-            <button onClick={() => onCollect(item.id)}>
+            <button
+                onClick={(e) => {
+                    e.stopPropagation();
+                    onCollect(item.id);
+                }}
+            >
                 {item.collected ? "Collected" : "Collect"}
             </button>
         </div>

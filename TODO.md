@@ -76,6 +76,12 @@ Focus: simplicity, clarity, and hackathon-ready implementation.
 
 ## Module B — Frontend (React + Vite)
 
+### 🔑 Auth & Roles
+* [x] User Registration
+* [x] Role-based routing (Admin, Moderator, Fan)
+
+---
+
 ### 🎨 Base UI
 
 * [x] Setup React project
@@ -124,5 +130,5 @@ Focus: simplicity, clarity, and hackathon-ready implementation.
 ## 🚀 Milestones
 
 * [x] Backend MVP ready
-* [ ] Frontend MVP ready
+* [x] Frontend MVP ready
 * [ ] Full demo ready

@@ -7,11 +7,13 @@ import ItemCard from "../components/ItemCard";
 import { getProgress, getAchievements } from "../services/api";
 import ProgressBar from "../components/ProgressBar";
 import AchievementList from "../components/AchievementList";
+import ItemModal from "../components/ItemModal";
 
 function Dashboard({ user }) {
     const [items, setItems] = useState([]);
     const [progress, setProgress] = useState(null);
     const [achievements, setAchievements] = useState([]);
+    const [selectedItem, setSelectedItem] = useState(null);
 
     useEffect(() => {
         loadItems();
@@ -49,7 +51,12 @@ function Dashboard({ user }) {
             )
         );
 
-        loadExtras(); // 🔥 recalcula progreso + logros
+        // Update selectedItem if it is the one being collected from the modal
+        if (selectedItem && selectedItem.id === itemId) {
+            setSelectedItem(prev => ({ ...prev, collected: true }));
+        }
+
+        loadExtras();
     };
 
     return (
@@ -68,9 +75,18 @@ function Dashboard({ user }) {
                         key={item.id}
                         item={item}
                         onCollect={handleCollect}
+                        onClick={() => setSelectedItem(item)}
                     />
                 ))}
             </div>
+
+            {selectedItem && (
+                <ItemModal
+                    item={selectedItem}
+                    onClose={() => setSelectedItem(null)}
+                    onCollect={handleCollect}
+                />
+            )}
         </div>
     );
 }
