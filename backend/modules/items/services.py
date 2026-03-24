@@ -1,4 +1,4 @@
-from .repository import get_all_items
+from .repository import get_all_items, insert_item, insert_item_tag
 
 
 def list_items():
@@ -17,3 +17,19 @@ def list_items():
         })
 
     return result
+
+def create_item(data):
+    name = data.get("name")
+    rarity = data.get("rarity")
+    description = data.get("description", "")
+    tags = data.get("tags", [])
+
+    if not name:
+        return {"status": False, "message": "Name required"}
+
+    item_id = insert_item(name, rarity, description)
+
+    for tag in tags:
+        insert_item_tag(item_id, tag)
+
+    return {"status": True, "message": "Item created"}

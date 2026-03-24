@@ -50,3 +50,15 @@ export async function register(username, password) {
 
     return res.json();
 }
+
+export async function createItem(data) {
+    const res = await fetch(`${API_URL}/items`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    });
+
+    return res.json();
+}
