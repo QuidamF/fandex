@@ -94,8 +94,8 @@ Focus: simplicity, clarity, and hackathon-ready implementation.
 
 ### 📊 Progress & Gamification
 
-* [ ] Progress bar
-* [ ] Achievements list
+* [x] Progress bar
+* [x] Achievements list
 * [ ] Unlock animation / toast
 
 ---

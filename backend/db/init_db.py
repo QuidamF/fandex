@@ -1,4 +1,9 @@
+from dotenv import load_dotenv
+import os
+from core.security import hash_password
 from db.database import get_connection
+
+load_dotenv()
 
 def init_db():
     conn = get_connection()
@@ -143,6 +148,16 @@ def init_db():
     (id, name, description, condition_type, condition_value)
     VALUES (2, 'Halfway There', 'Reach 50% progress', 'progress', 50)
     """)
+
+    admin_user = os.getenv("ADMIN_USERNAME")
+    admin_pass = os.getenv("ADMIN_PASSWORD")
+
+    if admin_user and admin_pass:
+        cursor.execute("""
+            INSERT OR IGNORE INTO users (username, password, role_id)
+            VALUES (?, ?, 1)
+        """, (admin_user, hash_password(admin_pass)))
+
 
     conn.commit()
     conn.close()

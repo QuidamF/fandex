@@ -36,7 +36,26 @@ def login_user(data):
     token = generate_token(username)
 
     return {
-        "status": True,
-        "token": token,
-        "username": username
-    }
+    "status": True,
+    "token": token,
+    "username": username,
+    "role_id": user["role_id"],
+    "id": user["id"]
+}
+
+
+def create_moderator(data, current_user):
+    if current_user["role_id"] != 1:
+        return {"status": False, "message": "Unauthorized"}
+
+    username = data.get("username")
+    password = data.get("password")
+
+    hashed = hash_password(password)
+
+    success = create_user(username, hashed, role_id=2)
+
+    if not success:
+        return {"status": False, "message": "User exists"}
+
+    return {"status": True, "message": "Moderator created"}
