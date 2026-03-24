@@ -95,6 +95,7 @@ Focus: simplicity, clarity, and hackathon-ready implementation.
 * [x] Display items
 * [x] Mark item as collected
 * [x] Visual feedback (state change)
+* [x] Item Details Modal (interaction & overlay)
 
 ---
 

@@ -9,11 +9,16 @@ import ProgressBar from "../components/ProgressBar";
 import AchievementList from "../components/AchievementList";
 import ItemModal from "../components/ItemModal";
 
+
 function Dashboard({ user }) {
     const [items, setItems] = useState([]);
     const [progress, setProgress] = useState(null);
     const [achievements, setAchievements] = useState([]);
     const [selectedItem, setSelectedItem] = useState(null);
+    const [filterTag, setFilterTag] = useState("");
+    const [filterRarity, setFilterRarity] = useState("");
+
+    const tags = [...new Set(items.flatMap(i => i.tags || []))];
 
     useEffect(() => {
         loadItems();
@@ -59,6 +64,13 @@ function Dashboard({ user }) {
         loadExtras();
     };
 
+    const filteredItems = items.filter(item => {
+        const matchTag = filterTag ? item.tags?.includes(filterTag) : true;
+        const matchRarity = filterRarity ? item.rarity === filterRarity : true;
+
+        return matchTag && matchRarity;
+    });
+
     return (
         <div>
             <h2>Welcome {user.username}</h2>
@@ -69,8 +81,26 @@ function Dashboard({ user }) {
                 <AchievementList achievements={achievements} />
             )}
 
+            <div style={{ padding: "10px" }}>
+
+                <select onChange={(e) => setFilterTag(e.target.value)}>
+                    <option value="">All Tags</option>
+                    {tags.map(tag => (
+                        <option key={tag} value={tag}>{tag}</option>
+                    ))}
+                </select>
+
+                <select onChange={(e) => setFilterRarity(e.target.value)}>
+                    <option value="">All Rarities</option>
+                    <option value="common">Common</option>
+                    <option value="rare">Rare</option>
+                    <option value="legendary">Legendary</option>
+                </select>
+
+            </div>
+
             <div className="grid">
-                {items.map(item => (
+                {filteredItems.map(item => (
                     <ItemCard
                         key={item.id}
                         item={item}
