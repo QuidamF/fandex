@@ -1,24 +1,18 @@
 import "./Dashboard.css";
 
 import { useEffect, useState } from "react";
-import { getItems, collectItem } from "../services/api";
-import ItemCard from "../components/ItemCard";
+import { getItems, collectItem, getProgress, getAchievements, getTags } from "../services/api";
 
-import { getProgress, getAchievements } from "../services/api";
-import ProgressBar from "../components/ProgressBar";
-import AchievementList from "../components/AchievementList";
-import ItemModal from "../components/ItemModal";
-
+import HomeView from "../components/HomeView";
+import ItemsView from "../components/ItemsView";
+import AchievementsView from "../components/AchievementsView";
 
 function Dashboard({ user }) {
     const [items, setItems] = useState([]);
     const [progress, setProgress] = useState(null);
     const [achievements, setAchievements] = useState([]);
-    const [selectedItem, setSelectedItem] = useState(null);
-    const [filterTag, setFilterTag] = useState("");
-    const [filterRarity, setFilterRarity] = useState("");
-
-    const tags = [...new Set(items.flatMap(i => i.tags || []))];
+    const [tags, setTags] = useState([]);
+    const [view, setView] = useState("home");
 
     useEffect(() => {
         loadItems();
@@ -28,7 +22,6 @@ function Dashboard({ user }) {
     const loadItems = async () => {
         const data = await getItems();
 
-        // Inicialmente ninguno está colectado
         const mapped = data.map(item => ({
             ...item,
             collected: false
@@ -40,9 +33,11 @@ function Dashboard({ user }) {
     const loadExtras = async () => {
         const p = await getProgress(user.id || 1);
         const a = await getAchievements(user.id || 1);
+        const t = await getTags();
 
         setProgress(p);
         setAchievements(a);
+        setTags(t.map(tag => tag.name));
     };
 
     const handleCollect = async (itemId) => {
@@ -56,67 +51,31 @@ function Dashboard({ user }) {
             )
         );
 
-        // Update selectedItem if it is the one being collected from the modal
-        if (selectedItem && selectedItem.id === itemId) {
-            setSelectedItem(prev => ({ ...prev, collected: true }));
-        }
-
         loadExtras();
     };
 
-    const filteredItems = items.filter(item => {
-        const matchTag = filterTag ? item.tags?.includes(filterTag) : true;
-        const matchRarity = filterRarity ? item.rarity === filterRarity : true;
+    let content;
 
-        return matchTag && matchRarity;
-    });
+    if (view === "home") {
+        content = <HomeView progress={progress} />;
+    } else if (view === "items") {
+        content = <ItemsView items={items} tags={tags} onCollect={handleCollect} />;
+    } else {
+        content = <AchievementsView achievements={achievements} />;
+    }
 
     return (
         <div>
             <h2>Welcome {user.username}</h2>
-
-            {progress && <ProgressBar progress={progress} />}
-
-            {achievements.length > 0 && (
-                <AchievementList achievements={achievements} />
-            )}
-
-            <div style={{ padding: "10px" }}>
-
-                <select onChange={(e) => setFilterTag(e.target.value)}>
-                    <option value="">All Tags</option>
-                    {tags.map(tag => (
-                        <option key={tag} value={tag}>{tag}</option>
-                    ))}
-                </select>
-
-                <select onChange={(e) => setFilterRarity(e.target.value)}>
-                    <option value="">All Rarities</option>
-                    <option value="common">Common</option>
-                    <option value="rare">Rare</option>
-                    <option value="legendary">Legendary</option>
-                </select>
-
+            {/* nav */}
+            <div style={{ display: "flex", gap: "10px", padding: "10px" }}>
+                <button onClick={() => setView("home")}>Home</button>
+                <button onClick={() => setView("items")}>Items</button>
+                <button onClick={() => setView("achievements")}>Achievements</button>
             </div>
 
-            <div className="grid">
-                {filteredItems.map(item => (
-                    <ItemCard
-                        key={item.id}
-                        item={item}
-                        onCollect={handleCollect}
-                        onClick={() => setSelectedItem(item)}
-                    />
-                ))}
-            </div>
-
-            {selectedItem && (
-                <ItemModal
-                    item={selectedItem}
-                    onClose={() => setSelectedItem(null)}
-                    onCollect={handleCollect}
-                />
-            )}
+            {/* view content */}
+            {content}
         </div>
     );
 }
