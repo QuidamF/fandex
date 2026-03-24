@@ -38,3 +38,15 @@ export async function getAchievements(user_id) {
     const res = await fetch(`${API_URL}/achievements/${user_id}`);
     return res.json();
 }
+
+export async function register(username, password) {
+    const res = await fetch(`${API_URL}/users`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ username, password })
+    });
+
+    return res.json();
+}

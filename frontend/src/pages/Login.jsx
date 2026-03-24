@@ -15,6 +15,16 @@ function Login({ onLogin }) {
         }
     };
 
+    const handleRegister = async () => {
+        const res = await register(username, password);
+
+        if (res.status) {
+            alert("User created! Now login");
+        } else {
+            alert(res.message);
+        }
+    };
+
     return (
         <div className="login-container">
             <h2>FanDex</h2>
@@ -33,6 +43,7 @@ function Login({ onLogin }) {
             />
 
             <button onClick={handleLogin}>Login</button>
+            <button onClick={handleRegister}>Register</button>
         </div>
     );
 }
