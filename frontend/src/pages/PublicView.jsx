@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getItems, getTags } from "../services/api";
+import { getItems, getTags, getRanking } from "../services/api";
 
 function PublicView() {
     const navigate = useNavigate();
     const [items, setItems] = useState([]);
     const [tags, setTags] = useState([]);
+    const [ranking, setRanking] = useState([]);
     const [view, setView] = useState("overview");
     
     // filters
@@ -15,6 +16,7 @@ function PublicView() {
     useEffect(() => {
         getItems().then(setItems);
         getTags().then(setTags);
+        getRanking().then(setRanking);
     }, []);
 
     const filteredItems = items.filter(item => {
@@ -44,19 +46,15 @@ function PublicView() {
                     ))}
                 </div>
 
-                {/* RANKING MOCK */}
+                {/* RANKING LIVE */}
                 <div style={{ background: "#1e293b", padding: "20px", borderRadius: "10px", boxShadow: "0 4px 6px rgba(0,0,0,0.1)" }}>
                     <h3 style={{ margin: "0 0 15px 0" }}>Top Collectors</h3>
-                    {[
-                        { user: "AshKetchum", count: 151 },
-                        { user: "GaryOak", count: 140 },
-                        { user: "Misty", count: 120 }
-                    ].map((u, i) => (
+                    {ranking.length > 0 ? ranking.map((u, i) => (
                         <div key={u.user} style={{ display: "flex", justifyContent: "space-between", margin: "10px 0", padding: "5px 0" }}>
                             <span><span style={{ color: i === 0 ? "gold" : i === 1 ? "silver" : "#cd7f32", marginRight: "5px" }}>#{i + 1}</span> {u.user}</span>
                             <span style={{ fontWeight: "bold" }}>{u.count}</span>
                         </div>
-                    ))}
+                    )) : <p style={{ color: "#94a3b8" }}>No collectors yet</p>}
                 </div>
             </div>
         );
@@ -81,6 +79,9 @@ function PublicView() {
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))", gap: "15px" }}>
                     {filteredItems.map(item => (
                         <div key={item.id} style={{ background: "#1e293b", padding: "15px", borderRadius: "8px", borderLeft: item.rarity === 'legendary' ? '3px solid gold' : item.rarity === 'rare' ? '3px solid #3b82f6' : '3px solid #94a3b8' }}>
+                            {item.image && (
+                                <img src={item.image} alt={item.name} style={{ width: "100%", height: "100px", objectFit: "cover", borderRadius: "4px", marginBottom: "10px" }} />
+                            )}
                             <h4 style={{ margin: "0 0 5px 0" }}>{item.name}</h4>
                             <p style={{ margin: 0, fontSize: "0.8rem", color: item.rarity === 'legendary' ? 'gold' : item.rarity === 'rare' ? '#3b82f6' : '#94a3b8', textTransform: "capitalize" }}>
                                 {item.rarity}

@@ -43,9 +43,9 @@ def init_db():
     CREATE TABLE IF NOT EXISTS items (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
+        rarity TEXT DEFAULT 'common',
         description TEXT,
         image TEXT,
-        rarity TEXT,
         collection_id INTEGER,
         created_by INTEGER,
         FOREIGN KEY (collection_id) REFERENCES collections(id)

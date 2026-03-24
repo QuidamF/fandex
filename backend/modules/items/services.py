@@ -23,11 +23,12 @@ def create_item(data):
     rarity = data.get("rarity")
     description = data.get("description", "")
     tags = data.get("tags", [])
+    image = data.get("image", None)
 
     if not name:
         return {"status": False, "message": "Name required"}
 
-    item_id = insert_item(name, rarity, description)
+    item_id = insert_item(name, rarity, description, image)
 
     for tag in tags:
         insert_item_tag(item_id, tag)

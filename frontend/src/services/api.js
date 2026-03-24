@@ -22,6 +22,11 @@ export async function getUserCollection(user_id) {
     return res.json();
 }
 
+export async function getRanking() {
+    const res = await fetch(`${API_URL}/ranking`);
+    return res.json();
+}
+
 export async function collectItem(user_id, item_id) {
     const res = await fetch(`${API_URL}/collection/`, {
         method: "POST",

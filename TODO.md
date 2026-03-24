@@ -87,6 +87,8 @@ Focus: simplicity, clarity, and hackathon-ready implementation.
 * [x] Setup React project
 * [x] Create layout (header + main view)
 * [x] Create item grid
+* [x] Multi-view Landing Page (PublicView)
+* [x] Landing Page Tabbed Navigation
 
 ---
 

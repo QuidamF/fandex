@@ -18,14 +18,14 @@ def get_all_items():
 
     return items
 
-def insert_item(name, rarity, description):
+def insert_item(name, rarity, description, image=None):
     conn = get_connection()
     cursor = conn.cursor()
 
     cursor.execute("""
-        INSERT INTO items (name, rarity, description)
-        VALUES (?, ?, ?)
-    """, (name, rarity, description))
+        INSERT INTO items (name, rarity, description, image)
+        VALUES (?, ?, ?, ?)
+    """, (name, rarity, description, image))
 
     conn.commit()
 

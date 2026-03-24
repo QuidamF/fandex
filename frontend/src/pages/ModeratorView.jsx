@@ -8,6 +8,17 @@ function ModeratorView({ user }) {
     const [tags, setTags] = useState([]);
     const [description, setDescription] = useState("");
     const [newTag, setNewTag] = useState("");
+    const [image, setImage] = useState("");
+
+    const handleFile = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setImage(reader.result);
+        };
+        reader.readAsDataURL(file);
+    };
 
     useEffect(() => {
         loadTags();
@@ -27,7 +38,8 @@ function ModeratorView({ user }) {
             name,
             rarity,
             tags: [tag],
-            description
+            description,
+            image
         });
 
         if (res.status) {
@@ -35,6 +47,7 @@ function ModeratorView({ user }) {
             setName("");
             setTag("");
             setDescription("");
+            setImage("");
         } else {
             alert(res.message);
         }
@@ -100,6 +113,9 @@ function ModeratorView({ user }) {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
             />
+
+            <input type="file" onChange={handleFile} accept="image/*" />
+            {image && <img src={image} alt="preview" style={{ width: "100px", display: "block", margin: "10px 0", borderRadius: "5px" }} />}
 
             <button onClick={handleCreateItem}>Create Item</button>
         </div>

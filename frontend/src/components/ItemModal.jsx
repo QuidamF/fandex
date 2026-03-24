@@ -9,6 +9,10 @@ function ItemModal({ item, onClose, onCollect }) {
 
                 <button className="close-btn" onClick={onClose}>✖</button>
 
+                {item.image && (
+                    <img src={item.image} alt={item.name} style={{ width: "100%", maxHeight: "250px", objectFit: "cover", borderRadius: "8px", margin: "10px 0" }} />
+                )}
+
                 <h2>{item.name}</h2>
                 <p><strong>Rarity:</strong> {item.rarity}</p>
                 <p>{item.description || "No description"}</p>
