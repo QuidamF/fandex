@@ -79,3 +79,20 @@ export async function createTag(name) {
 
     return res.json();
 }
+
+export async function getStats() {
+    const res = await fetch(`${API_URL}/admin/stats`);
+    return res.json();
+}
+
+export async function createModerator(username, password) {
+    const res = await fetch(`${API_URL}/users/create-moderator`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ username, password })
+    });
+
+    return res.json();
+}

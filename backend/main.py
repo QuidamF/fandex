@@ -7,6 +7,7 @@ from modules.items.routes import item_router
 from modules.collection.routes import collection_router
 from modules.achievements.routes import achievement_router
 from modules.tags.routes import tag_router
+from modules.admin.routers import admin_router
 
 init_db()
 
@@ -25,6 +26,7 @@ app.register_blueprint(item_router, url_prefix="/api/items")
 app.register_blueprint(collection_router, url_prefix="/api/collection")
 app.register_blueprint(achievement_router, url_prefix="/api/achievements")
 app.register_blueprint(tag_router, url_prefix="/api/tags")
+app.register_blueprint(admin_router, url_prefix="/api/admin")
 
 @app.route("/api/health")
 def health():
