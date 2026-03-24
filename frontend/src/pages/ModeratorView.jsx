@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { createItem, getItems } from "../services/api";
+import { createItem, getTags, createTag } from "../services/api";
 
 function ModeratorView({ user }) {
     const [name, setName] = useState("");
@@ -7,15 +7,22 @@ function ModeratorView({ user }) {
     const [tag, setTag] = useState("");
     const [tags, setTags] = useState([]);
     const [description, setDescription] = useState("");
+    const [newTag, setNewTag] = useState("");
 
     useEffect(() => {
-        getItems().then(data => {
-            const allTags = [...new Set(data.flatMap(i => i.tags || []))];
-            setTags(allTags);
-        });
+        loadTags();
     }, []);
 
-    const handleCreate = async () => {
+    const loadTags = () => {
+        getTags().then(setTags);
+    };
+
+    const handleCreateItem = async () => {
+        if (!tag) {
+            alert("Select a tag");
+            return;
+        }
+
         const res = await createItem({
             name,
             rarity,
@@ -33,9 +40,38 @@ function ModeratorView({ user }) {
         }
     };
 
+    const handleCreateTag = async () => {
+        if (!newTag) return;
+
+        const res = await createTag(newTag);
+
+        if (res.status) {
+            setNewTag("");
+            loadTags(); // 🔥 refresca lista
+        } else {
+            alert(res.message);
+        }
+    };
+
     return (
         <div style={{ padding: "20px" }}>
             <h2>Moderator Panel</h2>
+
+            {/* 🟣 CREATE TAG */}
+            <h3>Create Tag</h3>
+
+            <input
+                placeholder="New tag"
+                value={newTag}
+                onChange={(e) => setNewTag(e.target.value)}
+            />
+
+            <button onClick={handleCreateTag}>Create Tag</button>
+
+            <hr />
+
+            {/* 🟡 CREATE ITEM */}
+            <h3>Create Item</h3>
 
             <input
                 placeholder="Item name"
@@ -49,16 +85,13 @@ function ModeratorView({ user }) {
                 <option value="legendary">Legendary</option>
             </select>
 
-            <input
-                placeholder="Tag"
-                value={tag}
-                onChange={(e) => setTag(e.target.value)}
-            />
-
-            <select onChange={(e) => setTag(e.target.value)}>
-                <option value="">Select existing tag</option>
-                {tags.map(tag => (
-                    <option key={tag} value={tag}>{tag}</option>
+            {/* 🔥 SOLO SELECT, sin input manual */}
+            <select value={tag} onChange={(e) => setTag(e.target.value)}>
+                <option value="">Select tag</option>
+                {tags.map(t => (
+                    <option key={t.id} value={t.name}>
+                        {t.name}
+                    </option>
                 ))}
             </select>
 
@@ -68,7 +101,7 @@ function ModeratorView({ user }) {
                 onChange={(e) => setDescription(e.target.value)}
             />
 
-            <button onClick={handleCreate}>Create Item</button>
+            <button onClick={handleCreateItem}>Create Item</button>
         </div>
     );
 }

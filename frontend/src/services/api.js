@@ -62,3 +62,20 @@ export async function createItem(data) {
 
     return res.json();
 }
+
+export async function getTags() {
+    const res = await fetch(`${API_URL}/tags`);
+    return res.json();
+}
+
+export async function createTag(name) {
+    const res = await fetch(`${API_URL}/tags`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name })
+    });
+
+    return res.json();
+}
