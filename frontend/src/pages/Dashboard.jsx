@@ -1,7 +1,7 @@
 import "./Dashboard.css";
 
 import { useEffect, useState } from "react";
-import { getItems, collectItem, getProgress, getAchievements, getTags } from "../services/api";
+import { getItems, collectItem, getProgress, getAchievements, getTags, getUserCollection } from "../services/api";
 
 import HomeView from "../components/HomeView";
 import ItemsView from "../components/ItemsView";
@@ -21,10 +21,11 @@ function Dashboard({ user }) {
 
     const loadItems = async () => {
         const data = await getItems();
+        const collection = await getUserCollection(user.id || 1);
 
         const mapped = data.map(item => ({
             ...item,
-            collected: false
+            collected: collection.some(c => c.id === item.id)
         }));
 
         setItems(mapped);
@@ -54,10 +55,38 @@ function Dashboard({ user }) {
         loadExtras();
     };
 
+    const getProgressByTag = () => {
+        const tagMap = {};
+
+        items.forEach(item => {
+            (item.tags || []).forEach(tag => {
+                if (!tagMap[tag]) {
+                    tagMap[tag] = { total: 0, collected: 0 };
+                }
+
+                tagMap[tag].total += 1;
+
+                if (item.collected) {
+                    tagMap[tag].collected += 1;
+                }
+            });
+        });
+
+        return Object.entries(tagMap).map(([tag, data]) => ({
+            tag,
+            percentage: Math.round((data.collected / data.total) * 100),
+            collected: data.collected,
+            total: data.total
+        }));
+    };
+
     let content;
 
     if (view === "home") {
-        content = <HomeView progress={progress} />;
+        content = <HomeView
+            progress={progress}
+            progressByTag={getProgressByTag()}
+        />;
     } else if (view === "items") {
         content = <ItemsView items={items} tags={tags} onCollect={handleCollect} />;
     } else {
