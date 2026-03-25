@@ -22,6 +22,10 @@ function ModeratorView({ user, onLogout }) {
     const [items, setItems] = useState([]);
     const [stats, setStats] = useState(null);
     const [achievements, setAchievements] = useState([]);
+    
+    // gallery filters
+    const [filterTag, setFilterTag] = useState("");
+    const [filterRarity, setFilterRarity] = useState("");
 
     // identity
     const [collectionName, setCollectionName] = useState("");
@@ -61,6 +65,7 @@ function ModeratorView({ user, onLogout }) {
             getItems().then(setItems);
             getStats().then(setStats);
             getTags().then(setTags);
+            getRarities().then(setRarities);
         } else if (view === "identity") {
             getCollectionInfo().then(res => {
                 if (res.status) {
@@ -197,6 +202,12 @@ function ModeratorView({ user, onLogout }) {
         const res = await deleteAchievement(id);
         if (res.status) getAllAchievements().then(setAchievements);
     };
+
+    const filteredItems = items.filter(item => {
+        const matchesTag = filterTag ? item.tags.includes(filterTag) : true;
+        const matchesRarity = filterRarity ? item.rarity === filterRarity : true;
+        return matchesTag && matchesRarity;
+    });
 
     return (
         <div className="mod-wrapper">
@@ -392,8 +403,19 @@ function ModeratorView({ user, onLogout }) {
                             </div>
                         )}
 
+                        <div style={{ display: "flex", gap: "30px", marginBottom: "40px", paddingBottom: "25px", borderBottom: "1px dashed rgba(255,255,255,0.05)" }}>
+                            <select className="mod-select" style={{ margin: 0 }} value={filterRarity} onChange={e => setFilterRarity(e.target.value)}>
+                                <option value="">All Rarities</option>
+                                {rarities.map(r => <option key={r.id} value={r.name}>{r.name.toUpperCase()}</option>)}
+                            </select>
+                            <select className="mod-select" style={{ margin: 0 }} value={filterTag} onChange={e => setFilterTag(e.target.value)}>
+                                <option value="">All Categories</option>
+                                {tags.map(t => <option key={t.id} value={t.name}>{t.name}</option>)}
+                            </select>
+                        </div>
+
                         <div className="mod-grid">
-                            {items.map(i => (
+                            {filteredItems.map(i => (
                                 <div 
                                     key={i.id} 
                                     onClick={() => handleEditItemClick(i)} 
