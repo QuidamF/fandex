@@ -1,22 +1,40 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { login, register } from "../services/api";
 import "./Login.css";
 
-function Login({ onLogin }) {
+function Login() {
+    const navigate = useNavigate();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
     const handleLogin = async () => {
+        if (!username || !password) {
+            alert("Rellena todos los campos");
+            return;
+        }
+
         const res = await login(username, password);
 
         if (res.status) {
-            onLogin(res);
+            localStorage.setItem("fandex_user", JSON.stringify(res));
+
+            if (res.role_id === 1) navigate("/admin");
+            else if (res.role_id === 2) navigate("/moderator");
+            else if (res.role_id === 3) navigate("/fan");
+            else navigate("/");
+
         } else {
             alert(res.message);
         }
     };
 
     const handleRegister = async () => {
+        if (!username || !password) {
+            alert("Rellena todos los campos");
+            return;
+        }
+
         const res = await register(username, password);
 
         if (res.status) {
