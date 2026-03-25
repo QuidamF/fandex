@@ -21,6 +21,8 @@
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    flex-wrap: wrap;
+    gap: 15px;
 }
 
 .dashboard-title {
@@ -45,20 +47,29 @@
 /* Navigation Tabs */
 .dashboard-nav {
     display: flex;
-    gap: 30px;
+    gap: 20px;
+    overflow-x: auto;
+    scrollbar-width: none; /* Hide scrollbar Firefox */
+    -ms-overflow-style: none; /* Hide scrollbar IE/Edge */
+    padding-bottom: 5px;
+}
+
+.dashboard-nav::-webkit-scrollbar {
+    display: none; /* Hide scrollbar Chrome/Safari */
 }
 
 .dashboard-tab {
     background: transparent;
     border: none;
     color: #888;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     text-transform: uppercase;
-    letter-spacing: 3px;
+    letter-spacing: 2px;
     padding: 10px 0;
     cursor: pointer;
     border-bottom: 1px solid transparent;
     transition: all 0.3s ease;
+    white-space: nowrap;
 }
 
 .dashboard-tab:hover {
@@ -136,4 +147,40 @@
 .vintage-select option {
     background: #1a1514;
     color: #fff;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 768px) {
+    .dashboard-header {
+        padding: 1rem 20px;
+    }
+
+    .dashboard-hero {
+        padding: 3rem 20px 2rem;
+    }
+
+    .dashboard-hero h1 {
+        font-size: 2.2rem;
+        letter-spacing: 2px;
+    }
+
+    .dashboard-hero p {
+        font-size: 0.95rem;
+    }
+
+    .grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 15px;
+    }
+
+    .vintage-filters {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-hero h1 {
+        font-size: 1.8rem;
+    }
 }

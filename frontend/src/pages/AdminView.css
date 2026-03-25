@@ -12,11 +12,13 @@
 .admin-header {
     background: #1a1514;
     border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-    padding: 2rem 5%;
+    padding: 1rem 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    flex-wrap: wrap;
+    gap: 15px;
 }
 
 .admin-title {
@@ -147,7 +149,33 @@
 }
 
 @media (max-width: 768px) {
+    .admin-header {
+        padding: 1rem 20px;
+    }
+
+    .admin-title {
+        font-size: 1.4rem;
+    }
+
+    .admin-title span {
+        display: none;
+    }
+
     .admin-content {
-        grid-template-columns: 1fr; /* Stack panels on mobile */
+        margin: 20px auto;
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .admin-panel {
+        padding: 25px;
+    }
+
+    .admin-stat {
+        padding: 12px 0;
+    }
+
+    .admin-stat span {
+        font-size: 1.2rem;
     }
 }

@@ -16,11 +16,13 @@
     background: rgba(26, 21, 20, 0.95);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-    padding: 2rem 5%;
+    padding: 1rem 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    flex-wrap: wrap;
+    gap: 15px;
 }
 
 .mod-title {
@@ -64,7 +66,14 @@
 /* Navigation Tabs */
 .mod-nav {
     display: flex;
-    gap: 30px;
+    gap: 20px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.mod-nav::-webkit-scrollbar {
+    display: none;
 }
 
 .mod-tab {
@@ -272,8 +281,52 @@
     gap: 30px;
 }
 
+.mod-minting-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+}
+
 @media (max-width: 768px) {
+    .mod-header {
+        padding: 1rem 20px;
+    }
+
+    .mod-title {
+        font-size: 1.4rem;
+    }
+
+    .mod-title span {
+        display: none; /* Hide subtitle on mobile */
+    }
+
     .mod-content {
+        margin: 20px auto;
+        gap: 20px;
+    }
+
+    .mod-panel {
+        padding: 25px;
+    }
+
+    .mod-minting-grid {
         grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .mod-minting-grid > div:last-child {
+        border-left: none !important;
+        border-top: 1px dashed rgba(255,255,255,0.1);
+        padding-top: 40px;
+    }
+
+    .mod-stats-banner {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .mod-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 15px;
     }
 }

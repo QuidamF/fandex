@@ -263,7 +263,7 @@ function ModeratorView({ user, onLogout }) {
                                 </div>
                             )}
 
-                            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "50px" }}>
+                            <div className="mod-minting-grid">
                                 {/* Left Side: Matrix Inputs */}
                                 <div style={{ display: "flex", flexDirection: "column" }}>
                                     <input className="mod-input" placeholder="ARTIFACT NAME" value={name} onChange={(e) => setName(e.target.value)} disabled={tags.length === 0 || rarities.length === 0} />

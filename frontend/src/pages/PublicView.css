@@ -10,7 +10,7 @@
 
 /* Hero Section */
 .hero-section {
-    padding: 6rem 5% 4rem;
+    padding: 4rem 20px 3rem;
     text-align: center;
     background: radial-gradient(circle at top, rgba(212, 175, 55, 0.05) 0%, transparent 40%);
     border-bottom: 1px solid rgba(212, 175, 55, 0.2);
@@ -282,14 +282,57 @@
 }
 
 @media (max-width: 768px) {
-    .overview-grid {
-        grid-template-columns: 1fr;
+    .public-header {
+        padding: 1rem 20px;
     }
+
+    .hero-title {
+        font-size: 2.2rem !important;
+        letter-spacing: 2px;
+    }
+
+    .hero-section {
+        padding: 3rem 20px 2rem;
+    }
+
     .public-stats {
         flex-direction: column;
-        gap: 30px;
+        gap: 20px;
+        text-align: center;
+        padding: 20px;
     }
-    .hero-title {
-        font-size: 3.5rem;
+
+    .stat-block h3 {
+        font-size: 2rem;
+    }
+
+    .overview-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .items-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 15px;
+    }
+
+    .public-filters {
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .public-nav {
+        gap: 20px;
+        padding: 10px 20px;
+        overflow-x: auto;
+        justify-content: flex-start;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .public-tab {
+        white-space: nowrap;
+        font-size: 0.8rem;
+        letter-spacing: 2px;
     }
 }
