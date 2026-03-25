@@ -107,56 +107,30 @@ def init_db():
     cursor.execute("INSERT OR IGNORE INTO roles (id, name) VALUES (2, 'moderator')")
     cursor.execute("INSERT OR IGNORE INTO roles (id, name) VALUES (3, 'user')")
 
-    
-
-
-
-
-    # Seed collection
-    cursor.execute("""
-    INSERT OR IGNORE INTO collections (id, name, description)
-    VALUES (1, 'How to Train Your Dragon', 'Demo collection')
-    """)
-
-    # Seed tags
-    cursor.execute("INSERT OR IGNORE INTO tags (id, name, collection_id) VALUES (1, 'Posters', 1)")
-    cursor.execute("INSERT OR IGNORE INTO tags (id, name, collection_id) VALUES (2, 'Figures', 1)")
-
-    # Seed items
-    cursor.execute("""
-    INSERT OR IGNORE INTO items (id, name, description, image, rarity, collection_id)
-    VALUES (1, 'Toothless Poster', 'Movie poster', '', 'common', 1)
-    """)
-
-    cursor.execute("""
-    INSERT OR IGNORE INTO items (id, name, description, image, rarity, collection_id)
-    VALUES (2, 'Toothless Figure', 'Collectible figure', '', 'rare', 1)
-    """)
-
-    # Assign tags
-    cursor.execute("INSERT OR IGNORE INTO item_tags (item_id, tag_id) VALUES (1, 1)")
-    cursor.execute("INSERT OR IGNORE INTO item_tags (item_id, tag_id) VALUES (2, 2)")
-
-    cursor.execute("""
-    INSERT OR IGNORE INTO achievements 
-    (id, name, description, condition_type, condition_value)
-    VALUES (1, 'First Item', 'Collect your first item', 'total_items', 1)
-    """)
-
-    cursor.execute("""
-    INSERT OR IGNORE INTO achievements 
-    (id, name, description, condition_type, condition_value)
-    VALUES (2, 'Halfway There', 'Reach 50% progress', 'progress', 50)
-    """)
-
     admin_user = os.getenv("ADMIN_USERNAME")
     admin_pass = os.getenv("ADMIN_PASSWORD")
 
     if admin_user and admin_pass:
         cursor.execute("""
-            INSERT OR IGNORE INTO users (username, password, role_id)
-            VALUES (?, ?, 1)
+            INSERT OR IGNORE INTO users (id, username, password, role_id)
+            VALUES (1, ?, ?, 1)
         """, (admin_user, hash_password(admin_pass)))
+
+    # Only seed demo data if the collections table is completely virgin
+    cursor.execute("SELECT COUNT(*) as c FROM collections")
+    if cursor.fetchone()["c"] == 0:
+        cursor.execute("INSERT INTO collections (id, name, description) VALUES (1, 'How to Train Your Dragon', 'Demo collection')")
+        cursor.execute("INSERT INTO tags (id, name, collection_id) VALUES (1, 'Posters', 1)")
+        cursor.execute("INSERT INTO tags (id, name, collection_id) VALUES (2, 'Figures', 1)")
+        
+        cursor.execute("INSERT INTO items (id, name, description, image, rarity, collection_id) VALUES (1, 'Toothless Poster', 'Movie poster', '', 'common', 1)")
+        cursor.execute("INSERT INTO items (id, name, description, image, rarity, collection_id) VALUES (2, 'Toothless Figure', 'Collectible figure', '', 'rare', 1)")
+        
+        cursor.execute("INSERT INTO item_tags (item_id, tag_id) VALUES (1, 1)")
+        cursor.execute("INSERT INTO item_tags (item_id, tag_id) VALUES (2, 2)")
+        
+        cursor.execute("INSERT INTO achievements (id, name, description, condition_type, condition_value) VALUES (1, 'First Item', 'Collect your first item', 'total_items', 1)")
+        cursor.execute("INSERT INTO achievements (id, name, description, condition_type, condition_value) VALUES (2, 'Halfway There', 'Reach 50% progress', 'progress', 50)")
 
 
     conn.commit()
