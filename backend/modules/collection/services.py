@@ -14,9 +14,9 @@ def collect_item(data):
     if not success:
         return {"status": False, "message": "Item already collected"}
 
-    evaluate_achievements(user_id)
+    unlocked_list = evaluate_achievements(user_id)
 
-    return {"status": True, "message": "Item collected"}
+    return {"status": True, "message": "Item collected", "unlocked": unlocked_list}
 
 
 def list_user_collection(user_id):

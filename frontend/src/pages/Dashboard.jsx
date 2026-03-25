@@ -6,6 +6,7 @@ import { getItems, collectItem, getProgress, getAchievements, getTags, getUserCo
 import HomeView from "../components/HomeView";
 import ItemsView from "../components/ItemsView";
 import AchievementsView from "../components/AchievementsView";
+import AchievementCelebration from "../components/AchievementCelebration";
 
 function Dashboard({ user, onLogout }) {
     const [items, setItems] = useState([]);
@@ -14,6 +15,7 @@ function Dashboard({ user, onLogout }) {
     const [tags, setTags] = useState([]);
     const [view, setView] = useState("home");
     const [collectionInfo, setCollectionInfo] = useState({ name: "LOADING...", description: "Connecting to Vault..." });
+    const [celebratingAchievements, setCelebratingAchievements] = useState([]);
 
     useEffect(() => {
         loadItems();
@@ -45,7 +47,9 @@ function Dashboard({ user, onLogout }) {
     };
 
     const handleCollect = async (itemId) => {
-        await collectItem(user.id || 1, itemId);
+        const res = await collectItem(user.id || 1, itemId);
+
+        if (res.status === false) return alert(res.message);
 
         setItems(prev =>
             prev.map(item =>
@@ -56,6 +60,10 @@ function Dashboard({ user, onLogout }) {
         );
 
         loadExtras();
+
+        if (res.unlocked && res.unlocked.length > 0) {
+            setCelebratingAchievements(res.unlocked);
+        }
     };
 
     const getProgressByTag = () => {
@@ -135,6 +143,13 @@ function Dashboard({ user, onLogout }) {
 
             <main className="dashboard-content">
                 {content}
+
+                {celebratingAchievements.length > 0 && (
+                    <AchievementCelebration 
+                        achievements={celebratingAchievements} 
+                        onClose={() => setCelebratingAchievements([])} 
+                    />
+                )}
             </main>
         </div>
     );

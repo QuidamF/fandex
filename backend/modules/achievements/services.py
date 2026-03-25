@@ -10,6 +10,7 @@ from modules.collection.services import get_progress
 def evaluate_achievements(user_id):
     achievements = get_all_achievements()
     progress = get_progress(user_id)
+    newly_unlocked = []
     from db.database import get_connection
     conn = get_connection()
     cursor = conn.cursor()
@@ -18,14 +19,15 @@ def evaluate_achievements(user_id):
         c_type = ach["condition_type"]
         c_val = ach["condition_value"]
         c_extra = ach["condition_extra"]
+        unlocked = False
 
         if c_type == "total_items":
             if progress["collected"] >= c_val:
-                unlock_achievement(user_id, ach["id"])
+                unlocked = True
 
         elif c_type == "progress":
             if progress["percentage"] >= c_val:
-                unlock_achievement(user_id, ach["id"])
+                unlocked = True
 
         elif c_type == "rarity":
             cursor.execute("SELECT COUNT(*) as c FROM items i JOIN user_items ui ON i.id=ui.item_id WHERE ui.user_id=? AND i.rarity=?", (user_id, c_extra))
@@ -37,7 +39,7 @@ def evaluate_achievements(user_id):
                 target = cursor.fetchone()["t"]
             
             if target > 0 and count >= target:
-                unlock_achievement(user_id, ach["id"])
+                unlocked = True
 
         elif c_type == "tag":
             cursor.execute("""
@@ -58,9 +60,19 @@ def evaluate_achievements(user_id):
                 target = cursor.fetchone()["t"]
 
             if target > 0 and count >= target:
-                unlock_achievement(user_id, ach["id"])
+                unlocked = True
+
+        if unlocked:
+            from .repository import unlock_achievement
+            if unlock_achievement(user_id, ach["id"]):
+                newly_unlocked.append({
+                    "id": ach["id"], 
+                    "name": ach["name"], 
+                    "description": ach["description"]
+                })
 
     conn.close()
+    return newly_unlocked
 
 
 def list_user_achievements(user_id):

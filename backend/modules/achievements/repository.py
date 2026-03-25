@@ -37,6 +37,7 @@ def delete_achievement(achievement_id):
 def unlock_achievement(user_id, achievement_id):
     conn = get_connection()
     cursor = conn.cursor()
+    success = False
 
     try:
         cursor.execute("""
@@ -44,11 +45,14 @@ def unlock_achievement(user_id, achievement_id):
             VALUES (?, ?, datetime('now'))
         """, (user_id, achievement_id))
         conn.commit()
+        success = True
     except:
         pass  # ya existe
 
     finally:
         conn.close()
+    
+    return success
 
 
 def get_user_achievements(user_id):
