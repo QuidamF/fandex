@@ -30,7 +30,7 @@ function AchievementCelebration({ achievements, onClose }) {
 
     return (
         <div className="celebration-overlay" onClick={handleNext}>
-            <div className="celebration-content" onClick={e => e.stopPropagation()}>
+            <div key={ach.id} className="celebration-content" onClick={e => e.stopPropagation()}>
                 <div className="celebration-rays"></div>
                 <div className="celebration-badge">
                     <span className="trophy-icon">🏆</span>
