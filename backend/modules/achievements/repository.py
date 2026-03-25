@@ -6,7 +6,9 @@ def get_all_achievements():
     cursor = conn.cursor()
 
     cursor.execute("SELECT * FROM achievements")
-    achievements = cursor.fetchall()
+    rows = cursor.fetchall()
+    
+    achievements = [dict(row) for row in rows]
 
     conn.close()
     return achievements
