@@ -134,3 +134,17 @@ export async function deleteTag(id) {
     const res = await fetch(`${API_URL}/tags/${id}`, { method: "DELETE" });
     return res.json();
 }
+
+export async function getCollectionInfo() {
+    const res = await fetch(`${API_URL}/collection/info`);
+    return res.json();
+}
+
+export async function updateCollectionInfo(name, description) {
+    const res = await fetch(`${API_URL}/collection/info`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, description })
+    });
+    return res.json();
+}

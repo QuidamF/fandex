@@ -147,6 +147,8 @@ Focus: simplicity, clarity, and hackathon-ready implementation.
 * [x] Universal Edge-Glow expansions (Modals & Achievements)
 * [x] Admin Control Center Redesign
 * [x] Moderator Curator Desk Redesign (Including Visualizer Grid)
+* [x] Full Stack CRUD Architecture for Moderator Operations
+* [x] Dynamic Collection Identity Metadata Editor (Curator)
 
 ---
 

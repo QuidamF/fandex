@@ -1,7 +1,7 @@
 import "./Dashboard.css";
 
 import { useEffect, useState } from "react";
-import { getItems, collectItem, getProgress, getAchievements, getTags, getUserCollection } from "../services/api";
+import { getItems, collectItem, getProgress, getAchievements, getTags, getUserCollection, getCollectionInfo } from "../services/api";
 
 import HomeView from "../components/HomeView";
 import ItemsView from "../components/ItemsView";
@@ -13,6 +13,7 @@ function Dashboard({ user, onLogout }) {
     const [achievements, setAchievements] = useState([]);
     const [tags, setTags] = useState([]);
     const [view, setView] = useState("home");
+    const [collectionInfo, setCollectionInfo] = useState({ name: "LOADING...", description: "Connecting to Vault..." });
 
     useEffect(() => {
         loadItems();
@@ -35,10 +36,12 @@ function Dashboard({ user, onLogout }) {
         const p = await getProgress(user.id || 1);
         const a = await getAchievements(user.id || 1);
         const t = await getTags();
+        const c = await getCollectionInfo();
 
         setProgress(p);
         setAchievements(a);
         setTags(t.map(tag => tag.name));
+        if (c.status) setCollectionInfo(c.data);
     };
 
     const handleCollect = async (itemId) => {
@@ -97,7 +100,7 @@ function Dashboard({ user, onLogout }) {
         <div className="dashboard-wrapper">
             <header className="dashboard-header">
                 <h2 className="dashboard-title">
-                    FANDEX <span>/// {user.username}'s Vault</span>
+                    {collectionInfo.name} <span>/// {collectionInfo.description}</span>
                 </h2>
                 
                 <nav className="dashboard-nav">

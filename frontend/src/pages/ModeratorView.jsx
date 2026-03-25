@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { createItem, getTags, createTag, getItems, getStats, updateItem, deleteItem, deleteTag } from "../services/api";
+import { createItem, getTags, createTag, getItems, getStats, updateItem, deleteItem, deleteTag, getCollectionInfo, updateCollectionInfo } from "../services/api";
 import ItemCard from "../components/ItemCard";
 import "./ModeratorView.css";
 
@@ -16,10 +16,13 @@ function ModeratorView({ user, onLogout }) {
 
     const [newTag, setNewTag] = useState("");
 
-    // data
     const [tags, setTags] = useState([]);
     const [items, setItems] = useState([]);
     const [stats, setStats] = useState(null);
+
+    // identity
+    const [collectionName, setCollectionName] = useState("");
+    const [collectionDesc, setCollectionDesc] = useState("");
 
     const handleFile = (e) => {
         const file = e.target.files[0];
@@ -36,6 +39,13 @@ function ModeratorView({ user, onLogout }) {
             getItems().then(setItems);
             getStats().then(setStats);
             getTags().then(setTags);
+        } else if (view === "identity") {
+            getCollectionInfo().then(res => {
+                if (res.status) {
+                    setCollectionName(res.data.name);
+                    setCollectionDesc(res.data.description);
+                }
+            });
         }
     }, [view]);
 
@@ -107,6 +117,12 @@ function ModeratorView({ user, onLogout }) {
         }
     };
 
+    const handleSaveCollectionInfo = async () => {
+        if (!collectionName) return;
+        const res = await updateCollectionInfo(collectionName, collectionDesc);
+        alert(res.message);
+    };
+
     return (
         <div className="mod-wrapper">
             <header className="mod-header">
@@ -126,6 +142,11 @@ function ModeratorView({ user, onLogout }) {
                     >Gallery
                     </button>
                     <button 
+                        className={`mod-tab ${view === "identity" ? "active" : ""}`} 
+                        onClick={() => setView("identity")}
+                    >Identity
+                    </button>
+                    <button 
                         className="mod-tab" 
                         onClick={onLogout}
                         style={{ color: "#ef4444", border: "1px solid rgba(239,68,68,0.3)", padding: "5px 15px", borderRadius: "2px", marginLeft: "10px" }}
@@ -134,7 +155,7 @@ function ModeratorView({ user, onLogout }) {
                 </nav>
             </header>
 
-            <main className="mod-content" style={view === "gallery" ? { display: "block" } : {}}>
+            <main className="mod-content" style={view === "gallery" || view === "identity" ? { display: "block" } : {}}>
                 {view === "minting" && (
                     <>
                         {/* 🟣 CREATE TAG */}
@@ -227,6 +248,34 @@ function ModeratorView({ user, onLogout }) {
                                 </div>
                             ))}
                         </div>
+                    </div>
+                )}
+
+                {view === "identity" && (
+                    <div className="mod-panel" style={{ marginTop: 0 }}>
+                        <h3>MUSEUM IDENTITY</h3>
+                        
+                        <p style={{ color: "#888", fontSize: "0.85rem", marginBottom: "30px", letterSpacing: "1px" }}>
+                            Modify the global namesake and narrative of the collection. This metadata is projected across all public and collector terminals.
+                        </p>
+
+                        <label style={{ display: "block", color: "#14b8a6", fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "2px", marginBottom: "10px" }}>Collection Title</label>
+                        <input
+                            className="mod-input"
+                            placeholder="TITLE"
+                            value={collectionName}
+                            onChange={(e) => setCollectionName(e.target.value)}
+                        />
+
+                        <label style={{ display: "block", color: "#14b8a6", fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "2px", marginBottom: "10px" }}>Museum Description</label>
+                        <input
+                            className="mod-input"
+                            placeholder="DESCRIPTION"
+                            value={collectionDesc}
+                            onChange={(e) => setCollectionDesc(e.target.value)}
+                        />
+
+                        <button className="mod-btn" onClick={handleSaveCollectionInfo} style={{ marginTop: "20px" }}>Publish Identity Overrides</button>
                     </div>
                 )}
             </main>

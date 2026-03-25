@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from .services import collect_item, list_user_collection, get_progress
+from .services import collect_item, list_user_collection, get_progress, fetch_collection_info, modify_collection_info
 
 collection_router = Blueprint("collection", __name__)
 
@@ -18,3 +18,11 @@ def get_collection(user_id):
 @collection_router.route("/progress/<int:user_id>", methods=["GET"])
 def progress(user_id):
     return jsonify(get_progress(user_id))
+
+@collection_router.route("/info", methods=["GET"])
+def get_info():
+    return jsonify(fetch_collection_info())
+
+@collection_router.route("/info", methods=["PUT"])
+def update_info():
+    return jsonify(modify_collection_info(request.json))

@@ -1,4 +1,4 @@
-from .repository import add_user_item, get_user_items, get_total_items, get_user_collected_count
+from .repository import add_user_item, get_user_items, get_total_items, get_user_collected_count, get_collection_info, update_collection_info
 
 def collect_item(data):
     from modules.achievements.services import evaluate_achievements
@@ -47,3 +47,14 @@ def get_progress(user_id):
         "total": total,
         "percentage": percentage
     }
+
+def fetch_collection_info():
+    info = get_collection_info()
+    return {"status": True, "data": info}
+
+def modify_collection_info(data):
+    name = data.get("name")
+    desc = data.get("description", "")
+    if not name: return {"status": False, "message": "Name required"}
+    update_collection_info(name, desc)
+    return {"status": True, "message": "Collection metadata updated"}

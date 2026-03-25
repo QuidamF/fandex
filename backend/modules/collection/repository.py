@@ -58,3 +58,20 @@ def get_user_collected_count(user_id):
 
     conn.close()
     return total
+
+def get_collection_info(collection_id=1):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT name, description FROM collections WHERE id=?", (collection_id,))
+    row = cursor.fetchone()
+    conn.close()
+    if row: return dict(row)
+    return {"name": "Unknown", "description": ""}
+
+def update_collection_info(name, description, collection_id=1):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE collections SET name=?, description=? WHERE id=?", (name, description, collection_id))
+    conn.commit()
+    conn.close()
+    return True
