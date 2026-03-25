@@ -168,9 +168,12 @@ Focus: simplicity, clarity, and hackathon-ready implementation.
 
 ---
 
-## 🚀 Milestones
-
 * [x] Backend MVP ready
 * [x] Frontend MVP ready
 * [x] Full demo ready
 * [x] Mobile Responsive Overhaul (Master Implementation)
+* [x] **Image System Refactor (Pillow + WebP + Thumbnails)**
+* [x] **Environment Variable Configuration (Vite .env)**
+* [x] **Repository Security & Gitignore Consolidation**
+* [x] **Technical Documentation (Mermaid Architecture & Roadmap)**
+* [ ] **Add Screenshots & Demo Video for Hackathon Flow**
