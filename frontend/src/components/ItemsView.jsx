@@ -24,15 +24,15 @@ function ItemsView({ items, tags, onCollect }) {
 
     return (
         <div>
-            <div style={{ padding: "10px" }}>
-                <select onChange={(e) => setFilterTag(e.target.value)}>
+            <div className="vintage-filters">
+                <select className="vintage-select" onChange={(e) => setFilterTag(e.target.value)}>
                     <option value="">All Tags</option>
                     {tags.map(tag => (
                         <option key={tag} value={tag}>{tag}</option>
                     ))}
                 </select>
 
-                <select onChange={(e) => setFilterRarity(e.target.value)} style={{ marginLeft: "10px" }}>
+                <select className="vintage-select" onChange={(e) => setFilterRarity(e.target.value)}>
                     <option value="">All Rarities</option>
                     <option value="common">Common</option>
                     <option value="rare">Rare</option>

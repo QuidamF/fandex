@@ -94,17 +94,34 @@ function Dashboard({ user }) {
     }
 
     return (
-        <div>
-            <h2>Welcome {user.username}</h2>
-            {/* nav */}
-            <div style={{ display: "flex", gap: "10px", padding: "10px" }}>
-                <button onClick={() => setView("home")}>Home</button>
-                <button onClick={() => setView("items")}>Items</button>
-                <button onClick={() => setView("achievements")}>Achievements</button>
-            </div>
+        <div className="dashboard-wrapper">
+            <header className="dashboard-header">
+                <h2 className="dashboard-title">
+                    FANDEX <span>/// {user.username}'s Vault</span>
+                </h2>
+                
+                <nav className="dashboard-nav">
+                    <button 
+                        className={`dashboard-tab ${view === "home" ? "active" : ""}`} 
+                        onClick={() => setView("home")}
+                    >Overview
+                    </button>
+                    <button 
+                        className={`dashboard-tab ${view === "items" ? "active" : ""}`} 
+                        onClick={() => setView("items")}
+                    >Collection
+                    </button>
+                    <button 
+                        className={`dashboard-tab ${view === "achievements" ? "active" : ""}`} 
+                        onClick={() => setView("achievements")}
+                    >Milestones
+                    </button>
+                </nav>
+            </header>
 
-            {/* view content */}
-            {content}
+            <main className="dashboard-content">
+                {content}
+            </main>
         </div>
     );
 }

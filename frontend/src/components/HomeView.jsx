@@ -5,19 +5,19 @@ function HomeView({ progress, progressByTag }) {
 
     return (
         <div style={{ padding: "20px" }}>
-            <h2>Overview</h2>
-            <div style={{ marginBottom: "30px" }}>
+            <div style={{ marginBottom: "40px", padding: "20px", background: "#1a1514", border: "1px solid rgba(212, 175, 55, 0.2)", borderRadius: "2px" }}>
                 <ProgressBar progress={progress} />
             </div>
 
-            <h3>By Category</h3>
+            <h3 style={{fontFamily: "Playfair Display, serif", color: "#d4af37", letterSpacing: "2px", fontWeight:"300"}}>BY CATEGORY</h3>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "15px" }}>
                 {progressByTag?.map(t => (
                     <div key={t.tag} style={{
-                        background: "#1e293b",
-                        padding: "15px",
-                        borderRadius: "8px",
-                        boxShadow: "0 4px 6px rgba(0,0,0,0.1)"
+                        background: "#1a1514",
+                        padding: "20px",
+                        borderRadius: "2px",
+                        border: "1px solid rgba(212, 175, 55, 0.15)",
+                        boxShadow: "0 10px 20px rgba(0,0,0,0.3)"
                     }}>
                         <p style={{ margin: "0 0 10px 0", fontWeight: "bold", textTransform: "capitalize" }}>{t.tag}</p>
                         <ProgressBar progress={t} />

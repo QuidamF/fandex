@@ -1,26 +1,53 @@
 .achievements {
-    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    margin-top: 10px;
 }
 
-.achievement {
-    background: #1e293b;
-    padding: 10px;
-    border-radius: 5px;
+.achievements h3 {
+    grid-column: 1 / -1;
+    font-family: 'Playfair Display', serif;
+    color: #d4af37;
+    font-weight: 300;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    padding-bottom: 15px;
     margin-bottom: 5px;
 }
 
-.achievement.new {
-    animation: pop 0.4s ease;
+.achievement {
+    background: #1a1514;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    padding: 25px 20px;
+    border-radius: 2px;
+    color: #e5e5e5;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-family: 'Helvetica Neue', sans-serif;
+    font-weight: 300;
+    letter-spacing: 1px;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 10px 30px rgba(0,0,0,0.4);
+    transition: all 0.4s ease;
 }
 
-@keyframes pop {
-    0% {
-        transform: scale(0.8);
-        opacity: 0;
-    }
+.achievement:hover {
+    transform: translateY(-5px);
+    border-color: rgba(212, 175, 55, 0.6);
+    box-shadow: inset 0 0 20px rgba(212, 175, 55, 0.05), 0 15px 40px rgba(0,0,0,0.6);
+}
 
-    100% {
-        transform: scale(1);
-        opacity: 1;
+.achievement.new {
+    animation: goldGlow 3s infinite alternate;
+}
+
+@keyframes goldGlow {
+    from {
+        box-shadow: 0 0 10px rgba(212, 175, 55, 0.05);
+    }
+    to {
+        box-shadow: 0 0 25px rgba(212, 175, 55, 0.35);
     }
 }

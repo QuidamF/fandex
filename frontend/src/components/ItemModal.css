@@ -1,46 +1,80 @@
 .modal-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(10, 8, 8, 0.85); 
+    backdrop-filter: blur(8px);
     display: flex;
     justify-content: center;
     align-items: center;
-
     z-index: 1000;
 }
 
 .modal-content {
-    background: #1e293b;
-    padding: 20px;
-    border-radius: 10px;
-    width: 300px;
+    background: #1a1514;
+    padding: 40px;
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    border-radius: 2px;
+    width: 400px;
     position: relative;
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.9), inset 0 0 40px rgba(212, 175, 55, 0.05);
+    animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    color: #e5e5e5;
+    text-align: center;
+}
 
-    animation: fadeIn 0.3s ease;
+.modal-content h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 300;
+    font-size: 2rem;
+    margin-bottom: 5px;
+    color: #d4af37;
+    letter-spacing: 2px;
+}
+
+.modal-content p {
+    font-weight: 300;
+    line-height: 1.6;
+    color: #a39171;
+    font-size: 0.9rem;
+}
+
+.modal-content button:not(.close-btn) {
+    width: 100%;
+    margin-top: 20px;
+    background: transparent;
+    border: 1px solid rgba(212, 175, 55, 0.5);
+    color: #d4af37;
+    padding: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.modal-content button:not(.close-btn):hover {
+    background: rgba(212, 175, 55, 0.1);
 }
 
 .close-btn {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 15px;
+    right: 15px;
     background: transparent;
     border: none;
-    color: white;
+    color: #888;
+    font-size: 1.5rem;
     cursor: pointer;
+    transition: 0.3s;
 }
+.close-btn:hover { color: #d4af37; }
 
 @keyframes fadeIn {
     from {
-        transform: scale(0.9);
+        transform: scale(0.95) translateY(20px);
         opacity: 0;
     }
-
     to {
-        transform: scale(1);
+        transform: scale(1) translateY(0);
         opacity: 1;
     }
 }
