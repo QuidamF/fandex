@@ -91,6 +91,12 @@
 
 /* Navigation */
 .public-nav {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(17, 14, 13, 0.95);
+    backdrop-filter: blur(10px);
+    padding-top: 20px;
     display: flex;
     justify-content: center;
     gap: 40px;
