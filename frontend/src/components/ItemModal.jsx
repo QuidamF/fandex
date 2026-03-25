@@ -14,7 +14,7 @@ function ItemModal({ item, onClose, onCollect }) {
 
                     {item.has_image && (
                         <div style={{ background: "rgba(0,0,0,0.5)", borderRadius: "4px", padding: "10px", margin: "10px 0" }}>
-                            <img src={`http://localhost:5000/api/items/${item.id}/image`} alt={item.name} style={{ width: "100%", maxHeight: "500px", objectFit: "contain", borderRadius: "2px" }} />
+                            <img src={`http://localhost:5000${item.image_url}`} alt={item.name} style={{ width: "100%", maxHeight: "500px", objectFit: "contain", borderRadius: "2px" }} />
                         </div>
                     )}
 

@@ -20,14 +20,14 @@ def get_all_items():
 
     return items
 
-def insert_item(name, rarity, description, image=None):
+def insert_item(name, rarity, description, image=None, image_filename=None, thumb_filename=None):
     conn = get_connection()
     cursor = conn.cursor()
 
     cursor.execute("""
-        INSERT INTO items (name, rarity, description, image)
-        VALUES (?, ?, ?, ?)
-    """, (name, rarity, description, image))
+        INSERT INTO items (name, rarity, description, image, image_filename, thumb_filename)
+        VALUES (?, ?, ?, ?, ?, ?)
+    """, (name, rarity, description, image, image_filename, thumb_filename))
 
     conn.commit()
 
@@ -55,17 +55,27 @@ def insert_item_tag(item_id, name):
     conn.commit()
 
 
-def update_item_in_db(item_id, name, rarity, description, image=None):
+def update_item_in_db(item_id, name, rarity, description, image=None, image_filename=None, thumb_filename=None):
     conn = get_connection()
     cursor = conn.cursor()
     
-    if image is not None:
+    # Base Update
+    if image_filename:
+        # We have a NEW file-based image
         cursor.execute("""
             UPDATE items 
-            SET name=?, rarity=?, description=?, image=?
+            SET name=?, rarity=?, description=?, image='', image_filename=?, thumb_filename=?
+            WHERE id=?
+        """, (name, rarity, description, image_filename, thumb_filename, item_id))
+    elif image:
+        # We have a NEW Base64 image (fallback)
+        cursor.execute("""
+            UPDATE items 
+            SET name=?, rarity=?, description=?, image=?, image_filename=NULL, thumb_filename=NULL
             WHERE id=?
         """, (name, rarity, description, image, item_id))
     else:
+        # No new image, just update text meta
         cursor.execute("""
             UPDATE items 
             SET name=?, rarity=?, description=?
@@ -73,6 +83,7 @@ def update_item_in_db(item_id, name, rarity, description, image=None):
         """, (name, rarity, description, item_id))
         
     conn.commit()
+    conn.close()
 
 def delete_item_from_db(item_id):
     conn = get_connection()

@@ -46,11 +46,22 @@ def init_db():
         rarity TEXT DEFAULT 'common',
         description TEXT,
         image TEXT,
+        image_filename TEXT,
+        thumb_filename TEXT,
         collection_id INTEGER,
         created_by INTEGER,
         FOREIGN KEY (collection_id) REFERENCES collections(id)
     )
     """)
+
+    try:
+        cursor.execute("ALTER TABLE items ADD COLUMN image_filename TEXT")
+    except:
+        pass
+    try:
+        cursor.execute("ALTER TABLE items ADD COLUMN thumb_filename TEXT")
+    except:
+        pass
 
     # Tags
     cursor.execute("""
