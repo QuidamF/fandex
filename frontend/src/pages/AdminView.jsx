@@ -41,6 +41,12 @@ function AdminView({ user, onLogout }) {
         }
     };
 
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            handleCreateModerator();
+        }
+    };
+
     if (!stats) return <div style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", color: "#a39171", background: "#110e0d" }}><p>Initializing Master Archive...</p></div>;
 
     return (
@@ -78,6 +84,7 @@ function AdminView({ user, onLogout }) {
                         placeholder="USERNAME IDENTIFIER"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
+                        onKeyDown={handleKeyDown}
                     />
 
                     <input
@@ -86,6 +93,7 @@ function AdminView({ user, onLogout }) {
                         placeholder="ACCESS CODE"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        onKeyDown={handleKeyDown}
                     />
 
                     <button className="admin-btn" onClick={handleCreateModerator}>

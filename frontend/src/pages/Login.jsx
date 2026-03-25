@@ -55,6 +55,12 @@ function Login() {
         }
     };
 
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            handleLogin();
+        }
+    };
+
     return (
         <div className="login-wrapper">
             <div className="login-container">
@@ -68,6 +74,7 @@ function Login() {
                         placeholder="USERNAME"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
+                        onKeyDown={handleKeyDown}
                     />
                 </div>
 
@@ -79,6 +86,7 @@ function Login() {
                         placeholder="PASSWORD"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        onKeyDown={handleKeyDown}
                     />
                 </div>
 
