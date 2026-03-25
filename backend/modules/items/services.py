@@ -13,6 +13,7 @@ def list_items():
             "description": item["description"],
             "image": item["image"],
             "rarity": item["rarity"],
+            "rarity_color": item["rarity_color"],
             "tags": item["tags"].split(",") if item["tags"] else []
         })
 

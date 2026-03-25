@@ -28,7 +28,8 @@ def list_user_collection(user_id):
         result.append({
             "id": item["id"],
             "name": item["name"],
-            "rarity": item["rarity"]
+            "rarity": item["rarity"],
+            "rarity_color": item["rarity_color"]
         })
 
     return result
