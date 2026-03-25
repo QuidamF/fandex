@@ -10,19 +10,67 @@
 }
 
 .modal-content {
-    background: #1a1514;
-    padding: 40px;
-    border: 1px solid rgba(212, 175, 55, 0.4);
-    border-radius: 2px;
+    background: transparent;
+    border: none;
+    border-radius: 4px;
     width: 400px;
     position: relative;
-    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.9), inset 0 0 40px rgba(212, 175, 55, 0.05);
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.9);
     animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     color: #e5e5e5;
     text-align: center;
+    overflow: hidden;
+    padding: 40px;
 }
 
-.modal-content h2 {
+/* Inner Solid Background */
+.modal-bg {
+    position: absolute;
+    inset: 1px;
+    background: rgba(26, 21, 20, 0.98); 
+    border-radius: 3px;
+    z-index: 0;
+    transition: all 0.4s ease;
+}
+
+.modal-content.collected .modal-bg {
+    background: rgba(20, 26, 22, 0.98);
+}
+
+/* Animated Border */
+.modal-content::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%; width: 200%; height: 200%;
+    background: conic-gradient(
+        from 0deg, 
+        transparent 0deg, 
+        transparent 280deg, 
+        rgba(212, 175, 55, 0.1) 320deg, 
+        rgba(212, 175, 55, 1) 360deg
+    );
+    animation: borderSpin 5s linear infinite;
+    z-index: -1;
+    opacity: 0.8;
+}
+
+.modal-content.collected::before {
+    background: conic-gradient(
+        from 0deg, 
+        transparent 0deg, 
+        transparent 280deg, 
+        rgba(16, 185, 129, 0.1) 320deg, 
+        rgba(16, 185, 129, 1) 360deg
+    );
+}
+
+/* Ensure Inner Content is Above Background */
+.modal-inner-content {
+    position: relative;
+    z-index: 1;
+}
+
+.modal-inner-content h2 {
     font-family: 'Playfair Display', serif;
     font-weight: 300;
     font-size: 2rem;
@@ -31,14 +79,22 @@
     letter-spacing: 2px;
 }
 
-.modal-content p {
+.modal-content.collected .modal-inner-content h2 {
+    color: #10b981;
+}
+
+.modal-inner-content p {
     font-weight: 300;
     line-height: 1.6;
     color: #a39171;
     font-size: 0.9rem;
 }
 
-.modal-content button:not(.close-btn) {
+.modal-content.collected .modal-inner-content p {
+    color: #84a59d;
+}
+
+.modal-inner-content button:not(.close-btn) {
     width: 100%;
     margin-top: 20px;
     background: transparent;
@@ -51,14 +107,23 @@
     transition: all 0.3s;
 }
 
-.modal-content button:not(.close-btn):hover {
+.modal-content.collected .modal-inner-content button:not(.close-btn) {
+    border-color: rgba(16, 185, 129, 0.5);
+    color: #10b981;
+}
+
+.modal-inner-content button:not(.close-btn):hover {
     background: rgba(212, 175, 55, 0.1);
+}
+
+.modal-content.collected .modal-inner-content button:not(.close-btn):hover {
+    background: rgba(16, 185, 129, 0.1);
 }
 
 .close-btn {
     position: absolute;
-    top: 15px;
-    right: 15px;
+    top: -25px;
+    right: -25px;
     background: transparent;
     border: none;
     color: #888;
@@ -66,7 +131,7 @@
     cursor: pointer;
     transition: 0.3s;
 }
-.close-btn:hover { color: #d4af37; }
+.close-btn:hover { color: #fff; }
 
 @keyframes fadeIn {
     from {

@@ -18,36 +18,69 @@
 }
 
 .achievement {
-    background: #1a1514;
-    border: 1px solid rgba(212, 175, 55, 0.3);
+    position: relative;
     padding: 25px 20px;
-    border-radius: 2px;
+    border-radius: 4px;
     color: #e5e5e5;
-    display: flex;
-    align-items: center;
-    gap: 15px;
     font-family: 'Helvetica Neue', sans-serif;
     font-weight: 300;
     letter-spacing: 1px;
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 10px 30px rgba(0,0,0,0.4);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    transition: all 0.4s ease;
+    background: transparent;
+    border: none;
+    overflow: hidden;
+}
+
+.achievement-bg {
+    position: absolute;
+    inset: 1px;
+    background: rgba(26, 21, 20, 0.96);
+    border-radius: 3px;
+    z-index: 0;
     transition: all 0.4s ease;
 }
 
-.achievement:hover {
-    transform: translateY(-5px);
-    border-color: rgba(212, 175, 55, 0.6);
-    box-shadow: inset 0 0 20px rgba(212, 175, 55, 0.05), 0 15px 40px rgba(0,0,0,0.6);
+.achievement-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
-.achievement.new {
-    animation: goldGlow 3s infinite alternate;
+.achievement::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%; width: 200%; height: 200%;
+    background: conic-gradient(
+        from 0deg, 
+        transparent 0deg, 
+        transparent 280deg, 
+        rgba(212, 175, 55, 0.1) 320deg, 
+        rgba(212, 175, 55, 1) 360deg
+    );
+    animation: borderSpin 6s linear infinite;
+    z-index: -1;
+    opacity: 0.5;
+    transition: opacity 0.3s;
 }
 
-@keyframes goldGlow {
-    from {
-        box-shadow: 0 0 10px rgba(212, 175, 55, 0.05);
-    }
-    to {
-        box-shadow: 0 0 25px rgba(212, 175, 55, 0.35);
-    }
+.achievement:hover::before {
+    opacity: 1;
+    background: conic-gradient(
+        from 0deg, 
+        transparent 0deg, 
+        transparent 260deg, 
+        rgba(255, 215, 0, 0.3) 320deg, 
+        #facc15 360deg
+    );
+    animation: borderSpin 2s linear infinite;
+}
+
+/* Highlight new achievements distinctly */
+.achievement.new::before {
+    background: conic-gradient(from 0deg, transparent 0deg, rgba(234, 179, 8, 0.2) 180deg, rgba(234, 179, 8, 1) 360deg);
+    animation: borderSpin 3s linear infinite;
+    opacity: 0.8;
 }

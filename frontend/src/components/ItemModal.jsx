@@ -5,21 +5,25 @@ function ItemModal({ item, onClose, onCollect }) {
 
     return (
         <div className="modal-overlay" onClick={onClose}>
-            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className={`modal-content ${item.collected ? "collected" : ""}`} onClick={(e) => e.stopPropagation()}>
+                
+                <div className="modal-bg"></div>
 
-                <button className="close-btn" onClick={onClose}>✖</button>
+                <div className="modal-inner-content">
+                    <button className="close-btn" onClick={onClose}>✖</button>
 
-                {item.image && (
-                    <img src={item.image} alt={item.name} style={{ width: "100%", maxHeight: "250px", objectFit: "cover", borderRadius: "8px", margin: "10px 0" }} />
-                )}
+                    {item.image && (
+                        <img src={item.image} alt={item.name} style={{ width: "100%", maxHeight: "250px", objectFit: "cover", borderRadius: "2px", margin: "10px 0" }} />
+                    )}
 
-                <h2>{item.name}</h2>
-                <p><strong>Rarity:</strong> {item.rarity}</p>
-                <p>{item.description || "No description"}</p>
+                    <h2>{item.name}</h2>
+                    <p><strong>Rarity:</strong> {item.rarity}</p>
+                    <p>{item.description || "No description"}</p>
 
-                <button onClick={() => onCollect(item.id)}>
-                    {item.collected ? "Collected" : "Collect"}
-                </button>
+                    <button onClick={() => onCollect(item.id)}>
+                        {item.collected ? "Collected" : "Collect"}
+                    </button>
+                </div>
 
             </div>
         </div>
