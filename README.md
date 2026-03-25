@@ -93,17 +93,14 @@ sequenceDiagram
 
 ## 🛡️ Role-based Permissions
 
-```mermaid
-matrix
-    title "System Permissions Matrix"
-    "Action" | "Admin" | "Moderator" | "Fan" | "Public"
-    "View Gallery" | "✅" | "✅" | "✅" | "✅"
-    "Collect Items" | "✅" | "✅" | "✅" | "❌"
-    "Mint Artifacts" | "✅" | "✅" | "❌" | "❌"
-    "Create Milestones" | "✅" | "✅" | "❌" | "❌"
-    "Manage Users" | "✅" | "❌" | "❌" | "❌"
-    "Purge System" | "✅" | "❌" | "❌" | "❌"
-```
+| Action | Admin | Moderator | Fan | Public |
+| :--- | :---: | :---: | :---: | :---: |
+| **View Gallery** | ✅ | ✅ | ✅ | ✅ |
+| **Collect Items** | ✅ | ✅ | ✅ | ❌ |
+| **Mint Artifacts** | ✅ | ✅ | ❌ | ❌ |
+| **Create Milestones** | ✅ | ✅ | ❌ | ❌ |
+| **Manage Users** | ✅ | ❌ | ❌ | ❌ |
+| **Purge System** | ✅ | ❌ | ❌ | ❌ |
 
 ## ✨ Features
 
