@@ -1,0 +1,179 @@
+.card {
+    position: relative;
+    width: 100%;
+    max-width: 200px;
+    aspect-ratio: 200 / 320;
+    height: auto;
+    background: transparent;
+    border-radius: 4px;
+    isolation: isolate;
+    cursor: pointer;
+    overflow: hidden;
+    padding: 15px;
+    text-align: center;
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease-out;
+    margin: 0 auto;
+}
+
+.card.invisible {
+    opacity: 0;
+    transform: scale(0.85) translateY(20px);
+    pointer-events: none;
+}
+
+.card.visible {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+}
+
+/* Inner Solid Background */
+.card-bg {
+    position: absolute;
+    inset: 1px; /* The gap created by inset acts as our 1px border */
+    background: rgba(255, 255, 255, 0.03); /* Faint visible background */
+    border: 1px solid var(--rarity-color, rgba(255,255,255,0.1)); /* Static visible color edge */
+    border-radius: 3px;
+    z-index: 0;
+    transition: all 0.4s ease;
+}
+
+/* The Animated Traveling Glow Border BASE */
+.card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+        from 0deg, 
+        transparent 0deg, 
+        transparent 280deg, 
+        transparent 320deg, 
+        var(--rarity-color, #9ca3af) 350deg,
+        var(--rarity-color, #9ca3af) 360deg
+    );
+    animation: borderSpin 6s linear infinite;
+    z-index: -1;
+    opacity: 0.6;
+    transition: opacity 0.3s;
+}
+
+@keyframes borderSpin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Move all contents above the card-bg */
+.card-content {
+    position: relative;
+    z-index: 1;
+}
+
+.card.visible:hover {
+    transform: scale(1) translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.6), 0 0 15px var(--rarity-color, rgba(212, 175, 55, 0.05));
+}
+
+.card-content h3 {
+    font-family: 'Playfair Display', 'Didot', serif;
+    font-weight: 300;
+    letter-spacing: 1px;
+    color: #e5e5e5;
+    margin: 10px 0 5px;
+    font-size: 1.2rem;
+}
+
+.card.visible:hover::before {
+    opacity: 1;
+    background: conic-gradient(
+        from 0deg, 
+        transparent 0deg, 
+        transparent 260deg, 
+        transparent 320deg, 
+        var(--rarity-color, #9ca3af) 350deg,
+        var(--rarity-color, #9ca3af) 360deg
+    );
+    animation: borderSpin 2s linear infinite;
+}
+
+/* ==================================
+   COLLECTED (OWNED) STATE OVERRIDE
+   ================================== */
+.card.collected .card-bg {
+    background: rgba(20, 26, 22, 0.98);
+}
+
+.card.collected::before {
+    background: conic-gradient(
+        from 0deg, 
+        transparent 0deg, 
+        transparent 280deg, 
+        rgba(16, 185, 129, 0.1) 320deg, 
+        rgba(16, 185, 129, 1) 360deg
+    ) !important;
+}
+
+.card.collected:hover::before {
+    opacity: 1;
+    background: conic-gradient(
+        from 0deg, 
+        transparent 0deg, 
+        transparent 260deg, 
+        rgba(52, 211, 153, 0.3) 320deg, 
+        #34d399 360deg
+    ) !important;
+    animation: borderSpin 2s linear infinite;
+}
+
+.card.collected::after {
+    content: 'OWNED';
+    position: absolute;
+    top: 10px;
+    right: -25px;
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+    font-size: 0.55rem;
+    padding: 3px 25px;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    letter-spacing: 2px;
+    transform: rotate(45deg);
+    z-index: 5;
+}
+
+/* Buttons */
+.card-content button {
+    background: transparent;
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    color: #d4af37;
+    padding: 8px 15px;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 10px;
+    transition: all 0.3s;
+    cursor: pointer;
+    width: 100%;
+}
+
+.card-content button:hover {
+    background: rgba(212, 175, 55, 0.1);
+}
+
+.card.collected .card-content button {
+    border-color: rgba(16, 185, 129, 0.4);
+    color: #10b981;
+}
+
+.card.collected .card-content button:hover {
+    background: rgba(16, 185, 129, 0.1);
+}
+
+/* Typography Strings */
+.rarity {
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin: 5px 0;
+}

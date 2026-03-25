@@ -1,0 +1,186 @@
+/* Dashboard Vintage Premium Theme */
+
+.dashboard-wrapper {
+    min-height: 100vh;
+    background: #110e0d; /* Deep warm black */
+    color: #e5e5e5;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    padding-bottom: 50px;
+}
+
+/* Header Area */
+.dashboard-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(26, 21, 20, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    padding: 1rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.dashboard-title {
+    font-family: 'Playfair Display', 'Didot', 'Georgia', serif;
+    font-size: 1.8rem;
+    margin: 0;
+    color: #d4af37;
+    font-weight: 300;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.dashboard-title span {
+    color: #a39171;
+    font-size: 0.8rem;
+    letter-spacing: 4px;
+    margin-left: 15px;
+    font-family: sans-serif;
+    vertical-align: middle;
+}
+
+/* Navigation Tabs */
+.dashboard-nav {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scrollbar-width: none; /* Hide scrollbar Firefox */
+    -ms-overflow-style: none; /* Hide scrollbar IE/Edge */
+    padding-bottom: 5px;
+}
+
+.dashboard-nav::-webkit-scrollbar {
+    display: none; /* Hide scrollbar Chrome/Safari */
+}
+
+.dashboard-tab {
+    background: transparent;
+    border: none;
+    color: #888;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 10px 0;
+    cursor: pointer;
+    border-bottom: 1px solid transparent;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.dashboard-tab:hover {
+    color: #d4af37;
+}
+
+.dashboard-tab.active {
+    color: #d4af37;
+    border-bottom: 1px solid #d4af37;
+}
+
+/* Content Container */
+.dashboard-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px 50px;
+}
+
+.dashboard-hero {
+    padding: 4rem 5% 3rem;
+    text-align: center;
+    background: radial-gradient(circle at center, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    margin-bottom: 40px;
+}
+
+.dashboard-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    color: #d4af37;
+    font-weight: 300;
+    margin: 0 0 10px 0;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+}
+
+.dashboard-hero p {
+    font-size: 1.1rem;
+    color: #a39171;
+    letter-spacing: 2px;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 30px;
+}
+
+/* Filter selects in ItemsView */
+.vintage-filters {
+    padding: 10px 0;
+    margin-bottom: 30px;
+    display: flex;
+    gap: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding-bottom: 20px;
+}
+
+.vintage-select {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+    color: #d4af37;
+    padding: 10px 20px 10px 5px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    outline: none;
+    cursor: pointer;
+}
+
+.vintage-select option {
+    background: #1a1514;
+    color: #fff;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 768px) {
+    .dashboard-header {
+        padding: 1rem 20px;
+    }
+
+    .dashboard-hero {
+        padding: 3rem 20px 2rem;
+    }
+
+    .dashboard-hero h1 {
+        font-size: 2.2rem;
+        letter-spacing: 2px;
+    }
+
+    .dashboard-hero p {
+        font-size: 0.95rem;
+    }
+
+    .grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 15px;
+    }
+
+    .vintage-filters {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-hero h1 {
+        font-size: 1.8rem;
+    }
+}
