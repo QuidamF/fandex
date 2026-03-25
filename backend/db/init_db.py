@@ -61,6 +61,16 @@ def init_db():
     )
     """)
 
+    # Rarities
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS rarities (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT UNIQUE NOT NULL,
+        color_hex TEXT NOT NULL,
+        collection_id INTEGER
+    )
+    """)
+
     # Item-Tags
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS item_tags (
@@ -122,6 +132,11 @@ def init_db():
         cursor.execute("INSERT INTO collections (id, name, description) VALUES (1, 'How to Train Your Dragon', 'Demo collection')")
         cursor.execute("INSERT INTO tags (id, name, collection_id) VALUES (1, 'Posters', 1)")
         cursor.execute("INSERT INTO tags (id, name, collection_id) VALUES (2, 'Figures', 1)")
+        
+        cursor.execute("INSERT INTO rarities (name, color_hex, collection_id) VALUES ('common', '#9ca3af', 1)")
+        cursor.execute("INSERT INTO rarities (name, color_hex, collection_id) VALUES ('rare', '#60a5fa', 1)")
+        cursor.execute("INSERT INTO rarities (name, color_hex, collection_id) VALUES ('epic', '#c084fc', 1)")
+        cursor.execute("INSERT INTO rarities (name, color_hex, collection_id) VALUES ('legendary', '#d4af37', 1)")
         
         cursor.execute("INSERT INTO items (id, name, description, image, rarity, collection_id) VALUES (1, 'Toothless Poster', 'Movie poster', '', 'common', 1)")
         cursor.execute("INSERT INTO items (id, name, description, image, rarity, collection_id) VALUES (2, 'Toothless Figure', 'Collectible figure', '', 'rare', 1)")

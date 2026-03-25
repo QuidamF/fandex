@@ -3,7 +3,8 @@ import "./ItemCard.css";
 function ItemCard({ item, onCollect, onClick }) {
     return (
         <div
-            className={`card ${item.rarity || "common"} ${item.collected ? "collected" : ""}`}
+            className={`card ${item.collected ? "collected" : ""}`}
+            style={{ "--rarity-color": item.rarity_color || "#9ca3af" }}
             onClick={onClick}
         >
             <div className="card-bg"></div>
@@ -13,7 +14,7 @@ function ItemCard({ item, onCollect, onClick }) {
                     <img src={item.image} alt={item.name} style={{ width: "100%", height: "120px", objectFit: "cover", borderRadius: "2px" }} />
                 )}
                 <h3>{item.name}</h3>
-                <p className={`rarity ${item.rarity}`}>
+                <p className="rarity" style={{ color: item.rarity_color || "#9ca3af" }}>
                     {item.rarity}
                 </p>
 

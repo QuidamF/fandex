@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { createItem, getTags, createTag, getItems, getStats, updateItem, deleteItem, deleteTag, getCollectionInfo, updateCollectionInfo, getAllAchievements, createAchievement, deleteAchievement } from "../services/api";
+import { createItem, getTags, createTag, getItems, getStats, updateItem, deleteItem, deleteTag, getCollectionInfo, updateCollectionInfo, getAllAchievements, createAchievement, deleteAchievement, getRarities, createRarity, deleteRarity } from "../services/api";
 import ItemCard from "../components/ItemCard";
 import "./ModeratorView.css";
 
@@ -17,6 +17,7 @@ function ModeratorView({ user, onLogout }) {
     const [newTag, setNewTag] = useState("");
 
     const [tags, setTags] = useState([]);
+    const [rarities, setRarities] = useState([]);
     const [items, setItems] = useState([]);
     const [stats, setStats] = useState(null);
     const [achievements, setAchievements] = useState([]);
@@ -24,6 +25,10 @@ function ModeratorView({ user, onLogout }) {
     // identity
     const [collectionName, setCollectionName] = useState("");
     const [collectionDesc, setCollectionDesc] = useState("");
+    
+    // new rarities
+    const [newRarityName, setNewRarityName] = useState("");
+    const [newRarityColor, setNewRarityColor] = useState("#c084fc");
 
     // achievements
     const [achName, setAchName] = useState("");
@@ -43,6 +48,7 @@ function ModeratorView({ user, onLogout }) {
     useEffect(() => {
         if (view === "minting") {
             getTags().then(setTags);
+            getRarities().then(setRarities);
         } else if (view === "gallery") {
             getItems().then(setItems);
             getStats().then(setStats);
@@ -54,9 +60,11 @@ function ModeratorView({ user, onLogout }) {
                     setCollectionDesc(res.data.description);
                 }
             });
+            getRarities().then(setRarities);
         } else if (view === "trophies") {
             getAllAchievements().then(setAchievements);
             getTags().then(setTags);
+            getRarities().then(setRarities);
         }
     }, [view]);
 
@@ -132,6 +140,23 @@ function ModeratorView({ user, onLogout }) {
         if (!collectionName) return;
         const res = await updateCollectionInfo(collectionName, collectionDesc);
         alert(res.message);
+    };
+
+    const handleCreateRarity = async () => {
+        if (!newRarityName) return;
+        const res = await createRarity(newRarityName, newRarityColor);
+        if (res.status) {
+            setNewRarityName("");
+            getRarities().then(setRarities);
+        } else {
+            alert(res.message);
+        }
+    };
+    
+    const handleDeleteRarity = async (r_id) => {
+        if (!window.confirm("Destroy this rarity? Items tied to it will become standard.")) return;
+        await deleteRarity(r_id);
+        getRarities().then(setRarities);
     };
 
     const handleCreateTrophy = async () => {
@@ -228,10 +253,10 @@ function ModeratorView({ user, onLogout }) {
                             <h3 style={{ color: "#d4af37", borderBottom: "1px solid rgba(212, 175, 55, 0.2)" }}>{editItemId ? "Modify Artifact" : "Index New Artifact"}</h3>
                             <input className="mod-input" placeholder="ARTIFACT NAME" value={name} onChange={(e) => setName(e.target.value)} />
                             <select className="mod-select" value={rarity} onChange={(e) => setRarity(e.target.value)}>
-                                <option value="common">Common</option>
-                                <option value="rare">Rare</option>
-                                <option value="epic">Epic</option>
-                                <option value="legendary">Legendary</option>
+                                {rarities.length === 0 ? <option value="common">Common</option> : null}
+                                {rarities.map(r => (
+                                    <option key={r.id} value={r.name}>{r.name.toUpperCase()}</option>
+                                ))}
                             </select>
                             <select className="mod-select" value={tag} onChange={(e) => setTag(e.target.value)}>
                                 <option value="">Select Category...</option>
@@ -315,6 +340,31 @@ function ModeratorView({ user, onLogout }) {
                         />
 
                         <button className="mod-btn" onClick={handleSaveCollectionInfo} style={{ marginTop: "20px" }}>Publish Identity Overrides</button>
+
+                        <div style={{ marginTop: "50px", borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "30px" }}>
+                            <h3 style={{ color: "#c084fc" }}>DYNAMIC RARITY STUDIO</h3>
+                            <p style={{ color: "#888", fontSize: "0.85rem", marginBottom: "20px" }}>Forge custom hierarchy tiers for your artifacts.</p>
+                            
+                            <div style={{ display: "flex", gap: "10px" }}>
+                                <input className="mod-input" style={{ flex: 1, margin: 0 }} placeholder="TIER NAME (e.g. Mythic)" value={newRarityName} onChange={e => setNewRarityName(e.target.value)} />
+                                <input type="color" className="mod-input" style={{ flex: 0.2, margin: 0, padding: "2px", height: "42px", cursor: "pointer" }} value={newRarityColor} onChange={e => setNewRarityColor(e.target.value)} />
+                                <button className="mod-btn" style={{ margin: 0, padding: "0 20px" }} onClick={handleCreateRarity}>Mint Tier</button>
+                            </div>
+
+                            {rarities.length > 0 && (
+                                <div style={{ marginTop: "30px", display: "grid", gap: "10px", gridTemplateColumns: "1fr 1fr" }}>
+                                    {rarities.map(r => (
+                                        <div key={r.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "rgba(255,255,255,0.02)", border: `1px solid ${r.color_hex}`, padding: "10px 15px", borderRadius: "3px" }}>
+                                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                                                <div style={{ width: "15px", height: "15px", borderRadius: "50%", background: r.color_hex, boxShadow: `0 0 10px ${r.color_hex}` }}></div>
+                                                <span style={{ color: "#e5e5e5", textTransform: "uppercase", fontSize: "0.8rem", letterSpacing: "2px" }}>{r.name}</span>
+                                            </div>
+                                            <button onClick={() => handleDeleteRarity(r.id)} style={{ background: "none", border: "none", color: "#ef4444", cursor: "pointer" }}>✖</button>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
                     </div>
                 )}
 
@@ -339,10 +389,7 @@ function ModeratorView({ user, onLogout }) {
                             {achType === "rarity" && (
                                 <select className="mod-select" value={achExtra} onChange={(e) => setAchExtra(e.target.value)}>
                                     <option value="">Select Target Rarity...</option>
-                                    <option value="common">Common</option>
-                                    <option value="rare">Rare</option>
-                                    <option value="epic">Epic</option>
-                                    <option value="legendary">Legendary</option>
+                                    {rarities.map(r => <option key={r.id} value={r.name}>{r.name.toUpperCase()}</option>)}
                                 </select>
                             )}
 

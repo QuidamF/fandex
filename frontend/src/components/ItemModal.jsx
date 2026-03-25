@@ -5,7 +5,7 @@ function ItemModal({ item, onClose, onCollect }) {
 
     return (
         <div className="modal-overlay" onClick={onClose}>
-            <div className={`modal-content ${item.rarity || "common"} ${item.collected ? "collected" : ""}`} onClick={(e) => e.stopPropagation()}>
+            <div className={`modal-content ${item.collected ? "collected" : ""}`} style={{ "--rarity-color": item.rarity_color || "#9ca3af" }} onClick={(e) => e.stopPropagation()}>
                 
                 <div className="modal-bg"></div>
 
@@ -17,7 +17,7 @@ function ItemModal({ item, onClose, onCollect }) {
                     )}
 
                     <h2>{item.name}</h2>
-                    <p><strong>Rarity:</strong> {item.rarity}</p>
+                    <p><strong style={{ color: item.rarity_color || "#9ca3af"}}>Rarity:</strong> {item.rarity.toUpperCase()}</p>
                     <p>{item.description || "No description"}</p>
 
                     <button onClick={() => onCollect(item.id)}>

@@ -1,11 +1,17 @@
 import { useState, useEffect } from "react";
 import ItemCard from "./ItemCard";
 import ItemModal from "./ItemModal";
+import { getRarities } from "../services/api";
 
 function ItemsView({ items, tags, onCollect }) {
     const [filterTag, setFilterTag] = useState("");
     const [filterRarity, setFilterRarity] = useState("");
     const [selectedItem, setSelectedItem] = useState(null);
+    const [rarities, setRarities] = useState([]);
+
+    useEffect(() => {
+        getRarities().then(setRarities).catch(() => {});
+    }, []);
 
     // Keep selected item in sync if its collected status changes
     useEffect(() => {
@@ -34,10 +40,7 @@ function ItemsView({ items, tags, onCollect }) {
 
                 <select className="vintage-select" onChange={(e) => setFilterRarity(e.target.value)}>
                     <option value="">All Rarities</option>
-                    <option value="common">Common</option>
-                    <option value="rare">Rare</option>
-                    <option value="epic">Epic</option>
-                    <option value="legendary">Legendary</option>
+                    {rarities.map(r => <option key={r.id} value={r.name}>{r.name.toUpperCase()}</option>)}
                 </select>
             </div>
 

@@ -32,7 +32,11 @@ def purge_database():
         # Core tables
         cursor.execute("DELETE FROM items")
         cursor.execute("DELETE FROM tags")
+        cursor.execute("DELETE FROM rarities")
         cursor.execute("DELETE FROM achievements")
+        
+        # Reset Identity
+        cursor.execute("UPDATE collections SET name='Unnamed Vault', description='Awaiting curation...' WHERE id=1")
         
         # Identity tables (leaving admin safe)
         cursor.execute("DELETE FROM users WHERE role_id != 1")

@@ -23,8 +23,9 @@ def get_user_items(user_id):
     cursor = conn.cursor()
 
     cursor.execute("""
-        SELECT i.*
+        SELECT i.*, r.color_hex as rarity_color
         FROM items i
+        LEFT JOIN rarities r ON i.rarity = r.name
         JOIN user_items ui ON i.id = ui.item_id
         WHERE ui.user_id = ?
     """, (user_id,))

@@ -172,3 +172,22 @@ export async function deleteAchievement(id) {
     const res = await fetch(`${API_URL}/achievements/${id}`, { method: "DELETE" });
     return res.json();
 }
+
+export async function getRarities() {
+    const res = await fetch(`${API_URL}/rarities/`);
+    return res.json();
+}
+
+export async function createRarity(name, color_hex) {
+    const res = await fetch(`${API_URL}/rarities/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, color_hex })
+    });
+    return res.json();
+}
+
+export async function deleteRarity(id) {
+    const res = await fetch(`${API_URL}/rarities/${id}`, { method: "DELETE" });
+    return res.json();
+}

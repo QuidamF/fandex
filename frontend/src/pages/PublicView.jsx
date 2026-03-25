@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getItems, getTags, getRanking, getCollectionInfo } from "../services/api";
+import { getItems, getTags, getRanking, getCollectionInfo, getRarities, getAllAchievements } from "../services/api";
 import ItemCard from "../components/ItemCard";
 import "./PublicView.css";
 
@@ -8,7 +8,9 @@ function PublicView() {
     const navigate = useNavigate();
     const [items, setItems] = useState([]);
     const [tags, setTags] = useState([]);
+    const [rarities, setRarities] = useState([]);
     const [ranking, setRanking] = useState([]);
+    const [achievements, setAchievements] = useState([]);
     const [view, setView] = useState("overview");
     const [collectionInfo, setCollectionInfo] = useState({ name: "MUSEUM", description: "Connecting to global archive..." });
     
@@ -19,6 +21,8 @@ function PublicView() {
     useEffect(() => {
         getItems().then(setItems).catch(console.error);
         getTags().then(setTags).catch(console.error);
+        getRarities().then(setRarities).catch(console.error);
+        getAllAchievements().then(setAchievements).catch(console.error);
         getRanking()
             .then(data => setRanking(data || []))
             .catch(console.error);
@@ -88,10 +92,7 @@ function PublicView() {
 
                     <select className="public-select" value={filterRarity} onChange={(e) => setFilterRarity(e.target.value)}>
                         <option value="">All Rarities</option>
-                        <option value="common">Common</option>
-                        <option value="rare">Rare</option>
-                        <option value="epic">Epic</option>
-                        <option value="legendary">Legendary</option>
+                        {rarities.map(r => <option key={r.id} value={r.name}>{r.name.toUpperCase()}</option>)}
                     </select>
                 </div>
 
@@ -110,18 +111,12 @@ function PublicView() {
             <div className="public-panel">
                 <h3>Global Milestones</h3>
                 <div className="achievements-grid">
-                    {[
-                        { name: "First Artifact", desc: "Acquire 1 museum item" },
-                        { name: "Halfway There", desc: "Retrieve 50% of the collection" },
-                        { name: "Myth Seeker", desc: "Locate a legendary artifact" },
-                        { name: "Museum Director", desc: "Acquire every item in the archive" },
-                        { name: "Grave Robber", desc: "Steal 10 items in 1 day" }
-                    ].map(a => (
-                        <div key={a.name} className="public-achievement">
+                    {achievements.length > 0 ? achievements.map(a => (
+                        <div key={a.id} className="public-achievement">
                             <h4>{a.name}</h4>
-                            <p>{a.desc}</p>
+                            <p>{a.description}</p>
                         </div>
-                    ))}
+                    )) : <p style={{ color: "#888", fontSize: "0.8rem", letterSpacing: "1px" }}>NO MILESTONES DEFINED</p>}
                 </div>
             </div>
         );
@@ -154,7 +149,7 @@ function PublicView() {
                     <p>Categories</p>
                 </div>
                 <div className="stat-block">
-                    <h3>5</h3>
+                    <h3>{achievements.length}</h3>
                     <p>Milestones</p>
                 </div>
             </div>
