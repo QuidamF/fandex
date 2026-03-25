@@ -1,24 +1,77 @@
 .card {
-    background: rgba(26, 21, 20, 0.8);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(212, 175, 55, 0.15);
+    position: relative;
     padding: 15px;
-    border-radius: 2px;
+    border-radius: 4px;
     transition: all 0.4s ease;
     cursor: pointer;
     text-align: center;
     box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-    position: relative;
     overflow: hidden;
+    background: transparent;
+    border: none;
+}
+
+/* Inner Solid Background */
+.card-bg {
+    position: absolute;
+    inset: 1px; /* The gap created by inset acts as our 1px border */
+    background: rgba(26, 21, 20, 0.98); /* Solid dark museum backdrop */
+    border-radius: 3px;
+    z-index: 0;
+    transition: all 0.4s ease;
+}
+
+/* The Animated Traveling Glow Border */
+.card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+        from 0deg, 
+        transparent 0deg, 
+        transparent 280deg, 
+        rgba(212, 175, 55, 0.1) 320deg, 
+        rgba(212, 175, 55, 1) 360deg
+    );
+    animation: borderSpin 6s linear infinite;
+    z-index: -1;
+    opacity: 0.6;
+    transition: opacity 0.3s;
+}
+
+.card:hover::before {
+    opacity: 1;
+    background: conic-gradient(
+        from 0deg, 
+        transparent 0deg, 
+        transparent 260deg, 
+        rgba(255, 215, 0, 0.3) 320deg, 
+        #facc15 360deg
+    );
+    animation: borderSpin 2s linear infinite; /* Accelerates dramatically */
+}
+
+@keyframes borderSpin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Move all contents above the card-bg */
+.card-content {
+    position: relative;
+    z-index: 1;
 }
 
 .card:hover {
     transform: translateY(-5px);
-    border-color: rgba(212, 175, 55, 0.5);
     box-shadow: 0 15px 30px rgba(0,0,0,0.6), 0 0 15px rgba(212, 175, 55, 0.1);
 }
 
-.card h3 {
+.card-content h3 {
     font-family: 'Playfair Display', 'Didot', serif;
     font-weight: 300;
     letter-spacing: 1px;
@@ -27,9 +80,31 @@
     font-size: 1.2rem;
 }
 
-.card.collected {
-    border: 1px solid rgba(16, 185, 129, 0.4);
-    box-shadow: inset 0 0 20px rgba(16, 185, 129, 0.05);
+/* Collected State */
+.card.collected .card-bg {
+    /* Subtle emerald tint overlay on the collected items background */
+    background: rgba(20, 26, 22, 0.98);
+}
+
+.card.collected::before {
+    /* Emerald traveling border instead of gold */
+    background: conic-gradient(
+        from 0deg, 
+        transparent 0deg, 
+        transparent 280deg, 
+        rgba(16, 185, 129, 0.1) 320deg, 
+        rgba(16, 185, 129, 1) 360deg
+    );
+}
+
+.card.collected:hover::before {
+    background: conic-gradient(
+        from 0deg, 
+        transparent 0deg, 
+        transparent 260deg, 
+        rgba(52, 211, 153, 0.3) 320deg, 
+        #34d399 360deg
+    );
 }
 
 .card.collected::after {
@@ -44,9 +119,10 @@
     border: 1px solid rgba(16, 185, 129, 0.3);
     letter-spacing: 2px;
     transform: rotate(45deg);
+    z-index: 5;
 }
 
-.card button {
+.card-content button {
     background: transparent;
     border: 1px solid rgba(212, 175, 55, 0.4);
     color: #d4af37;
@@ -60,16 +136,16 @@
     width: 100%;
 }
 
-.card button:hover {
+.card-content button:hover {
     background: rgba(212, 175, 55, 0.1);
 }
 
-.card.collected button {
+.card.collected .card-content button {
     border-color: rgba(16, 185, 129, 0.4);
     color: #10b981;
 }
 
-.card.collected button:hover {
+.card.collected .card-content button:hover {
     background: rgba(16, 185, 129, 0.1);
 }
 
