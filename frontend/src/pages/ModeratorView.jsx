@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { createItem, getTags, createTag, getItems, getStats, updateItem, deleteItem, deleteTag, getCollectionInfo, updateCollectionInfo, getAllAchievements, createAchievement, deleteAchievement, getRarities, createRarity, deleteRarity } from "../services/api";
 import ItemCard from "../components/ItemCard";
 import "./ModeratorView.css";
@@ -13,6 +13,7 @@ function ModeratorView({ user, onLogout }) {
     const [tag, setTag] = useState("");
     const [description, setDescription] = useState("");
     const [image, setImage] = useState("");
+    const fileInputRef = useRef(null);
 
     const [newTag, setNewTag] = useState("");
 
@@ -85,7 +86,7 @@ function ModeratorView({ user, onLogout }) {
         const res = editItemId ? await updateItem(editItemId, payload) : await createItem(payload);
 
         if (res.status) {
-            handleCancelEdit();
+            handleClearForm();
             alert(res.message);
         } else {
             alert(res.message);
@@ -97,7 +98,7 @@ function ModeratorView({ user, onLogout }) {
         if (!window.confirm("Are you sure you want to completely destroy this artifact?")) return;
         const res = await deleteItem(editItemId);
         if (res.status) {
-            handleCancelEdit();
+            handleClearForm();
         } else {
             alert(res.message);
         }
@@ -113,14 +114,19 @@ function ModeratorView({ user, onLogout }) {
         setView("minting");
     };
 
-    const handleCancelEdit = () => {
+    const handleClearForm = () => {
+        if (editItemId) setView("gallery");
+        
         setEditItemId(null);
         setName("");
         setRarity(rarities.length > 0 ? rarities[0].name : "common");
         setDescription("");
         setImage("");
         setTag(tags.length > 0 ? tags[0].name : "");
-        setView("gallery");
+        
+        if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+        }
     };
 
     // Tag CRUD
@@ -237,7 +243,6 @@ function ModeratorView({ user, onLogout }) {
                             
                             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid rgba(212, 175, 55, 0.2)", paddingBottom: "15px", marginBottom: "30px" }}>
                                 <h3 style={{ margin: 0, padding: 0, border: "none" }}>{editItemId ? "Modify Artifact" : "Index New Artifact"}</h3>
-                                <span style={{ fontFamily: "monospace", color: "#d4af37", letterSpacing: "2px" }}>[ ROOT COMPILER ]</span>
                             </div>
 
                             {(tags.length === 0 || rarities.length === 0) && (
@@ -267,17 +272,19 @@ function ModeratorView({ user, onLogout }) {
                                     </select>
 
                                     <input className="mod-input" placeholder="ARTIFACT DESCRIPTION" value={description} onChange={(e) => setDescription(e.target.value)} disabled={tags.length === 0 || rarities.length === 0} />
-                                    <input className="mod-file" type="file" onChange={handleFile} accept="image/*" disabled={tags.length === 0 || rarities.length === 0} />
+                                    <input ref={fileInputRef} className="mod-file" type="file" onChange={handleFile} accept="image/*" disabled={tags.length === 0 || rarities.length === 0} />
                                     
                                     <div style={{ display: "flex", gap: "10px", marginTop: "auto" }}>
                                         <button className="mod-btn" onClick={handleSaveItem} style={{ color: "#d4af37", borderColor: "rgba(212, 175, 55, 0.4)", flex: 1 }} disabled={tags.length === 0 || rarities.length === 0}>
                                             {editItemId ? "Update Artifact" : "Mint Artifact"}
                                         </button>
+                                        
+                                        <button className="mod-btn" onClick={handleClearForm} style={{ color: "#888", borderColor: "rgba(255,255,255,0.2)", flex: 0.4 }}>
+                                            {editItemId ? "Cancel" : "Clear"}
+                                        </button>
+
                                         {editItemId && (
-                                            <>
-                                                <button className="mod-btn" onClick={handleCancelEdit} style={{ color: "#888", borderColor: "rgba(255,255,255,0.2)", flex: 0.4 }}>Cancel</button>
-                                                <button className="mod-btn" onClick={handleDeleteItem} style={{ color: "#ef4444", borderColor: "rgba(239, 68, 68, 0.4)", flex: 0.4 }}>Destroy</button>
-                                            </>
+                                            <button className="mod-btn" onClick={handleDeleteItem} style={{ color: "#ef4444", borderColor: "rgba(239, 68, 68, 0.4)", flex: 0.4 }}>Destroy</button>
                                         )}
                                     </div>
                                 </div>
