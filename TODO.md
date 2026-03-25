@@ -153,6 +153,8 @@ Focus: simplicity, clarity, and hackathon-ready implementation.
 * [x] Public Landing (MVP 2 Redesign to Final Architecture)
 * [x] Explict React Router DOM Architecture Implementation (Protected Routes + LocalStorage)
 * [x] Epic Rarity Tier and Dynamic Semantic Luminous Edge Effects
+* [x] System Database Void Purge (Admin Interface)
+* [x] Dynamic Milestone Evaluator Engine (Curator Interface via SQL Counting Layers)
 
 ---
 

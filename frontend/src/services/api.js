@@ -153,3 +153,22 @@ export async function purgeSystem() {
     const res = await fetch(`${API_URL}/admin/purge`, { method: "DELETE" });
     return res.json();
 }
+
+export async function getAllAchievements() {
+    const res = await fetch(`${API_URL}/achievements/all`);
+    return res.json();
+}
+
+export async function createAchievement(data) {
+    const res = await fetch(`${API_URL}/achievements/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+    });
+    return res.json();
+}
+
+export async function deleteAchievement(id) {
+    const res = await fetch(`${API_URL}/achievements/${id}`, { method: "DELETE" });
+    return res.json();
+}

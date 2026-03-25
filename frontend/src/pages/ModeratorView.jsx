@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { createItem, getTags, createTag, getItems, getStats, updateItem, deleteItem, deleteTag, getCollectionInfo, updateCollectionInfo } from "../services/api";
+import { createItem, getTags, createTag, getItems, getStats, updateItem, deleteItem, deleteTag, getCollectionInfo, updateCollectionInfo, getAllAchievements, createAchievement, deleteAchievement } from "../services/api";
 import ItemCard from "../components/ItemCard";
 import "./ModeratorView.css";
 
@@ -19,10 +19,18 @@ function ModeratorView({ user, onLogout }) {
     const [tags, setTags] = useState([]);
     const [items, setItems] = useState([]);
     const [stats, setStats] = useState(null);
+    const [achievements, setAchievements] = useState([]);
 
     // identity
     const [collectionName, setCollectionName] = useState("");
     const [collectionDesc, setCollectionDesc] = useState("");
+
+    // achievements
+    const [achName, setAchName] = useState("");
+    const [achDesc, setAchDesc] = useState("");
+    const [achType, setAchType] = useState("total_items");
+    const [achValue, setAchValue] = useState("");
+    const [achExtra, setAchExtra] = useState("");
 
     const handleFile = (e) => {
         const file = e.target.files[0];
@@ -46,6 +54,9 @@ function ModeratorView({ user, onLogout }) {
                     setCollectionDesc(res.data.description);
                 }
             });
+        } else if (view === "trophies") {
+            getAllAchievements().then(setAchievements);
+            getTags().then(setTags);
         }
     }, [view]);
 
@@ -123,6 +134,28 @@ function ModeratorView({ user, onLogout }) {
         alert(res.message);
     };
 
+    const handleCreateTrophy = async () => {
+        if (!achName || !achValue) return;
+        const payload = {
+            name: achName,
+            description: achDesc,
+            condition_type: achType,
+            condition_value: parseInt(achValue),
+            condition_extra: achExtra
+        };
+        const res = await createAchievement(payload);
+        if (res.status) {
+            setAchName(""); setAchDesc(""); setAchValue(""); setAchExtra("");
+            getAllAchievements().then(setAchievements);
+        } else { alert(res.message); }
+    };
+
+    const handleDeleteTrophy = async (id) => {
+        if (!window.confirm("Destroy this trophy entirely?")) return;
+        const res = await deleteAchievement(id);
+        if (res.status) getAllAchievements().then(setAchievements);
+    };
+
     return (
         <div className="mod-wrapper">
             <header className="mod-header">
@@ -147,6 +180,11 @@ function ModeratorView({ user, onLogout }) {
                     >Identity
                     </button>
                     <button 
+                        className={`mod-tab ${view === "trophies" ? "active" : ""}`} 
+                        onClick={() => setView("trophies")}
+                    >Milestones
+                    </button>
+                    <button 
                         className="mod-tab" 
                         onClick={onLogout}
                         style={{ color: "#ef4444", border: "1px solid rgba(239,68,68,0.3)", padding: "5px 15px", borderRadius: "2px", marginLeft: "10px" }}
@@ -155,7 +193,7 @@ function ModeratorView({ user, onLogout }) {
                 </nav>
             </header>
 
-            <main className="mod-content" style={view === "gallery" || view === "identity" ? { display: "block" } : {}}>
+            <main className="mod-content" style={view === "gallery" || view === "identity" || view === "trophies" ? { display: "block" } : {}}>
                 {view === "minting" && (
                     <>
                         {/* 🟣 CREATE TAG */}
@@ -278,6 +316,64 @@ function ModeratorView({ user, onLogout }) {
 
                         <button className="mod-btn" onClick={handleSaveCollectionInfo} style={{ marginTop: "20px" }}>Publish Identity Overrides</button>
                     </div>
+                )}
+
+                {view === "trophies" && (
+                    <>
+                        <div className="mod-panel" style={{ border: "1px solid rgba(168, 85, 247, 0.3)" }}>
+                            <h3 style={{ color: "#c084fc", borderBottom: "1px solid rgba(168, 85, 247, 0.2)" }}>Forging Rulesets</h3>
+                            
+                            <input className="mod-input" placeholder="TROPHY NAME (e.g. My First Artifact)" value={achName} onChange={(e) => setAchName(e.target.value)} />
+                            <input className="mod-input" placeholder="DESCRIPTION (e.g. Find one item in the vault)" value={achDesc} onChange={(e) => setAchDesc(e.target.value)} />
+                            
+                            <div style={{ display: "flex", gap: "10px" }}>
+                                <select className="mod-select" style={{ flex: 1 }} value={achType} onChange={(e) => { setAchType(e.target.value); setAchExtra(""); }}>
+                                    <option value="total_items">Acquisition Threshold (Total Count)</option>
+                                    <option value="progress">Vault Completion (Percentage)</option>
+                                    <option value="rarity">Specialized Hunt (By Rarity)</option>
+                                    <option value="tag">Category Mastery (By Category)</option>
+                                </select>
+                                <input className="mod-input" type="number" style={{ flex: 0.5, margin: 0 }} placeholder="Qty (-1 = All)" value={achValue} onChange={(e) => setAchValue(e.target.value)} />
+                            </div>
+
+                            {achType === "rarity" && (
+                                <select className="mod-select" value={achExtra} onChange={(e) => setAchExtra(e.target.value)}>
+                                    <option value="">Select Target Rarity...</option>
+                                    <option value="common">Common</option>
+                                    <option value="rare">Rare</option>
+                                    <option value="epic">Epic</option>
+                                    <option value="legendary">Legendary</option>
+                                </select>
+                            )}
+
+                            {achType === "tag" && (
+                                <select className="mod-select" value={achExtra} onChange={(e) => setAchExtra(e.target.value)}>
+                                    <option value="">Select Target Category...</option>
+                                    {tags.map(t => <option key={t.id} value={t.name}>{t.name}</option>)}
+                                </select>
+                            )}
+
+                            <button className="mod-btn" onClick={handleCreateTrophy} style={{ color: "#c084fc", borderColor: "rgba(168, 85, 247, 0.4)", marginTop: "20px" }}>Compile Milestone</button>
+                        </div>
+
+                        {achievements.length > 0 && (
+                            <div className="mod-panel" style={{ marginTop: "30px", background: "transparent", border: "none", boxShadow: "none", padding: 0 }}>
+                                <h4 style={{ color: "#888", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "15px" }}>Active System Milestones</h4>
+                                <div className="mod-grid">
+                                    {achievements.map(a => (
+                                        <div key={a.id} style={{ background: "rgba(26, 21, 20, 0.9)", padding: "20px", border: "1px solid rgba(255,255,255,0.05)", borderRadius: "2px", position: "relative" }}>
+                                            <button onClick={() => handleDeleteTrophy(a.id)} style={{ position: "absolute", top: "10px", right: "10px", background: "none", border: "none", color: "#ef4444", cursor: "pointer" }}>✖</button>
+                                            <h4 style={{ color: "#d4af37", margin: "0 0 5px 0", fontFamily: "'Playfair Display', serif" }}>{a.name}</h4>
+                                            <p style={{ color: "#a39171", fontSize: "0.8rem", margin: "0 0 10px 0" }}>{a.description}</p>
+                                            <div style={{ fontSize: "0.7rem", color: "#888", textTransform: "uppercase", letterSpacing: "1px" }}>
+                                                Rule: {a.condition_type} [{a.condition_value}] {a.condition_extra}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </>
                 )}
             </main>
         </div>
