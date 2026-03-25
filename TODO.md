@@ -139,6 +139,10 @@ Focus: simplicity, clarity, and hackathon-ready implementation.
 * [x] Top Collectors Ranking Aggregation (Live Database)
 * [x] Public Landing System (Ranking Hydration)
 
+### 🎨 UI & Theming (Vintage Archive)
+
+* [x] Login View Redesign (Fine line, warm lighting, glassmorphism)
+
 ---
 
 ## 🚀 Milestones
