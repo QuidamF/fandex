@@ -108,7 +108,7 @@ function ModeratorView({ user, onLogout }) {
         setName(item.name);
         setRarity(item.rarity);
         setDescription(item.description || "");
-        setImage(item.image || "");
+        setImage(item.has_image ? `http://localhost:5000/api/items/${item.id}/image` : "");
         setTag(item.tags.length > 0 ? item.tags[0] : "");
         setView("minting");
     };

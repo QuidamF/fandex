@@ -58,11 +58,20 @@ def insert_item_tag(item_id, name):
 def update_item_in_db(item_id, name, rarity, description, image=None):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("""
-        UPDATE items 
-        SET name=?, rarity=?, description=?, image=?
-        WHERE id=?
-    """, (name, rarity, description, image, item_id))
+    
+    if image is not None:
+        cursor.execute("""
+            UPDATE items 
+            SET name=?, rarity=?, description=?, image=?
+            WHERE id=?
+        """, (name, rarity, description, image, item_id))
+    else:
+        cursor.execute("""
+            UPDATE items 
+            SET name=?, rarity=?, description=?
+            WHERE id=?
+        """, (name, rarity, description, item_id))
+        
     conn.commit()
 
 def delete_item_from_db(item_id):

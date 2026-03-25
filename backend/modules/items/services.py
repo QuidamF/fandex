@@ -11,7 +11,7 @@ def list_items():
             "id": item["id"],
             "name": item["name"],
             "description": item["description"],
-            "image": item["image"],
+            "has_image": bool(item["image"]),
             "rarity": item["rarity"],
             "rarity_color": item["rarity_color"],
             "tags": item["tags"].split(",") if item["tags"] else []
@@ -46,7 +46,10 @@ def update_item_service(item_id, data):
     if not name:
         return {"status": False, "message": "Name required"}
 
-    update_item_in_db(item_id, name, rarity, description, image)
+    if image and image.startswith("data:image"):
+        update_item_in_db(item_id, name, rarity, description, image)
+    else:
+        update_item_in_db(item_id, name, rarity, description, None)
 
     clear_item_tags(item_id)
     for tag in tags:

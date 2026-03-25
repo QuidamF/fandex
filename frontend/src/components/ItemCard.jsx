@@ -1,18 +1,27 @@
+import { useState } from "react";
 import "./ItemCard.css";
 
 function ItemCard({ item, onCollect, onClick }) {
+    const [loaded, setLoaded] = useState(false);
+
     return (
         <div
-            className={`card ${item.collected ? "collected" : ""}`}
-            style={{ "--rarity-color": item.rarity_color || "#9ca3af" }}
+            className={`card ${item.collected ? "collected" : ""} ${loaded ? "fade-in" : "invisible"}`}
+            style={{ "--rarity-color": item.rarity_color || "#9ca3af", opacity: item.has_image ? (loaded ? 1 : 0) : 1 }}
             onClick={onClick}
         >
             <div className="card-bg"></div>
 
             <div className="card-content">
-                {item.image && (
+                {item.has_image && (
                     <div style={{ background: "rgba(0,0,0,0.5)", borderRadius: "2px", marginBottom: "10px", padding: "5px" }}>
-                        <img src={item.image} alt={item.name} style={{ width: "100%", height: "180px", objectFit: "contain" }} />
+                        <img 
+                            src={`http://localhost:5000/api/items/${item.id}/image`} 
+                            alt={item.name} 
+                            style={{ width: "100%", height: "180px", objectFit: "contain" }} 
+                            loading="lazy"
+                            onLoad={() => setLoaded(true)}
+                        />
                     </div>
                 )}
                 <h3 style={{ color: item.rarity_color || "#e5e5e5", letterSpacing: "2px" }}>{item.name}</h3>
