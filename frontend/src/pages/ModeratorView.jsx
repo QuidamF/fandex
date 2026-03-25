@@ -232,7 +232,74 @@ function ModeratorView({ user, onLogout }) {
             <main className="mod-content" style={view === "gallery" || view === "identity" || view === "trophies" ? { display: "block" } : {}}>
                 {view === "minting" && (
                     <>
-                        {/* 🟣 CREATE TAG */}
+                        {/* 🟡 MULTI-COL CREATE/EDIT ITEM ROOT */}
+                        <div className="mod-panel" style={{ gridColumn: "1 / -1", border: "1px solid rgba(212, 175, 55, 0.4)" }}>
+                            
+                            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid rgba(212, 175, 55, 0.2)", paddingBottom: "15px", marginBottom: "30px" }}>
+                                <h3 style={{ margin: 0, padding: 0, border: "none" }}>{editItemId ? "Modify Artifact" : "Index New Artifact"}</h3>
+                                <span style={{ fontFamily: "monospace", color: "#d4af37", letterSpacing: "2px" }}>[ ROOT COMPILER ]</span>
+                            </div>
+
+                            {(tags.length === 0 || rarities.length === 0) && (
+                                <div style={{ background: "rgba(239, 68, 68, 0.1)", border: "1px dashed rgba(239, 68, 68, 0.5)", color: "#ef4444", padding: "20px", textAlign: "center", marginBottom: "30px", fontSize: "0.9rem", letterSpacing: "1px" }}>
+                                    <strong>⚠️ SYSTEM LOCK ACTIVATED</strong><br/>
+                                    You must initialize at least one <strong>Category</strong> and one <strong>Rarity Tier</strong> using the foundational modules below before you can index artifacts.
+                                </div>
+                            )}
+
+                            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "50px" }}>
+                                {/* Left Side: Matrix Inputs */}
+                                <div style={{ display: "flex", flexDirection: "column" }}>
+                                    <input className="mod-input" placeholder="ARTIFACT NAME" value={name} onChange={(e) => setName(e.target.value)} disabled={tags.length === 0 || rarities.length === 0} />
+                                    
+                                    <select className="mod-select" value={rarity} onChange={(e) => setRarity(e.target.value)} disabled={tags.length === 0 || rarities.length === 0}>
+                                        {rarities.length === 0 ? <option value="">Awaiting Rarity Definition...</option> : null}
+                                        {rarities.map(r => (
+                                            <option key={r.id} value={r.name}>{r.name.toUpperCase()}</option>
+                                        ))}
+                                    </select>
+                                    
+                                    <select className="mod-select" value={tag} onChange={(e) => setTag(e.target.value)} disabled={tags.length === 0 || rarities.length === 0}>
+                                        <option value="">Select Primary Category...</option>
+                                        {tags.map(t => (
+                                            <option key={t.id} value={t.name}>{t.name}</option>
+                                        ))}
+                                    </select>
+
+                                    <input className="mod-input" placeholder="ARTIFACT DESCRIPTION" value={description} onChange={(e) => setDescription(e.target.value)} disabled={tags.length === 0 || rarities.length === 0} />
+                                    <input className="mod-file" type="file" onChange={handleFile} accept="image/*" disabled={tags.length === 0 || rarities.length === 0} />
+                                    
+                                    <div style={{ display: "flex", gap: "10px", marginTop: "auto" }}>
+                                        <button className="mod-btn" onClick={handleSaveItem} style={{ color: "#d4af37", borderColor: "rgba(212, 175, 55, 0.4)", flex: 1 }} disabled={tags.length === 0 || rarities.length === 0}>
+                                            {editItemId ? "Update Artifact" : "Mint Artifact"}
+                                        </button>
+                                        {editItemId && (
+                                            <>
+                                                <button className="mod-btn" onClick={handleCancelEdit} style={{ color: "#888", borderColor: "rgba(255,255,255,0.2)", flex: 0.4 }}>Cancel</button>
+                                                <button className="mod-btn" onClick={handleDeleteItem} style={{ color: "#ef4444", borderColor: "rgba(239, 68, 68, 0.4)", flex: 0.4 }}>Destroy</button>
+                                            </>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* Right Side: Live Component Output */}
+                                <div style={{ borderLeft: "1px dashed rgba(255,255,255,0.1)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+                                    <h4 style={{ color: "#888", letterSpacing: "3px", textTransform: "uppercase", marginBottom: "30px", fontSize: "0.8rem" }}>Live Projection</h4>
+                                    <div style={{ pointerEvents: "none" }}>
+                                        <ItemCard item={{
+                                            id: "preview",
+                                            name: name || "UNDEFINED",
+                                            rarity: rarity || "common",
+                                            rarity_color: rarities.find(r => r.name === rarity)?.color_hex || "#9ca3af",
+                                            image: image,
+                                            has_image: !!image
+                                        }} />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* 🟣 CREATE TAG (Now Bottom Left Col) */}
                         <div className="mod-panel">
                             <h3>Catalogue Category</h3>
                             <input
@@ -256,27 +323,26 @@ function ModeratorView({ user, onLogout }) {
                                     </ul>
                                 </div>
                             )}
-
                         </div>
 
-                        {/* 🟢 RARITY STUDIO */}
+                        {/* 🟢 RARITY STUDIO (Now Bottom Right Col) */}
                         <div className="mod-panel">
                             <h3 style={{ color: "#c084fc" }}>Rarity Engineering</h3>
-                            <p style={{ color: "#888", fontSize: "0.85rem", marginBottom: "20px" }}>Define custom hierarchy tiers and visual auras for your artifacts.</p>
+                            <p style={{ color: "#888", fontSize: "0.85rem", marginBottom: "20px" }}>Define custom hierarchy tiers and visual auras.</p>
                             
                             <div style={{ display: "flex", flexDirection: "column", gap: "15px", background: "rgba(0,0,0,0.2)", padding: "20px", borderRadius: "4px", border: "1px solid rgba(192, 132, 252, 0.2)" }}>
                                 <div>
                                     <label style={{ display: "block", color: "#c084fc", fontSize: "0.75rem", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "5px" }}>1. Rarity Title</label>
-                                    <input className="mod-input" placeholder="e.g. Mythic, Holographic, First Edition..." value={newRarityName} onChange={e => setNewRarityName(e.target.value)} />
+                                    <input className="mod-input" placeholder="e.g. Holographic..." value={newRarityName} onChange={e => setNewRarityName(e.target.value)} />
                                 </div>
                                 
                                 <div>
-                                    <label style={{ display: "block", color: "#c084fc", fontSize: "0.75rem", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "5px" }}>2. Hierarchy Level (Numeric Tier)</label>
-                                    <input className="mod-input" type="number" min="1" placeholder="e.g. 1 (Lowest Rank), 5 (Highest Rank)..." value={newRarityTier} onChange={e => setNewRarityTier(e.target.value)} />
+                                    <label style={{ display: "block", color: "#c084fc", fontSize: "0.75rem", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "5px" }}>2. Hierarchy Level</label>
+                                    <input className="mod-input" type="number" min="1" placeholder="e.g. 5 (Highest Rank)..." value={newRarityTier} onChange={e => setNewRarityTier(e.target.value)} />
                                 </div>
 
                                 <div>
-                                    <label style={{ display: "block", color: "#c084fc", fontSize: "0.75rem", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "5px" }}>3. Aura Color (Border Glow)</label>
+                                    <label style={{ display: "block", color: "#c084fc", fontSize: "0.75rem", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "5px" }}>3. Aura Color (HEX)</label>
                                     <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
                                         <input type="color" value={newRarityColor} onChange={e => setNewRarityColor(e.target.value)} style={{ width: "60px", height: "45px", padding: "0", border: "1px solid #c084fc", borderRadius: "4px", cursor: "pointer", background: "transparent" }} />
                                         <span style={{ color: newRarityColor, fontFamily: "monospace", fontSize: "1.2rem", textShadow: `0 0 10px ${newRarityColor}`, letterSpacing: "2px" }}>{newRarityColor.toUpperCase()}</span>
@@ -300,40 +366,6 @@ function ModeratorView({ user, onLogout }) {
                                     ))}
                                 </div>
                             )}
-                        </div>
-
-                        {/* 🟡 CREATE/EDIT ITEM */}
-                        <div className="mod-panel" style={{ border: "1px solid rgba(212, 175, 55, 0.2)" }}>
-                            <h3 style={{ color: "#d4af37", borderBottom: "1px solid rgba(212, 175, 55, 0.2)" }}>{editItemId ? "Modify Artifact" : "Index New Artifact"}</h3>
-                            <input className="mod-input" placeholder="ARTIFACT NAME" value={name} onChange={(e) => setName(e.target.value)} />
-                            <select className="mod-select" value={rarity} onChange={(e) => setRarity(e.target.value)}>
-                                {rarities.length === 0 ? <option value="common">Common</option> : null}
-                                {rarities.map(r => (
-                                    <option key={r.id} value={r.name}>{r.name.toUpperCase()}</option>
-                                ))}
-                            </select>
-                            <select className="mod-select" value={tag} onChange={(e) => setTag(e.target.value)}>
-                                <option value="">Select Category...</option>
-                                {tags.map(t => (
-                                    <option key={t.id} value={t.name}>{t.name}</option>
-                                ))}
-                            </select>
-
-                            <input className="mod-input" placeholder="ARTIFACT DESCRIPTION" value={description} onChange={(e) => setDescription(e.target.value)} />
-                            <input className="mod-file" type="file" onChange={handleFile} accept="image/*" />
-                            {image && <img src={image} alt="preview" className="mod-preview" />}
-                            
-                            <div style={{ display: "flex", gap: "10px", marginTop: "auto" }}>
-                                <button className="mod-btn" onClick={handleSaveItem} style={{ color: "#d4af37", borderColor: "rgba(212, 175, 55, 0.4)", flex: 1 }}>
-                                    {editItemId ? "Update Artifact" : "Mint Artifact"}
-                                </button>
-                                {editItemId && (
-                                    <>
-                                        <button className="mod-btn" onClick={handleCancelEdit} style={{ color: "#888", borderColor: "rgba(255,255,255,0.2)", flex: 0.4 }}>Cancel</button>
-                                        <button className="mod-btn" onClick={handleDeleteItem} style={{ color: "#ef4444", borderColor: "rgba(239, 68, 68, 0.4)", flex: 0.4 }}>Destroy</button>
-                                    </>
-                                )}
-                            </div>
                         </div>
                     </>
                 )}
