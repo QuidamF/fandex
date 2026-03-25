@@ -15,8 +15,9 @@ function ItemCard({ item, onCollect, onClick }) {
                         <img src={item.image} alt={item.name} style={{ width: "100%", height: "180px", objectFit: "contain" }} />
                     </div>
                 )}
-                <h3>{item.name}</h3>
-                <p className="rarity" style={{ color: item.rarity_color || "#9ca3af" }}>
+                <h3 style={{ color: item.rarity_color || "#e5e5e5", letterSpacing: "2px" }}>{item.name}</h3>
+                <div style={{ height: "1px", background: item.rarity_color || "rgba(255,255,255,0.1)", margin: "10px 0", opacity: 0.5, boxShadow: `0 0 5px ${item.rarity_color || "transparent"}` }}></div>
+                <p className="rarity" style={{ color: item.rarity_color || "#9ca3af", fontWeight: "bold" }}>
                     {item.rarity}
                 </p>
 
