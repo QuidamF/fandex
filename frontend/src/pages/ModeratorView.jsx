@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { createItem, getTags, createTag } from "../services/api";
 
-function ModeratorView({ user }) {
+function ModeratorView({ user, onLogout }) {
     const [name, setName] = useState("");
     const [rarity, setRarity] = useState("common");
     const [tag, setTag] = useState("");
@@ -68,7 +68,10 @@ function ModeratorView({ user }) {
 
     return (
         <div style={{ padding: "20px" }}>
-            <h2>Moderator Panel</h2>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <h2>Moderator Panel</h2>
+                <button onClick={onLogout} style={{ padding: "8px 16px", cursor: "pointer", background: "#ef4444", color: "white", border: "none", borderRadius: "5px" }}>Logout</button>
+            </div>
 
             {/* 🟣 CREATE TAG */}
             <h3>Create Tag</h3>

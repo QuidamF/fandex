@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getStats, createModerator } from "../services/api";
 
-function AdminView({ user }) {
+function AdminView({ user, onLogout }) {
     const [stats, setStats] = useState(null);
 
     const [username, setUsername] = useState("");
@@ -35,7 +35,10 @@ function AdminView({ user }) {
 
     return (
         <div style={{ padding: "20px" }}>
-            <h2>Admin Dashboard</h2>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <h2>Admin Dashboard</h2>
+                <button onClick={onLogout} style={{ padding: "8px 16px", cursor: "pointer", background: "#ef4444", color: "white", border: "none", borderRadius: "5px" }}>Logout</button>
+            </div>
 
             {/* 📊 STATS */}
             <div>

@@ -7,7 +7,7 @@ import HomeView from "../components/HomeView";
 import ItemsView from "../components/ItemsView";
 import AchievementsView from "../components/AchievementsView";
 
-function Dashboard({ user }) {
+function Dashboard({ user, onLogout }) {
     const [items, setItems] = useState([]);
     const [progress, setProgress] = useState(null);
     const [achievements, setAchievements] = useState([]);
@@ -115,6 +115,12 @@ function Dashboard({ user }) {
                         className={`dashboard-tab ${view === "achievements" ? "active" : ""}`} 
                         onClick={() => setView("achievements")}
                     >Milestones
+                    </button>
+                    <button 
+                        className="dashboard-tab" 
+                        onClick={onLogout}
+                        style={{ color: "#888", border: "1px solid rgba(255,255,255,0.1)", padding: "5px 15px", borderRadius: "2px", marginLeft: "10px" }}
+                    >Logout
                     </button>
                 </nav>
             </header>

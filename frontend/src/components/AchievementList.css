@@ -19,6 +19,7 @@
 
 .achievement {
     position: relative;
+    isolation: isolate;
     padding: 25px 20px;
     border-radius: 4px;
     color: #e5e5e5;
@@ -83,4 +84,8 @@
     background: conic-gradient(from 0deg, transparent 0deg, rgba(234, 179, 8, 0.2) 180deg, rgba(234, 179, 8, 1) 360deg);
     animation: borderSpin 3s linear infinite;
     opacity: 0.8;
+}
+
+@keyframes borderSpin {
+    100% { transform: rotate(360deg); }
 }

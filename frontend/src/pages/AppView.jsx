@@ -12,12 +12,12 @@ function AppView() {
   }
 
   const views = {
-    1: <AdminView user={user} />,
-    2: <ModeratorView user={user} />,
-    3: <Dashboard user={user} />
+    1: <AdminView user={user} onLogout={() => setUser(null)} />,
+    2: <ModeratorView user={user} onLogout={() => setUser(null)} />,
+    3: <Dashboard user={user} onLogout={() => setUser(null)} />
   };
 
-  return views[user.role_id] || <Dashboard user={user} />;
+  return views[user.role_id] || <Dashboard user={user} onLogout={() => setUser(null)} />;
 }
 
 export default AppView;
