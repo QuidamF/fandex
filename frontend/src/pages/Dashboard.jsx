@@ -107,12 +107,9 @@ function Dashboard({ user, onLogout }) {
     return (
         <div className="dashboard-wrapper">
             <header className="dashboard-header">
-                <div>
-                    <h2 className="dashboard-title" style={{ margin: 0 }}>
-                        {collectionInfo.name} <span>/// {collectionInfo.description}</span>
-                    </h2>
-                    <div style={{ fontSize: "0.8rem", color: "#d4af37", letterSpacing: "3px", marginTop: "8px", textTransform: "uppercase" }}>
-                        Archivist: <span style={{ color: "#fff" }}>{user?.username}</span>
+                <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+                    <div style={{ fontSize: "0.7rem", color: "#d4af37", letterSpacing: "3px", textTransform: "uppercase", border: "1px solid rgba(212, 175, 55, 0.3)", padding: "4px 10px" }}>
+                        ARCHIVIST: <span style={{ color: "#fff" }}>{user?.username.toUpperCase()}</span>
                     </div>
                 </div>
                 
@@ -142,6 +139,10 @@ function Dashboard({ user, onLogout }) {
             </header>
 
             <main className="dashboard-content">
+                <div className="dashboard-hero">
+                    <h1>{collectionInfo.name}</h1>
+                    <p>{collectionInfo.description}</p>
+                </div>
                 {content}
 
                 {celebratingAchievements.length > 0 && (

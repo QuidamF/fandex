@@ -4,7 +4,7 @@ function HomeView({ progress, progressByTag }) {
     if (!progress) return null;
 
     return (
-        <div style={{ padding: "20px" }}>
+        <div>
             <div style={{ marginBottom: "40px", padding: "20px", background: "#1a1514", border: "1px solid rgba(212, 175, 55, 0.2)", borderRadius: "2px" }}>
                 <ProgressBar progress={progress} />
             </div>

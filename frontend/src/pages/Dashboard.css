@@ -16,7 +16,7 @@
     background: rgba(26, 21, 20, 0.95);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-    padding: 2rem 5%;
+    padding: 1rem 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -73,8 +73,41 @@
 /* Content Container */
 .dashboard-content {
     max-width: 1200px;
-    margin: 40px auto;
-    padding: 0 20px;
+    margin: 0 auto;
+    padding: 0 20px 50px;
+}
+
+.dashboard-hero {
+    padding: 4rem 5% 3rem;
+    text-align: center;
+    background: radial-gradient(circle at center, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    margin-bottom: 40px;
+}
+
+.dashboard-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    color: #d4af37;
+    font-weight: 300;
+    margin: 0 0 10px 0;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+}
+
+.dashboard-hero p {
+    font-size: 1.1rem;
+    color: #a39171;
+    letter-spacing: 2px;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 30px;
 }
 
 /* Filter selects in ItemsView */
