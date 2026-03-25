@@ -12,6 +12,7 @@ def get_all_items():
         LEFT JOIN item_tags it ON i.id = it.item_id
         LEFT JOIN tags t ON it.tag_id = t.id
         GROUP BY i.id
+        ORDER BY r.tier DESC, i.name ASC
     """)
 
     items = cursor.fetchall()

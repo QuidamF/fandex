@@ -28,6 +28,7 @@ def get_user_items(user_id):
         LEFT JOIN rarities r ON i.rarity = r.name
         JOIN user_items ui ON i.id = ui.item_id
         WHERE ui.user_id = ?
+        ORDER BY r.tier DESC, i.name ASC
     """, (user_id,))
 
     items = cursor.fetchall()
