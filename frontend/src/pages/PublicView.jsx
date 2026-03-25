@@ -14,9 +14,14 @@ function PublicView() {
     const [filterRarity, setFilterRarity] = useState("");
 
     useEffect(() => {
-        getItems().then(setItems);
-        getTags().then(setTags);
-        getRanking().then(setRanking);
+        getItems().then(setItems).catch(console.error);
+        getTags().then(setTags).catch(console.error);
+        getRanking()
+            .then(data => {
+                console.log("Ranking loaded:", data);
+                setRanking(data || []);
+            })
+            .catch(console.error);
     }, []);
 
     const filteredItems = items.filter(item => {

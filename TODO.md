@@ -131,6 +131,16 @@ Focus: simplicity, clarity, and hackathon-ready implementation.
 
 ---
 
+## Module D — Advanced Polish
+
+### 🥇 Ranking & Multimedia
+
+* [x] Item Image Storage & Visual Support (Base64)
+* [x] Top Collectors Ranking Aggregation (Live Database)
+* [x] Public Landing System (Ranking Hydration)
+
+---
+
 ## 🚀 Milestones
 
 * [x] Backend MVP ready

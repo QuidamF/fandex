@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { login } from "../services/api";
+import { login, register } from "../services/api";
+import "./Login.css";
 
 function Login({ onLogin }) {
     const [username, setUsername] = useState("");
@@ -26,24 +27,41 @@ function Login({ onLogin }) {
     };
 
     return (
-        <div className="login-container">
-            <h2>FanDex</h2>
+        <div className="login-wrapper">
+            <div className="login-container">
+                <h2>FanDex</h2>
+                <div className="login-subtitle">Curated Collection Tracking</div>
+                
+                <div className="login-form-group">
+                    <span className="login-icon">✧</span>
+                    <input
+                        className="login-input"
+                        placeholder="USERNAME"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
+                </div>
 
-            <input
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-            />
+                <div className="login-form-group">
+                    <span className="login-icon">✦</span>
+                    <input
+                        className="login-input"
+                        type="password"
+                        placeholder="PASSWORD"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                </div>
 
-            <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            />
-
-            <button onClick={handleLogin}>Login</button>
-            <button onClick={handleRegister}>Register</button>
+                <div className="login-actions">
+                    <button className="login-btn" onClick={handleLogin}>
+                        Enter Vault
+                    </button>
+                    <button className="login-btn login-btn-secondary" onClick={handleRegister}>
+                        Begin Archiving
+                    </button>
+                </div>
+            </div>
         </div>
     );
 }
