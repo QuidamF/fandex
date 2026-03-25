@@ -1,0 +1,153 @@
+/* Administrator Control Center Theme */
+
+.admin-wrapper {
+    min-height: 100vh;
+    background: #110e0d; /* Deep warm black */
+    color: #e5e5e5;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    padding-bottom: 50px;
+}
+
+/* Header */
+.admin-header {
+    background: #1a1514;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    padding: 2rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.admin-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    margin: 0;
+    color: #ef4444; /* Give Admin a distinctive Red tint for root */
+    font-weight: 300;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.admin-title span {
+    color: #a39171;
+    font-size: 0.8rem;
+    letter-spacing: 4px;
+    margin-left: 15px;
+    font-family: sans-serif;
+    vertical-align: middle;
+}
+
+.admin-logout {
+    color: #888;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 8px 15px;
+    border-radius: 2px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.admin-logout:hover {
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.4);
+}
+
+/* Content Container */
+.admin-content {
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+/* Panel Blocks */
+.admin-panel {
+    background: rgba(26, 21, 20, 0.98);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    padding: 40px;
+    border-radius: 2px;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 10px 30px rgba(0,0,0,0.4);
+}
+
+.admin-panel h3 {
+    font-family: 'Playfair Display', serif;
+    color: #ef4444; /* Red accent for the Director */
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 300;
+    border-bottom: 1px solid rgba(239, 68, 68, 0.2);
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+}
+
+/* Metrics */
+.admin-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #a39171;
+}
+
+.admin-stat span {
+    color: #e5e5e5;
+    font-weight: 300;
+    font-size: 1.5rem;
+    font-family: 'Playfair Display', serif;
+}
+
+/* Inputs / Form */
+.admin-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 12px 10px;
+    color: #fff;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    outline: none;
+    margin-bottom: 25px;
+    letter-spacing: 1px;
+}
+
+.admin-input:focus {
+    border-bottom: 1px solid #d4af37;
+    background: linear-gradient(to top, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
+}
+
+.admin-btn {
+    width: 100%;
+    padding: 15px;
+    background: transparent;
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    color: #d4af37;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-top: 15px;
+}
+
+.admin-btn:hover {
+    background: rgba(212, 175, 55, 0.1);
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+}
+
+@media (max-width: 768px) {
+    .admin-content {
+        grid-template-columns: 1fr; /* Stack panels on mobile */
+    }
+}
