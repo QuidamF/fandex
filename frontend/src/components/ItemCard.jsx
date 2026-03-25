@@ -17,14 +17,16 @@ function ItemCard({ item, onCollect, onClick }) {
                     {item.rarity}
                 </p>
 
-                <button
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        onCollect(item.id);
-                    }}
-                >
-                    {item.collected ? "Collected" : "Collect"}
-                </button>
+                {onCollect && (
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onCollect(item.id);
+                        }}
+                    >
+                        {item.collected ? "Collected" : "Collect"}
+                    </button>
+                )}
             </div>
         </div>
     );

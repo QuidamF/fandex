@@ -189,5 +189,58 @@
 @media (max-width: 768px) {
     .mod-content {
         grid-template-columns: 1fr;
-    }
+}
+
+/* Catalogue / Visualizer */
+.mod-catalogue {
+    grid-column: 1 / -1;
+    background: rgba(26, 21, 20, 0.98);
+    border: 1px solid rgba(20, 184, 166, 0.2);
+    padding: 40px;
+    border-radius: 2px;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 10px 30px rgba(0,0,0,0.4);
+    margin-top: 20px;
+}
+
+.mod-catalogue h3 {
+    font-family: 'Playfair Display', serif;
+    color: #14b8a6;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 300;
+    border-bottom: 1px solid rgba(20, 184, 166, 0.2);
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+}
+
+.mod-stats-banner {
+    display: flex;
+    justify-content: space-around;
+    background: #110e0d;
+    padding: 20px;
+    border: 1px solid rgba(20, 184, 166, 0.15);
+    border-radius: 2px;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.mod-stats-banner div {
+    color: #a39171;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.mod-stats-banner span {
+    display: block;
+    color: #14b8a6;
+    font-size: 2rem;
+    font-family: 'Playfair Display', serif;
+    margin-top: 10px;
+}
+
+.mod-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 30px;
 }

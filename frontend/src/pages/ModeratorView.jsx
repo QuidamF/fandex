@@ -1,15 +1,20 @@
 import { useState, useEffect } from "react";
-import { createItem, getTags, createTag } from "../services/api";
+import { createItem, getTags, createTag, getItems, getStats } from "../services/api";
+import ItemCard from "../components/ItemCard";
 import "./ModeratorView.css";
 
 function ModeratorView({ user, onLogout }) {
     const [name, setName] = useState("");
     const [rarity, setRarity] = useState("common");
     const [tag, setTag] = useState("");
-    const [tags, setTags] = useState([]);
     const [description, setDescription] = useState("");
     const [newTag, setNewTag] = useState("");
     const [image, setImage] = useState("");
+
+    // data
+    const [tags, setTags] = useState([]);
+    const [items, setItems] = useState([]);
+    const [stats, setStats] = useState(null);
 
     const handleFile = (e) => {
         const file = e.target.files[0];
@@ -22,11 +27,13 @@ function ModeratorView({ user, onLogout }) {
     };
 
     useEffect(() => {
-        loadTags();
+        loadData();
     }, []);
 
-    const loadTags = () => {
+    const loadData = () => {
         getTags().then(setTags);
+        getItems().then(setItems);
+        getStats().then(setStats);
     };
 
     const handleCreateItem = async () => {
@@ -44,11 +51,12 @@ function ModeratorView({ user, onLogout }) {
         });
 
         if (res.status) {
-            alert("Item Catalogued!");
+            alert("Artifact successfully catalogued!");
             setName("");
             setTag("");
             setDescription("");
             setImage("");
+            loadData();
         } else {
             alert(res.message);
         }
@@ -61,7 +69,7 @@ function ModeratorView({ user, onLogout }) {
 
         if (res.status) {
             setNewTag("");
-            loadTags();
+            loadData();
         } else {
             alert(res.message);
         }
@@ -132,6 +140,26 @@ function ModeratorView({ user, onLogout }) {
                         Mint Artifact
                     </button>
                 </div>
+
+                {/* 🔵 LIVE CATALOGUE PREVIEW */}
+                <div className="mod-catalogue">
+                    <h3>LIVE SYSTEM DATABASE</h3>
+                    
+                    {stats && (
+                        <div className="mod-stats-banner">
+                            <div>Active Collectors <span>{stats.fans}</span></div>
+                            <div>Total Artifacts <span>{stats.items}</span></div>
+                            <div>Active Categories <span>{tags.length}</span></div>
+                        </div>
+                    )}
+
+                    <div className="mod-grid">
+                        {items.map(i => (
+                            <ItemCard key={i.id} item={i} />
+                        ))}
+                    </div>
+                </div>
+
             </main>
         </div>
     );
