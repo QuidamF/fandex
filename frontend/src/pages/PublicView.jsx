@@ -90,6 +90,7 @@ function PublicView() {
                         <option value="">All Rarities</option>
                         <option value="common">Common</option>
                         <option value="rare">Rare</option>
+                        <option value="epic">Epic</option>
                         <option value="legendary">Legendary</option>
                     </select>
                 </div>
@@ -136,7 +137,7 @@ function PublicView() {
                 </p>
                 <button 
                     className="hero-btn"
-                    onClick={() => navigate('/app')}
+                    onClick={() => navigate('/login')}
                 >
                     Enter Private Vault
                 </button>

@@ -22,7 +22,7 @@
     transition: all 0.4s ease;
 }
 
-/* The Animated Traveling Glow Border */
+/* The Animated Traveling Glow Border BASE */
 .card::before {
     content: '';
     position: absolute;
@@ -34,25 +34,13 @@
         from 0deg, 
         transparent 0deg, 
         transparent 280deg, 
-        rgba(212, 175, 55, 0.1) 320deg, 
-        rgba(212, 175, 55, 1) 360deg
+        rgba(156, 163, 175, 0.1) 320deg, 
+        rgba(156, 163, 175, 1) 360deg
     );
     animation: borderSpin 6s linear infinite;
     z-index: -1;
     opacity: 0.6;
     transition: opacity 0.3s;
-}
-
-.card:hover::before {
-    opacity: 1;
-    background: conic-gradient(
-        from 0deg, 
-        transparent 0deg, 
-        transparent 260deg, 
-        rgba(255, 215, 0, 0.3) 320deg, 
-        #facc15 360deg
-    );
-    animation: borderSpin 2s linear infinite; /* Accelerates dramatically */
 }
 
 @keyframes borderSpin {
@@ -69,7 +57,7 @@
 
 .card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.6), 0 0 15px rgba(212, 175, 55, 0.1);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.6), 0 0 15px rgba(212, 175, 55, 0.05);
 }
 
 .card-content h3 {
@@ -81,31 +69,77 @@
     font-size: 1.2rem;
 }
 
-/* Collected State */
+/* ==================================
+   DYNAMIC RARITY BORDER GLOWS
+   ================================== */
+
+/* Rarity: COMMON (Iron/Grey) */
+.card.common::before {
+    background: conic-gradient(from 0deg, transparent 0deg, transparent 280deg, rgba(156, 163, 175, 0.1) 320deg, rgba(156, 163, 175, 1) 360deg);
+}
+.card.common:hover::before {
+    opacity: 1;
+    background: conic-gradient(from 0deg, transparent 0deg, transparent 260deg, rgba(209, 213, 219, 0.3) 320deg, #d1d5db 360deg);
+    animation: borderSpin 2s linear infinite;
+}
+
+/* Rarity: RARE (Cobalt/Blue) */
+.card.rare::before {
+    background: conic-gradient(from 0deg, transparent 0deg, transparent 280deg, rgba(59, 130, 246, 0.1) 320deg, rgba(59, 130, 246, 1) 360deg);
+}
+.card.rare:hover::before {
+    opacity: 1;
+    background: conic-gradient(from 0deg, transparent 0deg, transparent 260deg, rgba(96, 165, 250, 0.3) 320deg, #60a5fa 360deg);
+    animation: borderSpin 2s linear infinite;
+}
+
+/* Rarity: EPIC (Amethyst/Purple) */
+.card.epic::before {
+    background: conic-gradient(from 0deg, transparent 0deg, transparent 280deg, rgba(168, 85, 247, 0.1) 320deg, rgba(168, 85, 247, 1) 360deg);
+}
+.card.epic:hover::before {
+    opacity: 1;
+    background: conic-gradient(from 0deg, transparent 0deg, transparent 260deg, rgba(192, 132, 252, 0.3) 320deg, #c084fc 360deg);
+    animation: borderSpin 2s linear infinite;
+}
+
+/* Rarity: LEGENDARY (Gold) */
+.card.legendary::before {
+    background: conic-gradient(from 0deg, transparent 0deg, transparent 280deg, rgba(212, 175, 55, 0.1) 320deg, rgba(212, 175, 55, 1) 360deg);
+}
+.card.legendary:hover::before {
+    opacity: 1;
+    background: conic-gradient(from 0deg, transparent 0deg, transparent 260deg, rgba(255, 215, 0, 0.3) 320deg, #facc15 360deg);
+    animation: borderSpin 2s linear infinite;
+}
+
+/* ==================================
+   COLLECTED (OWNED) STATE OVERRIDE
+   ================================== */
 .card.collected .card-bg {
-    /* Subtle emerald tint overlay on the collected items background */
     background: rgba(20, 26, 22, 0.98);
 }
 
 .card.collected::before {
-    /* Emerald traveling border instead of gold */
     background: conic-gradient(
         from 0deg, 
         transparent 0deg, 
         transparent 280deg, 
         rgba(16, 185, 129, 0.1) 320deg, 
         rgba(16, 185, 129, 1) 360deg
-    );
+    ) !important;
 }
 
 .card.collected:hover::before {
+    opacity: 1;
     background: conic-gradient(
         from 0deg, 
         transparent 0deg, 
         transparent 260deg, 
         rgba(52, 211, 153, 0.3) 320deg, 
         #34d399 360deg
-    );
+    ) !important;
+    animation: borderSpin 2s linear infinite;
 }
 
 .card.collected::after {
@@ -123,6 +157,7 @@
     z-index: 5;
 }
 
+/* Buttons */
 .card-content button {
     background: transparent;
     border: 1px solid rgba(212, 175, 55, 0.4);
@@ -150,6 +185,7 @@
     background: rgba(16, 185, 129, 0.1);
 }
 
+/* Typography Strings */
 .rarity {
     font-size: 0.75rem;
     letter-spacing: 3px;
@@ -157,6 +193,7 @@
     margin: 5px 0;
 }
 
-.rarity.common { color: #888; }
+.rarity.common { color: #9ca3af; }
 .rarity.rare { color: #60a5fa; }
+.rarity.epic { color: #c084fc; }
 .rarity.legendary { color: #d4af37; }

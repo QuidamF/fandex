@@ -3,7 +3,7 @@ import "./ItemCard.css";
 function ItemCard({ item, onCollect, onClick }) {
     return (
         <div
-            className={`card ${item.collected ? "collected" : ""}`}
+            className={`card ${item.rarity || "common"} ${item.collected ? "collected" : ""}`}
             onClick={onClick}
         >
             <div className="card-bg"></div>

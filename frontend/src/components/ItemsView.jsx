@@ -36,6 +36,7 @@ function ItemsView({ items, tags, onCollect }) {
                     <option value="">All Rarities</option>
                     <option value="common">Common</option>
                     <option value="rare">Rare</option>
+                    <option value="epic">Epic</option>
                     <option value="legendary">Legendary</option>
                 </select>
             </div>

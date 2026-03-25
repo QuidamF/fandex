@@ -47,13 +47,18 @@
         from 0deg, 
         transparent 0deg, 
         transparent 280deg, 
-        rgba(212, 175, 55, 0.1) 320deg, 
-        rgba(212, 175, 55, 1) 360deg
+        rgba(156, 163, 175, 0.1) 320deg, 
+        rgba(156, 163, 175, 1) 360deg
     );
     animation: borderSpin 5s linear infinite;
     z-index: -1;
     opacity: 0.8;
 }
+
+.modal-content.common::before { background: conic-gradient(from 0deg, transparent 0deg, transparent 280deg, rgba(156, 163, 175, 0.1) 320deg, rgba(156, 163, 175, 1) 360deg); }
+.modal-content.rare::before { background: conic-gradient(from 0deg, transparent 0deg, transparent 280deg, rgba(59, 130, 246, 0.1) 320deg, rgba(59, 130, 246, 1) 360deg); }
+.modal-content.epic::before { background: conic-gradient(from 0deg, transparent 0deg, transparent 280deg, rgba(168, 85, 247, 0.1) 320deg, rgba(168, 85, 247, 1) 360deg); }
+.modal-content.legendary::before { background: conic-gradient(from 0deg, transparent 0deg, transparent 280deg, rgba(212, 175, 55, 0.1) 320deg, rgba(212, 175, 55, 1) 360deg); }
 
 .modal-content.collected::before {
     background: conic-gradient(
@@ -62,7 +67,7 @@
         transparent 280deg, 
         rgba(16, 185, 129, 0.1) 320deg, 
         rgba(16, 185, 129, 1) 360deg
-    );
+    ) !important;
 }
 
 /* Ensure Inner Content is Above Background */
@@ -76,13 +81,15 @@
     font-weight: 300;
     font-size: 2rem;
     margin-bottom: 5px;
-    color: #d4af37;
     letter-spacing: 2px;
 }
 
-.modal-content.collected .modal-inner-content h2 {
-    color: #10b981;
-}
+.modal-content.common .modal-inner-content h2 { color: #d1d5db; }
+.modal-content.rare .modal-inner-content h2 { color: #60a5fa; }
+.modal-content.epic .modal-inner-content h2 { color: #c084fc; }
+.modal-content.legendary .modal-inner-content h2 { color: #d4af37; }
+
+.modal-content.collected .modal-inner-content h2 { color: #10b981 !important; }
 
 .modal-inner-content p {
     font-weight: 300;

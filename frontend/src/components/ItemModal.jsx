@@ -5,7 +5,7 @@ function ItemModal({ item, onClose, onCollect }) {
 
     return (
         <div className="modal-overlay" onClick={onClose}>
-            <div className={`modal-content ${item.collected ? "collected" : ""}`} onClick={(e) => e.stopPropagation()}>
+            <div className={`modal-content ${item.rarity || "common"} ${item.collected ? "collected" : ""}`} onClick={(e) => e.stopPropagation()}>
                 
                 <div className="modal-bg"></div>
 

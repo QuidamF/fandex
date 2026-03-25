@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { login, register } from "../services/api";
 import "./Login.css";
@@ -7,6 +7,17 @@ function Login() {
     const navigate = useNavigate();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+
+    useEffect(() => {
+        const userStr = localStorage.getItem("fandex_user");
+        if (userStr) {
+            const user = JSON.parse(userStr);
+            if (user.role_id === 1) navigate("/admin");
+            else if (user.role_id === 2) navigate("/moderator");
+            else if (user.role_id === 3) navigate("/fan");
+            else navigate("/");
+        }
+    }, [navigate]);
 
     const handleLogin = async () => {
         if (!username || !password) {

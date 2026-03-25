@@ -192,6 +192,7 @@ function ModeratorView({ user, onLogout }) {
                             <select className="mod-select" value={rarity} onChange={(e) => setRarity(e.target.value)}>
                                 <option value="common">Common</option>
                                 <option value="rare">Rare</option>
+                                <option value="epic">Epic</option>
                                 <option value="legendary">Legendary</option>
                             </select>
                             <select className="mod-select" value={tag} onChange={(e) => setTag(e.target.value)}>
