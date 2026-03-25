@@ -1,13 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./ItemCard.css";
 
 function ItemCard({ item, onCollect, onClick }) {
-    const [loaded, setLoaded] = useState(false);
+    const [loaded, setLoaded] = useState(!item.has_image);
+    const [inView, setInView] = useState(false);
+    const cardRef = useRef(null);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(([entry]) => {
+            if (entry.isIntersecting) {
+                setInView(true);
+                observer.unobserve(entry.target);
+            }
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+        if (cardRef.current) observer.observe(cardRef.current);
+        return () => observer.disconnect();
+    }, []);
+
+    const isVisible = loaded && inView;
 
     return (
         <div
-            className={`card ${item.collected ? "collected" : ""} ${loaded ? "fade-in" : "invisible"}`}
-            style={{ "--rarity-color": item.rarity_color || "#9ca3af", opacity: item.has_image ? (loaded ? 1 : 0) : 1 }}
+            ref={cardRef}
+            className={`card ${item.collected ? "collected" : ""} ${isVisible ? "visible" : "invisible"}`}
+            style={{ "--rarity-color": item.rarity_color || "#9ca3af" }}
             onClick={onClick}
         >
             <div className="card-bg"></div>
