@@ -13,7 +13,9 @@ function ItemModal({ item, onClose, onCollect }) {
                     <button className="close-btn" onClick={onClose}>✖</button>
 
                     {item.image && (
-                        <img src={item.image} alt={item.name} style={{ width: "100%", maxHeight: "250px", objectFit: "cover", borderRadius: "2px", margin: "10px 0" }} />
+                        <div style={{ background: "rgba(0,0,0,0.5)", borderRadius: "4px", padding: "10px", margin: "10px 0" }}>
+                            <img src={item.image} alt={item.name} style={{ width: "100%", maxHeight: "500px", objectFit: "contain", borderRadius: "2px" }} />
+                        </div>
                     )}
 
                     <h2>{item.name}</h2>

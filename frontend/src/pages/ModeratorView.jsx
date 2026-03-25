@@ -48,8 +48,14 @@ function ModeratorView({ user, onLogout }) {
 
     useEffect(() => {
         if (view === "minting") {
-            getTags().then(setTags);
-            getRarities().then(setRarities);
+            getTags().then(res => {
+                setTags(res);
+                if (res.length > 0 && !tag) setTag(res[0].name);
+            });
+            getRarities().then(res => {
+                setRarities(res);
+                if (res.length > 0 && rarity === "common") setRarity(res[0].name);
+            });
         } else if (view === "gallery") {
             getItems().then(setItems);
             getStats().then(setStats);
@@ -110,10 +116,10 @@ function ModeratorView({ user, onLogout }) {
     const handleCancelEdit = () => {
         setEditItemId(null);
         setName("");
-        setRarity("common");
+        setRarity(rarities.length > 0 ? rarities[0].name : "common");
         setDescription("");
         setImage("");
-        setTag("");
+        setTag(tags.length > 0 ? tags[0].name : "");
         setView("gallery");
     };
 
@@ -256,12 +262,28 @@ function ModeratorView({ user, onLogout }) {
                         {/* 🟢 RARITY STUDIO */}
                         <div className="mod-panel">
                             <h3 style={{ color: "#c084fc" }}>Rarity Engineering</h3>
+                            <p style={{ color: "#888", fontSize: "0.85rem", marginBottom: "20px" }}>Define custom hierarchy tiers and visual auras for your artifacts.</p>
                             
-                            <div style={{ display: "flex", gap: "10px" }}>
-                                <input className="mod-input" type="number" style={{ flex: 0.3, margin: 0 }} placeholder="TIER (e.g. 1)" value={newRarityTier} onChange={e => setNewRarityTier(e.target.value)} />
-                                <input className="mod-input" style={{ flex: 1, margin: 0 }} placeholder="TIER NAME (e.g. Mythic)" value={newRarityName} onChange={e => setNewRarityName(e.target.value)} />
-                                <input type="color" className="mod-input" style={{ flex: 0.2, margin: 0, padding: "2px", height: "42px", cursor: "pointer" }} value={newRarityColor} onChange={e => setNewRarityColor(e.target.value)} />
-                                <button className="mod-btn" style={{ margin: 0, padding: "0 20px" }} onClick={handleCreateRarity}>Mint Tier</button>
+                            <div style={{ display: "flex", flexDirection: "column", gap: "15px", background: "rgba(0,0,0,0.2)", padding: "20px", borderRadius: "4px", border: "1px solid rgba(192, 132, 252, 0.2)" }}>
+                                <div>
+                                    <label style={{ display: "block", color: "#c084fc", fontSize: "0.75rem", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "5px" }}>1. Rarity Title</label>
+                                    <input className="mod-input" placeholder="e.g. Mythic, Holographic, First Edition..." value={newRarityName} onChange={e => setNewRarityName(e.target.value)} />
+                                </div>
+                                
+                                <div>
+                                    <label style={{ display: "block", color: "#c084fc", fontSize: "0.75rem", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "5px" }}>2. Hierarchy Level (Numeric Tier)</label>
+                                    <input className="mod-input" type="number" min="1" placeholder="e.g. 1 (Lowest Rank), 5 (Highest Rank)..." value={newRarityTier} onChange={e => setNewRarityTier(e.target.value)} />
+                                </div>
+
+                                <div>
+                                    <label style={{ display: "block", color: "#c084fc", fontSize: "0.75rem", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "5px" }}>3. Aura Color (Border Glow)</label>
+                                    <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
+                                        <input type="color" value={newRarityColor} onChange={e => setNewRarityColor(e.target.value)} style={{ width: "60px", height: "45px", padding: "0", border: "1px solid #c084fc", borderRadius: "4px", cursor: "pointer", background: "transparent" }} />
+                                        <span style={{ color: newRarityColor, fontFamily: "monospace", fontSize: "1.2rem", textShadow: `0 0 10px ${newRarityColor}`, letterSpacing: "2px" }}>{newRarityColor.toUpperCase()}</span>
+                                    </div>
+                                </div>
+
+                                <button className="mod-btn" style={{ borderColor: "rgba(192, 132, 252, 0.5)", color: "#c084fc", marginTop: "10px" }} onClick={handleCreateRarity}>Forge Rarity Level</button>
                             </div>
 
                             {rarities.length > 0 && (
