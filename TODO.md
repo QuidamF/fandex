@@ -106,7 +106,7 @@ Focus: simplicity, clarity, and hackathon-ready implementation.
 
 * [x] Progress bar
 * [x] Achievements list
-* [ ] Unlock animation / toast
+* [x] Unlock animation / toast
 
 ---
 
@@ -123,20 +123,20 @@ Focus: simplicity, clarity, and hackathon-ready implementation.
 
 ### 🧪 Backend Testing
 
-* [ ] Test login flow
-* [ ] Test item collection
-* [ ] Test progress calculation
-* [ ] Test achievements unlock
+* [x] Test login flow
+* [x] Test item collection
+* [x] Test progress calculation
+* [x] Test achievements unlock
 
 ---
 
 ### 🕹️ Full Flow
 
-* [ ] Register → Login
-* [ ] View items
-* [ ] Collect item
-* [ ] Progress updates
-* [ ] Achievement unlock
+* [x] Register → Login
+* [x] View items
+* [x] Collect item
+* [x] Progress updates
+* [x] Achievement unlock
 
 ---
 
