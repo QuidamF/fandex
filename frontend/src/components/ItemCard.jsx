@@ -8,11 +8,8 @@ function ItemCard({ item, onCollect, onClick }) {
 
     useEffect(() => {
         const observer = new IntersectionObserver(([entry]) => {
-            if (entry.isIntersecting) {
-                setInView(true);
-                observer.unobserve(entry.target);
-            }
-        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+            setInView(entry.isIntersecting);
+        }, { threshold: 0.15 });
 
         if (cardRef.current) observer.observe(cardRef.current);
         return () => observer.disconnect();
