@@ -50,7 +50,7 @@ export async function getAchievements(user_id) {
 }
 
 export async function register(username, password) {
-    const res = await fetch(`${API_URL}/users`, {
+    const res = await fetch(`${API_URL}/users/`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -62,7 +62,7 @@ export async function register(username, password) {
 }
 
 export async function createItem(data) {
-    const res = await fetch(`${API_URL}/items`, {
+    const res = await fetch(`${API_URL}/items/`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -79,7 +79,7 @@ export async function getTags() {
 }
 
 export async function createTag(name) {
-    const res = await fetch(`${API_URL}/tags`, {
+    const res = await fetch(`${API_URL}/tags/`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
