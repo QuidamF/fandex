@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getItems, getTags, getRanking, getCollectionInfo } from "../services/api";
+import ItemCard from "../components/ItemCard";
+import "./PublicView.css";
 
 function PublicView() {
     const navigate = useNavigate();
@@ -8,7 +10,7 @@ function PublicView() {
     const [tags, setTags] = useState([]);
     const [ranking, setRanking] = useState([]);
     const [view, setView] = useState("overview");
-    const [collectionInfo, setCollectionInfo] = useState({ name: "LOADING...", description: "Connecting to global database..." });
+    const [collectionInfo, setCollectionInfo] = useState({ name: "MUSEUM", description: "Connecting to global archive..." });
     
     // filters
     const [filterTag, setFilterTag] = useState("");
@@ -18,10 +20,7 @@ function PublicView() {
         getItems().then(setItems).catch(console.error);
         getTags().then(setTags).catch(console.error);
         getRanking()
-            .then(data => {
-                console.log("Ranking loaded:", data);
-                setRanking(data || []);
-            })
+            .then(data => setRanking(data || []))
             .catch(console.error);
         getCollectionInfo()
             .then(res => {
@@ -45,27 +44,35 @@ function PublicView() {
 
     if (view === "overview") {
         content = (
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "20px" }}>
+            <div className="overview-grid">
                 {/* TAG PROGRESS DISTRIBUTION */}
-                <div style={{ background: "#1e293b", padding: "20px", borderRadius: "10px", boxShadow: "0 4px 6px rgba(0,0,0,0.1)" }}>
-                    <h3 style={{ margin: "0 0 15px 0" }}>Tag Distribution</h3>
+                <div className="public-panel">
+                    <h3>Curator's Distribution</h3>
                     {tagDistribution.map(t => (
-                        <div key={t.name} style={{ display: "flex", justifyContent: "space-between", margin: "10px 0", paddingBottom: "10px", borderBottom: "1px solid #334155" }}>
-                            <span style={{ textTransform: "capitalize" }}>{t.name}</span>
-                            <span style={{ color: "#4ade80", fontWeight: "bold" }}>{t.count} items</span>
+                        <div key={t.name} className="dist-row">
+                            <span className="name">{t.name}</span>
+                            <span className="count">{t.count}</span>
                         </div>
                     ))}
+                    {tagDistribution.length === 0 && <p style={{ color: "#888", fontSize: "0.8rem", letterSpacing: "1px" }}>NO CATEGORIES ARCHIVED</p>}
                 </div>
 
                 {/* RANKING LIVE */}
-                <div style={{ background: "#1e293b", padding: "20px", borderRadius: "10px", boxShadow: "0 4px 6px rgba(0,0,0,0.1)" }}>
-                    <h3 style={{ margin: "0 0 15px 0" }}>Top Collectors</h3>
+                <div className="public-panel">
+                    <h3>Hall of Fame</h3>
                     {ranking.length > 0 ? ranking.map((u, i) => (
-                        <div key={u.user} style={{ display: "flex", justifyContent: "space-between", margin: "10px 0", padding: "5px 0" }}>
-                            <span><span style={{ color: i === 0 ? "gold" : i === 1 ? "silver" : "#cd7f32", marginRight: "5px" }}>#{i + 1}</span> {u.user}</span>
-                            <span style={{ fontWeight: "bold" }}>{u.count}</span>
+                        <div key={u.user} className="ranking-row">
+                            <span>
+                                <span className="rank-pos" style={{ 
+                                    color: i === 0 ? "#d4af37" : i === 1 ? "#e2e8f0" : i === 2 ? "#b45309" : "#888" 
+                                }}>#{i + 1}</span> 
+                                <span style={{ color: "#e5e5e5", textTransform: "uppercase", letterSpacing: "1px", fontSize: "0.85rem" }}>
+                                    {u.user}
+                                </span>
+                            </span>
+                            <span className="rank-score">{u.count}</span>
                         </div>
-                    )) : <p style={{ color: "#94a3b8" }}>No collectors yet</p>}
+                    )) : <p style={{ color: "#888", fontSize: "0.8rem", letterSpacing: "1px" }}>THE VAULTS ARE EMPTY</p>}
                 </div>
             </div>
         );
@@ -73,13 +80,13 @@ function PublicView() {
         content = (
             <div>
                 {/* ITEMS BROWSER */}
-                <div style={{ padding: "10px 0", display: "flex", gap: "10px", marginBottom: "20px" }}>
-                    <select value={filterTag} onChange={(e) => setFilterTag(e.target.value)} style={{ padding: "8px", borderRadius: "5px", background: "#334155", color: "white", border: "none" }}>
-                        <option value="">All Tags</option>
+                <div className="public-filters">
+                    <select className="public-select" value={filterTag} onChange={(e) => setFilterTag(e.target.value)}>
+                        <option value="">All Categories</option>
                         {tags.map(t => <option key={t.id} value={t.name}>{t.name}</option>)}
                     </select>
 
-                    <select value={filterRarity} onChange={(e) => setFilterRarity(e.target.value)} style={{ padding: "8px", borderRadius: "5px", background: "#334155", color: "white", border: "none" }}>
+                    <select className="public-select" value={filterRarity} onChange={(e) => setFilterRarity(e.target.value)}>
                         <option value="">All Rarities</option>
                         <option value="common">Common</option>
                         <option value="rare">Rare</option>
@@ -87,37 +94,31 @@ function PublicView() {
                     </select>
                 </div>
 
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))", gap: "15px" }}>
+                <div className="items-grid">
                     {filteredItems.map(item => (
-                        <div key={item.id} style={{ background: "#1e293b", padding: "15px", borderRadius: "8px", borderLeft: item.rarity === 'legendary' ? '3px solid gold' : item.rarity === 'rare' ? '3px solid #3b82f6' : '3px solid #94a3b8' }}>
-                            {item.image && (
-                                <img src={item.image} alt={item.name} style={{ width: "100%", height: "100px", objectFit: "cover", borderRadius: "4px", marginBottom: "10px" }} />
-                            )}
-                            <h4 style={{ margin: "0 0 5px 0" }}>{item.name}</h4>
-                            <p style={{ margin: 0, fontSize: "0.8rem", color: item.rarity === 'legendary' ? 'gold' : item.rarity === 'rare' ? '#3b82f6' : '#94a3b8', textTransform: "capitalize" }}>
-                                {item.rarity}
-                            </p>
-                            <p style={{ margin: "5px 0 0 0", fontSize: "0.8rem", color: "#94a3b8" }}>{(item.tags || []).join(", ")}</p>
+                        <div key={item.id}>
+                            <ItemCard item={item} />
                         </div>
                     ))}
+                    {filteredItems.length === 0 && <p style={{ color: "#888", fontSize: "0.8rem", letterSpacing: "1px", gridColumn: "1/-1", textAlign: "center" }}>NO ARTIFACTS FOUND</p>}
                 </div>
             </div>
         );
     } else if (view === "achievements") {
         content = (
-            <div style={{ background: "#1e293b", padding: "20px", borderRadius: "10px", boxShadow: "0 4px 6px rgba(0,0,0,0.1)" }}>
-                <h3 style={{ margin: "0 0 15px 0" }}>Global Achievements Overview</h3>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "15px" }}>
+            <div className="public-panel">
+                <h3>Global Milestones</h3>
+                <div className="achievements-grid">
                     {[
-                        { name: "First Item", desc: "Collect 1 item" },
-                        { name: "Halfway There", desc: "Reach 50% progress" },
-                        { name: "Legendary Hunter", desc: "Collect a legendary item" },
-                        { name: "Completionist", desc: "Collect all items in FanDex" },
-                        { name: "Speedrunner", desc: "Collect 10 items in 1 day" }
+                        { name: "First Artifact", desc: "Acquire 1 museum item" },
+                        { name: "Halfway There", desc: "Retrieve 50% of the collection" },
+                        { name: "Myth Seeker", desc: "Locate a legendary artifact" },
+                        { name: "Museum Director", desc: "Acquire every item in the archive" },
+                        { name: "Grave Robber", desc: "Steal 10 items in 1 day" }
                     ].map(a => (
-                        <div key={a.name} style={{ background: "#334155", padding: "15px", borderRadius: "8px" }}>
-                            <h4 style={{ margin: "0 0 5px 0" }}>🏆 {a.name}</h4>
-                            <p style={{ margin: 0, fontSize: "0.8rem", color: "#94a3b8" }}>{a.desc}</p>
+                        <div key={a.name} className="public-achievement">
+                            <h4>{a.name}</h4>
+                            <p>{a.desc}</p>
                         </div>
                     ))}
                 </div>
@@ -126,61 +127,63 @@ function PublicView() {
     }
 
     return (
-        <div style={{ padding: "40px", maxWidth: "1200px", margin: "0 auto" }}>
+        <div className="public-wrapper">
             {/* HERO */}
-            <div style={{ textAlign: "center", marginBottom: "40px" }}>
-                <h1 style={{ fontSize: "3.5rem", marginBottom: "10px", color: "#4ade80" }}>{collectionInfo.name}</h1>
-                <p style={{ fontSize: "1.2rem", color: "#94a3b8" }}>
+            <header className="hero-section">
+                <h1 className="hero-title">{collectionInfo.name}</h1>
+                <p className="hero-subtitle">
                     {collectionInfo.description}
                 </p>
                 <button 
+                    className="hero-btn"
                     onClick={() => navigate('/app')}
-                    style={{ marginTop: "20px", padding: "10px 30px", fontSize: "1.2rem", background: "#3b82f6", color: "white", border: "none", borderRadius: "5px", cursor: "pointer", fontWeight: "bold" }}
                 >
-                    Enter App
+                    Enter Private Vault
                 </button>
-            </div>
+            </header>
 
             {/* GLOBAL STATS */}
-            <div style={{ display: "flex", justifyContent: "space-around", background: "#1e293b", padding: "20px", borderRadius: "10px", marginBottom: "40px", boxShadow: "0 4px 6px rgba(0,0,0,0.1)" }}>
-                <div style={{ textAlign: "center" }}>
-                    <h3 style={{ fontSize: "2rem", margin: "0 0 5px 0", color: "#3b82f6" }}>{items.length}</h3>
-                    <p style={{ margin: 0, color: "#94a3b8" }}>Total Items</p>
+            <div className="public-stats">
+                <div className="stat-block">
+                    <h3>{items.length}</h3>
+                    <p>Total Artifacts</p>
                 </div>
-                <div style={{ textAlign: "center" }}>
-                    <h3 style={{ fontSize: "2rem", margin: "0 0 5px 0", color: "#f59e0b" }}>{tags.length}</h3>
-                    <p style={{ margin: 0, color: "#94a3b8" }}>Total Tags</p>
+                <div className="stat-block">
+                    <h3>{tags.length}</h3>
+                    <p>Categories</p>
                 </div>
-                <div style={{ textAlign: "center" }}>
-                    <h3 style={{ fontSize: "2rem", margin: "0 0 5px 0", color: "#ec4899" }}>8</h3>
-                    <p style={{ margin: 0, color: "#94a3b8" }}>Achievements</p>
+                <div className="stat-block">
+                    <h3>5</h3>
+                    <p>Milestones</p>
                 </div>
             </div>
 
             {/* GLOBAL NAVIGATION MENU */}
-            <div style={{ display: "flex", gap: "10px", justifyContent: "center", marginBottom: "30px", borderBottom: "1px solid #334155", paddingBottom: "20px" }}>
+            <nav className="public-nav">
                 <button 
+                    className={`public-tab ${view === "overview" ? "active" : ""}`}
                     onClick={() => setView("overview")}
-                    style={{ padding: "10px 20px", background: view === "overview" ? "#3b82f6" : "transparent", color: "white", border: view === "overview" ? "none" : "1px solid #334155", borderRadius: "5px", cursor: "pointer", fontWeight: "bold" }}
                 >
-                    Overview
+                    Hall of Fame
                 </button>
                 <button 
+                    className={`public-tab ${view === "collection" ? "active" : ""}`}
                     onClick={() => setView("collection")}
-                    style={{ padding: "10px 20px", background: view === "collection" ? "#3b82f6" : "transparent", color: "white", border: view === "collection" ? "none" : "1px solid #334155", borderRadius: "5px", cursor: "pointer", fontWeight: "bold" }}
                 >
-                    Collection
+                    Grand Exhibition
                 </button>
                 <button 
+                    className={`public-tab ${view === "achievements" ? "active" : ""}`}
                     onClick={() => setView("achievements")}
-                    style={{ padding: "10px 20px", background: view === "achievements" ? "#3b82f6" : "transparent", color: "white", border: view === "achievements" ? "none" : "1px solid #334155", borderRadius: "5px", cursor: "pointer", fontWeight: "bold" }}
                 >
-                    Achievements
+                    Milestones
                 </button>
-            </div>
+            </nav>
 
             {/* CURRENT VIEW CONTENT */}
-            {content}
+            <main className="public-content">
+                {content}
+            </main>
             
         </div>
     );
