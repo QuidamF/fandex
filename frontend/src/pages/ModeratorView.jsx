@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { createItem, getTags, createTag } from "../services/api";
+import "./ModeratorView.css";
 
 function ModeratorView({ user, onLogout }) {
     const [name, setName] = useState("");
@@ -43,7 +44,7 @@ function ModeratorView({ user, onLogout }) {
         });
 
         if (res.status) {
-            alert("Item created!");
+            alert("Item Catalogued!");
             setName("");
             setTag("");
             setDescription("");
@@ -60,67 +61,78 @@ function ModeratorView({ user, onLogout }) {
 
         if (res.status) {
             setNewTag("");
-            loadTags(); // 🔥 refresca lista
+            loadTags();
         } else {
             alert(res.message);
         }
     };
 
     return (
-        <div style={{ padding: "20px" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <h2>Moderator Panel</h2>
-                <button onClick={onLogout} style={{ padding: "8px 16px", cursor: "pointer", background: "#ef4444", color: "white", border: "none", borderRadius: "5px" }}>Logout</button>
-            </div>
+        <div className="mod-wrapper">
+            <header className="mod-header">
+                <h2 className="mod-title">
+                    CURATOR'S DESK <span>/// MODERATOR ACCESS</span>
+                </h2>
+                <button className="mod-logout" onClick={onLogout}>Disconnect</button>
+            </header>
 
-            {/* 🟣 CREATE TAG */}
-            <h3>Create Tag</h3>
+            <main className="mod-content">
+                {/* 🟣 CREATE TAG */}
+                <div className="mod-panel">
+                    <h3>Catalogue Category</h3>
 
-            <input
-                placeholder="New tag"
-                value={newTag}
-                onChange={(e) => setNewTag(e.target.value)}
-            />
+                    <input
+                        className="mod-input"
+                        placeholder="NEW CATEGORY NAME"
+                        value={newTag}
+                        onChange={(e) => setNewTag(e.target.value)}
+                    />
 
-            <button onClick={handleCreateTag}>Create Tag</button>
+                    <button className="mod-btn" onClick={handleCreateTag}>Register Category</button>
+                </div>
 
-            <hr />
+                {/* 🟡 CREATE ITEM */}
+                <div className="mod-panel" style={{ border: "1px solid rgba(212, 175, 55, 0.2)" }}>
+                    <h3 style={{ color: "#d4af37", borderBottom: "1px solid rgba(212, 175, 55, 0.2)" }}>Index New Artifact</h3>
 
-            {/* 🟡 CREATE ITEM */}
-            <h3>Create Item</h3>
+                    <input
+                        className="mod-input"
+                        placeholder="ARTIFACT NAME"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                    />
 
-            <input
-                placeholder="Item name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-            />
+                    <select className="mod-select" value={rarity} onChange={(e) => setRarity(e.target.value)}>
+                        <option value="common">Common</option>
+                        <option value="rare">Rare</option>
+                        <option value="legendary">Legendary</option>
+                    </select>
 
-            <select onChange={(e) => setRarity(e.target.value)}>
-                <option value="common">Common</option>
-                <option value="rare">Rare</option>
-                <option value="legendary">Legendary</option>
-            </select>
+                    <select className="mod-select" value={tag} onChange={(e) => setTag(e.target.value)}>
+                        <option value="">Select Category...</option>
+                        {tags.map(t => (
+                            <option key={t.id} value={t.name}>
+                                {t.name}
+                            </option>
+                        ))}
+                    </select>
 
-            {/* 🔥 SOLO SELECT, sin input manual */}
-            <select value={tag} onChange={(e) => setTag(e.target.value)}>
-                <option value="">Select tag</option>
-                {tags.map(t => (
-                    <option key={t.id} value={t.name}>
-                        {t.name}
-                    </option>
-                ))}
-            </select>
+                    <input
+                        className="mod-input"
+                        placeholder="ARTIFACT DESCRIPTION"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                    />
 
-            <input
-                placeholder="Description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-            />
+                    <input className="mod-file" type="file" onChange={handleFile} accept="image/*" />
+                    
+                    {image && <img src={image} alt="preview" className="mod-preview" />}
 
-            <input type="file" onChange={handleFile} accept="image/*" />
-            {image && <img src={image} alt="preview" style={{ width: "100px", display: "block", margin: "10px 0", borderRadius: "5px" }} />}
-
-            <button onClick={handleCreateItem}>Create Item</button>
+                    <button className="mod-btn" onClick={handleCreateItem} style={{ color: "#d4af37", borderColor: "rgba(212, 175, 55, 0.4)" }}>
+                        Mint Artifact
+                    </button>
+                </div>
+            </main>
         </div>
     );
 }

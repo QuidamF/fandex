@@ -145,6 +145,8 @@ Focus: simplicity, clarity, and hackathon-ready implementation.
 * [x] Vault Dashboard Redesign (Premium Museum aesthetic, gold accents, deep darks)
 * [x] Animated Edge-Glow Hover Item Cards
 * [x] Universal Edge-Glow expansions (Modals & Achievements)
+* [x] Admin Control Center Redesign
+* [x] Moderator Curator Desk Redesign
 
 ---
 
