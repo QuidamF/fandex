@@ -148,3 +148,8 @@ export async function updateCollectionInfo(name, description) {
     });
     return res.json();
 }
+
+export async function purgeSystem() {
+    const res = await fetch(`${API_URL}/admin/purge`, { method: "DELETE" });
+    return res.json();
+}

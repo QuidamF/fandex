@@ -152,6 +152,7 @@ Focus: simplicity, clarity, and hackathon-ready implementation.
 * [x] Dynamic Collection Identity Metadata Editor (Curator)
 * [x] Public Landing (MVP 2 Redesign to Final Architecture)
 * [x] Explict React Router DOM Architecture Implementation (Protected Routes + LocalStorage)
+* [x] Epic Rarity Tier and Dynamic Semantic Luminous Edge Effects
 
 ---
 
