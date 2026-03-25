@@ -51,3 +51,28 @@ def insert_item_tag(item_id, name):
     """, (item_id, tag_id))
 
     conn.commit()
+
+
+def update_item_in_db(item_id, name, rarity, description, image=None):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        UPDATE items 
+        SET name=?, rarity=?, description=?, image=?
+        WHERE id=?
+    """, (name, rarity, description, image, item_id))
+    conn.commit()
+
+def delete_item_from_db(item_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM user_items WHERE item_id=?", (item_id,))
+    cursor.execute("DELETE FROM item_tags WHERE item_id=?", (item_id,))
+    cursor.execute("DELETE FROM items WHERE id=?", (item_id,))
+    conn.commit()
+
+def clear_item_tags(item_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM item_tags WHERE item_id=?", (item_id,))
+    conn.commit()

@@ -1,17 +1,20 @@
 import { useState, useEffect } from "react";
-import { createItem, getTags, createTag, getItems, getStats } from "../services/api";
+import { createItem, getTags, createTag, getItems, getStats, updateItem, deleteItem, deleteTag } from "../services/api";
 import ItemCard from "../components/ItemCard";
 import "./ModeratorView.css";
 
 function ModeratorView({ user, onLogout }) {
     const [view, setView] = useState("minting");
 
+    // form state
+    const [editItemId, setEditItemId] = useState(null);
     const [name, setName] = useState("");
     const [rarity, setRarity] = useState("common");
     const [tag, setTag] = useState("");
     const [description, setDescription] = useState("");
-    const [newTag, setNewTag] = useState("");
     const [image, setImage] = useState("");
+
+    const [newTag, setNewTag] = useState("");
 
     // data
     const [tags, setTags] = useState([]);
@@ -22,9 +25,7 @@ function ModeratorView({ user, onLogout }) {
         const file = e.target.files[0];
         if (!file) return;
         const reader = new FileReader();
-        reader.onloadend = () => {
-            setImage(reader.result);
-        };
+        reader.onloadend = () => setImage(reader.result);
         reader.readAsDataURL(file);
     };
 
@@ -38,41 +39,71 @@ function ModeratorView({ user, onLogout }) {
         }
     }, [view]);
 
-    const handleCreateItem = async () => {
+    // Item CRUD
+    const handleSaveItem = async () => {
         if (!tag) {
             alert("Select a tag");
             return;
         }
-
-        const res = await createItem({
-            name,
-            rarity,
-            tags: [tag],
-            description,
-            image
-        });
+        const payload = { name, rarity, tags: [tag], description, image };
+        const res = editItemId ? await updateItem(editItemId, payload) : await createItem(payload);
 
         if (res.status) {
-            alert("Artifact successfully catalogued!");
-            setName("");
-            setTag("");
-            setDescription("");
-            setImage("");
+            handleCancelEdit();
+            alert(res.message);
         } else {
             alert(res.message);
         }
     };
 
+    const handleDeleteItem = async () => {
+        if (!editItemId) return;
+        if (!window.confirm("Are you sure you want to completely destroy this artifact?")) return;
+        const res = await deleteItem(editItemId);
+        if (res.status) {
+            handleCancelEdit();
+        } else {
+            alert(res.message);
+        }
+    };
+
+    const handleEditItemClick = (item) => {
+        setEditItemId(item.id);
+        setName(item.name);
+        setRarity(item.rarity);
+        setDescription(item.description || "");
+        setImage(item.image || "");
+        setTag(item.tags.length > 0 ? item.tags[0] : "");
+        setView("minting");
+    };
+
+    const handleCancelEdit = () => {
+        setEditItemId(null);
+        setName("");
+        setRarity("common");
+        setDescription("");
+        setImage("");
+        setTag("");
+        setView("gallery");
+    };
+
+    // Tag CRUD
     const handleCreateTag = async () => {
         if (!newTag) return;
-
         const res = await createTag(newTag);
-
         if (res.status) {
             setNewTag("");
             getTags().then(setTags);
         } else {
             alert(res.message);
+        }
+    };
+
+    const handleDeleteTag = async (tag_id) => {
+        if (!window.confirm("Are you sure you want to delete this category? All artifacts using it will lose this tag.")) return;
+        const res = await deleteTag(tag_id);
+        if (res.status) {
+            getTags().then(setTags);
         }
     };
 
@@ -109,65 +140,71 @@ function ModeratorView({ user, onLogout }) {
                         {/* 🟣 CREATE TAG */}
                         <div className="mod-panel">
                             <h3>Catalogue Category</h3>
-
                             <input
                                 className="mod-input"
                                 placeholder="NEW CATEGORY NAME"
                                 value={newTag}
                                 onChange={(e) => setNewTag(e.target.value)}
                             />
-
                             <button className="mod-btn" onClick={handleCreateTag}>Register Category</button>
+
+                            {tags.length > 0 && (
+                                <div style={{ marginTop: "40px" }}>
+                                    <h4 style={{ color: "#a39171", fontFamily: "'Playfair Display', serif", fontWeight: 300, borderBottom: "1px solid rgba(255,255,255,0.05)", paddingBottom: "10px", marginBottom: "15px", textTransform: "uppercase", letterSpacing: "2px" }}>Active Categories</h4>
+                                    <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+                                        {tags.map(t => (
+                                            <li key={t.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 0", borderBottom: "1px solid rgba(255,255,255,0.05)", fontSize: "0.85rem", color: "#e5e5e5", letterSpacing: "1px" }}>
+                                                {t.name}
+                                                <button onClick={() => handleDeleteTag(t.id)} style={{ background: "transparent", border: "none", color: "#ef4444", cursor: "pointer", fontSize: "0.75rem", textTransform: "uppercase", transition: "0.3s" }} onMouseEnter={(e) => e.target.style.textShadow = "0 0 5px red"} onMouseLeave={(e) => e.target.style.textShadow = "none"}>[ Scrap ]</button>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
+
                         </div>
 
-                        {/* 🟡 CREATE ITEM */}
+                        {/* 🟡 CREATE/EDIT ITEM */}
                         <div className="mod-panel" style={{ border: "1px solid rgba(212, 175, 55, 0.2)" }}>
-                            <h3 style={{ color: "#d4af37", borderBottom: "1px solid rgba(212, 175, 55, 0.2)" }}>Index New Artifact</h3>
-
-                            <input
-                                className="mod-input"
-                                placeholder="ARTIFACT NAME"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                            />
-
+                            <h3 style={{ color: "#d4af37", borderBottom: "1px solid rgba(212, 175, 55, 0.2)" }}>{editItemId ? "Modify Artifact" : "Index New Artifact"}</h3>
+                            <input className="mod-input" placeholder="ARTIFACT NAME" value={name} onChange={(e) => setName(e.target.value)} />
                             <select className="mod-select" value={rarity} onChange={(e) => setRarity(e.target.value)}>
                                 <option value="common">Common</option>
                                 <option value="rare">Rare</option>
                                 <option value="legendary">Legendary</option>
                             </select>
-
                             <select className="mod-select" value={tag} onChange={(e) => setTag(e.target.value)}>
                                 <option value="">Select Category...</option>
                                 {tags.map(t => (
-                                    <option key={t.id} value={t.name}>
-                                        {t.name}
-                                    </option>
+                                    <option key={t.id} value={t.name}>{t.name}</option>
                                 ))}
                             </select>
 
-                            <input
-                                className="mod-input"
-                                placeholder="ARTIFACT DESCRIPTION"
-                                value={description}
-                                onChange={(e) => setDescription(e.target.value)}
-                            />
-
+                            <input className="mod-input" placeholder="ARTIFACT DESCRIPTION" value={description} onChange={(e) => setDescription(e.target.value)} />
                             <input className="mod-file" type="file" onChange={handleFile} accept="image/*" />
-                            
                             {image && <img src={image} alt="preview" className="mod-preview" />}
-
-                            <button className="mod-btn" onClick={handleCreateItem} style={{ color: "#d4af37", borderColor: "rgba(212, 175, 55, 0.4)" }}>
-                                Mint Artifact
-                            </button>
+                            
+                            <div style={{ display: "flex", gap: "10px", marginTop: "auto" }}>
+                                <button className="mod-btn" onClick={handleSaveItem} style={{ color: "#d4af37", borderColor: "rgba(212, 175, 55, 0.4)", flex: 1 }}>
+                                    {editItemId ? "Update Artifact" : "Mint Artifact"}
+                                </button>
+                                {editItemId && (
+                                    <>
+                                        <button className="mod-btn" onClick={handleCancelEdit} style={{ color: "#888", borderColor: "rgba(255,255,255,0.2)", flex: 0.4 }}>Cancel</button>
+                                        <button className="mod-btn" onClick={handleDeleteItem} style={{ color: "#ef4444", borderColor: "rgba(239, 68, 68, 0.4)", flex: 0.4 }}>Destroy</button>
+                                    </>
+                                )}
+                            </div>
                         </div>
                     </>
                 )}
 
                 {view === "gallery" && (
-                    {/* 🔵 LIVE CATALOGUE PREVIEW */}
                     <div className="mod-catalogue" style={{ marginTop: 0 }}>
-                        <h3>LIVE SYSTEM DATABASE</h3>
+                        <h3 style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                            LIVE SYSTEM DATABASE
+                            <span style={{ fontSize: "0.6rem", color: "#888", letterSpacing: "1px" }}>*CLICK ARTIFACTS TO ENTER EDIT MODE</span>
+                        </h3>
                         
                         {stats && (
                             <div className="mod-stats-banner">
@@ -179,7 +216,15 @@ function ModeratorView({ user, onLogout }) {
 
                         <div className="mod-grid">
                             {items.map(i => (
-                                <ItemCard key={i.id} item={i} />
+                                <div 
+                                    key={i.id} 
+                                    onClick={() => handleEditItemClick(i)} 
+                                    style={{ cursor: "pointer", transition: "transform 0.2s" }} 
+                                    onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.02)"} 
+                                    onMouseLeave={(e) => e.currentTarget.style.transform = "scale(1)"}
+                                >
+                                    <ItemCard item={i} />
+                                </div>
                             ))}
                         </div>
                     </div>

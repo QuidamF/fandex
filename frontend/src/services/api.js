@@ -107,3 +107,30 @@ export async function createModerator(username, password) {
     return res.json();
 }
 
+export async function updateItem(id, data) {
+    const res = await fetch(`${API_URL}/items/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+    });
+    return res.json();
+}
+
+export async function deleteItem(id) {
+    const res = await fetch(`${API_URL}/items/${id}`, { method: "DELETE" });
+    return res.json();
+}
+
+export async function updateTag(id, data) {
+    const res = await fetch(`${API_URL}/tags/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+    });
+    return res.json();
+}
+
+export async function deleteTag(id) {
+    const res = await fetch(`${API_URL}/tags/${id}`, { method: "DELETE" });
+    return res.json();
+}

@@ -20,3 +20,18 @@ def get_tags():
 
     cursor.execute("SELECT * FROM tags")
     return cursor.fetchall()
+
+def update_tag_in_db(tag_id, name):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE tags SET name=? WHERE id=?", (name, tag_id))
+    conn.commit()
+    return True
+
+def delete_tag_from_db(tag_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM item_tags WHERE tag_id=?", (tag_id,))
+    cursor.execute("DELETE FROM tags WHERE id=?", (tag_id,))
+    conn.commit()
+    return True
