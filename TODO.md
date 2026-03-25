@@ -110,6 +110,15 @@ Focus: simplicity, clarity, and hackathon-ready implementation.
 
 ---
 
+## Backlog/Ideas Futuras
+- [ ] Implementar autenticación real (JWT)
+- [ ] **Badge/Iconografía Visual dedicada por cada Trofeo (En Modeller Tab)**
+- [ ] Añadir paginación en el Dashboard
+- [ ] Implementar un sistema de Puntos/Monedas
+- [ ] Exportación de reportes PDF para el Admin
+
+---
+
 ## Module C — Testing / Validation
 
 ### 🧪 Backend Testing

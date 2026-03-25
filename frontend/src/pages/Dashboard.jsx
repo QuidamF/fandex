@@ -99,9 +99,14 @@ function Dashboard({ user, onLogout }) {
     return (
         <div className="dashboard-wrapper">
             <header className="dashboard-header">
-                <h2 className="dashboard-title">
-                    {collectionInfo.name} <span>/// {collectionInfo.description}</span>
-                </h2>
+                <div>
+                    <h2 className="dashboard-title" style={{ margin: 0 }}>
+                        {collectionInfo.name} <span>/// {collectionInfo.description}</span>
+                    </h2>
+                    <div style={{ fontSize: "0.8rem", color: "#d4af37", letterSpacing: "3px", marginTop: "8px", textTransform: "uppercase" }}>
+                        Archivist: <span style={{ color: "#fff" }}>{user?.username}</span>
+                    </div>
+                </div>
                 
                 <nav className="dashboard-nav">
                     <button 
