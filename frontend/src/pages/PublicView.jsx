@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getItems, getTags, getRanking } from "../services/api";
+import { getItems, getTags, getRanking, getCollectionInfo } from "../services/api";
 
 function PublicView() {
     const navigate = useNavigate();
@@ -8,6 +8,7 @@ function PublicView() {
     const [tags, setTags] = useState([]);
     const [ranking, setRanking] = useState([]);
     const [view, setView] = useState("overview");
+    const [collectionInfo, setCollectionInfo] = useState({ name: "LOADING...", description: "Connecting to global database..." });
     
     // filters
     const [filterTag, setFilterTag] = useState("");
@@ -20,6 +21,11 @@ function PublicView() {
             .then(data => {
                 console.log("Ranking loaded:", data);
                 setRanking(data || []);
+            })
+            .catch(console.error);
+        getCollectionInfo()
+            .then(res => {
+                if (res.status) setCollectionInfo(res.data);
             })
             .catch(console.error);
     }, []);
@@ -123,9 +129,9 @@ function PublicView() {
         <div style={{ padding: "40px", maxWidth: "1200px", margin: "0 auto" }}>
             {/* HERO */}
             <div style={{ textAlign: "center", marginBottom: "40px" }}>
-                <h1 style={{ fontSize: "3.5rem", marginBottom: "10px", color: "#4ade80" }}>FanDex</h1>
+                <h1 style={{ fontSize: "3.5rem", marginBottom: "10px", color: "#4ade80" }}>{collectionInfo.name}</h1>
                 <p style={{ fontSize: "1.2rem", color: "#94a3b8" }}>
-                    The ultimate fan collection tracking platform. Discover, collect, and compete!
+                    {collectionInfo.description}
                 </p>
                 <button 
                     onClick={() => navigate('/app')}
