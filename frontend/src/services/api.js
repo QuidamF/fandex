@@ -178,11 +178,11 @@ export async function getRarities() {
     return res.json();
 }
 
-export async function createRarity(name, color_hex) {
+export async function createRarity(name, color_hex, tier) {
     const res = await fetch(`${API_URL}/rarities/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, color_hex })
+        body: JSON.stringify({ name, color_hex, tier })
     });
     return res.json();
 }

@@ -70,6 +70,10 @@ def init_db():
         collection_id INTEGER
     )
     """)
+    try:
+        cursor.execute("ALTER TABLE rarities ADD COLUMN tier INTEGER DEFAULT 0")
+    except:
+        pass
 
     # Item-Tags
     cursor.execute("""
@@ -133,10 +137,10 @@ def init_db():
         cursor.execute("INSERT INTO tags (id, name, collection_id) VALUES (1, 'Posters', 1)")
         cursor.execute("INSERT INTO tags (id, name, collection_id) VALUES (2, 'Figures', 1)")
         
-        cursor.execute("INSERT INTO rarities (name, color_hex, collection_id) VALUES ('common', '#9ca3af', 1)")
-        cursor.execute("INSERT INTO rarities (name, color_hex, collection_id) VALUES ('rare', '#60a5fa', 1)")
-        cursor.execute("INSERT INTO rarities (name, color_hex, collection_id) VALUES ('epic', '#c084fc', 1)")
-        cursor.execute("INSERT INTO rarities (name, color_hex, collection_id) VALUES ('legendary', '#d4af37', 1)")
+        cursor.execute("INSERT INTO rarities (name, color_hex, tier, collection_id) VALUES ('common', '#9ca3af', 1, 1)")
+        cursor.execute("INSERT INTO rarities (name, color_hex, tier, collection_id) VALUES ('rare', '#60a5fa', 2, 1)")
+        cursor.execute("INSERT INTO rarities (name, color_hex, tier, collection_id) VALUES ('epic', '#c084fc', 3, 1)")
+        cursor.execute("INSERT INTO rarities (name, color_hex, tier, collection_id) VALUES ('legendary', '#d4af37', 4, 1)")
         
         cursor.execute("INSERT INTO items (id, name, description, image, rarity, collection_id) VALUES (1, 'Toothless Poster', 'Movie poster', '', 'common', 1)")
         cursor.execute("INSERT INTO items (id, name, description, image, rarity, collection_id) VALUES (2, 'Toothless Figure', 'Collectible figure', '', 'rare', 1)")

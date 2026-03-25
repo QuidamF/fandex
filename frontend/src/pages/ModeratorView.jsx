@@ -29,6 +29,7 @@ function ModeratorView({ user, onLogout }) {
     // new rarities
     const [newRarityName, setNewRarityName] = useState("");
     const [newRarityColor, setNewRarityColor] = useState("#c084fc");
+    const [newRarityTier, setNewRarityTier] = useState("");
 
     // achievements
     const [achName, setAchName] = useState("");
@@ -143,10 +144,14 @@ function ModeratorView({ user, onLogout }) {
     };
 
     const handleCreateRarity = async () => {
-        if (!newRarityName) return;
-        const res = await createRarity(newRarityName, newRarityColor);
+        if (!newRarityName || !newRarityTier) {
+            alert("Rarity must have a Name and a Tier value (number)");
+            return;
+        }
+        const res = await createRarity(newRarityName, newRarityColor, newRarityTier);
         if (res.status) {
             setNewRarityName("");
+            setNewRarityTier("");
             getRarities().then(setRarities);
         } else {
             alert(res.message);
@@ -248,6 +253,33 @@ function ModeratorView({ user, onLogout }) {
 
                         </div>
 
+                        {/* 🟢 RARITY STUDIO */}
+                        <div className="mod-panel">
+                            <h3 style={{ color: "#c084fc" }}>Rarity Engineering</h3>
+                            
+                            <div style={{ display: "flex", gap: "10px" }}>
+                                <input className="mod-input" type="number" style={{ flex: 0.3, margin: 0 }} placeholder="TIER (e.g. 1)" value={newRarityTier} onChange={e => setNewRarityTier(e.target.value)} />
+                                <input className="mod-input" style={{ flex: 1, margin: 0 }} placeholder="TIER NAME (e.g. Mythic)" value={newRarityName} onChange={e => setNewRarityName(e.target.value)} />
+                                <input type="color" className="mod-input" style={{ flex: 0.2, margin: 0, padding: "2px", height: "42px", cursor: "pointer" }} value={newRarityColor} onChange={e => setNewRarityColor(e.target.value)} />
+                                <button className="mod-btn" style={{ margin: 0, padding: "0 20px" }} onClick={handleCreateRarity}>Mint Tier</button>
+                            </div>
+
+                            {rarities.length > 0 && (
+                                <div style={{ marginTop: "30px", display: "grid", gap: "10px", gridTemplateColumns: "1fr 1fr" }}>
+                                    {rarities.map(r => (
+                                        <div key={r.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "rgba(255,255,255,0.02)", border: `1px solid ${r.color_hex}`, padding: "10px 15px", borderRadius: "3px" }}>
+                                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                                                <div style={{ color: "#d4af37", fontSize: "0.8rem", width: "15px" }}>[{r.tier}]</div>
+                                                <div style={{ width: "12px", height: "12px", borderRadius: "50%", background: r.color_hex, boxShadow: `0 0 10px ${r.color_hex}` }}></div>
+                                                <span style={{ color: "#e5e5e5", textTransform: "uppercase", fontSize: "0.8rem", letterSpacing: "1px" }}>{r.name}</span>
+                                            </div>
+                                            <button onClick={() => handleDeleteRarity(r.id)} style={{ background: "none", border: "none", color: "#ef4444", cursor: "pointer" }}>✖</button>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+
                         {/* 🟡 CREATE/EDIT ITEM */}
                         <div className="mod-panel" style={{ border: "1px solid rgba(212, 175, 55, 0.2)" }}>
                             <h3 style={{ color: "#d4af37", borderBottom: "1px solid rgba(212, 175, 55, 0.2)" }}>{editItemId ? "Modify Artifact" : "Index New Artifact"}</h3>
@@ -340,31 +372,6 @@ function ModeratorView({ user, onLogout }) {
                         />
 
                         <button className="mod-btn" onClick={handleSaveCollectionInfo} style={{ marginTop: "20px" }}>Publish Identity Overrides</button>
-
-                        <div style={{ marginTop: "50px", borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "30px" }}>
-                            <h3 style={{ color: "#c084fc" }}>DYNAMIC RARITY STUDIO</h3>
-                            <p style={{ color: "#888", fontSize: "0.85rem", marginBottom: "20px" }}>Forge custom hierarchy tiers for your artifacts.</p>
-                            
-                            <div style={{ display: "flex", gap: "10px" }}>
-                                <input className="mod-input" style={{ flex: 1, margin: 0 }} placeholder="TIER NAME (e.g. Mythic)" value={newRarityName} onChange={e => setNewRarityName(e.target.value)} />
-                                <input type="color" className="mod-input" style={{ flex: 0.2, margin: 0, padding: "2px", height: "42px", cursor: "pointer" }} value={newRarityColor} onChange={e => setNewRarityColor(e.target.value)} />
-                                <button className="mod-btn" style={{ margin: 0, padding: "0 20px" }} onClick={handleCreateRarity}>Mint Tier</button>
-                            </div>
-
-                            {rarities.length > 0 && (
-                                <div style={{ marginTop: "30px", display: "grid", gap: "10px", gridTemplateColumns: "1fr 1fr" }}>
-                                    {rarities.map(r => (
-                                        <div key={r.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "rgba(255,255,255,0.02)", border: `1px solid ${r.color_hex}`, padding: "10px 15px", borderRadius: "3px" }}>
-                                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                                                <div style={{ width: "15px", height: "15px", borderRadius: "50%", background: r.color_hex, boxShadow: `0 0 10px ${r.color_hex}` }}></div>
-                                                <span style={{ color: "#e5e5e5", textTransform: "uppercase", fontSize: "0.8rem", letterSpacing: "2px" }}>{r.name}</span>
-                                            </div>
-                                            <button onClick={() => handleDeleteRarity(r.id)} style={{ background: "none", border: "none", color: "#ef4444", cursor: "pointer" }}>✖</button>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
                     </div>
                 )}
 
