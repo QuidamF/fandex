@@ -1,7 +1,15 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getItems, getTags, getRanking, getCollectionInfo, getRarities, getAllAchievements } from "../services/api";
-import ItemCard from "../components/ItemCard";
+
+// Modular Components
+import PublicHero from "../components/public/PublicHero";
+import PublicStats from "../components/public/PublicStats";
+import PublicNav from "../components/public/PublicNav";
+import PublicOverview from "../components/public/PublicOverview";
+import PublicExhibition from "../components/public/PublicExhibition";
+import PublicMilestones from "../components/public/PublicMilestones";
+
 import "./PublicView.css";
 
 function PublicView() {
@@ -44,143 +52,50 @@ function PublicView() {
         return { name: tag.name, count };
     });
 
-    let content;
-
-    if (view === "overview") {
-        content = (
-            <div className="overview-grid">
-                {/* TAG PROGRESS DISTRIBUTION */}
-                <div className="public-panel">
-                    <h3>Curator's Distribution</h3>
-                    {tagDistribution.map(t => (
-                        <div key={t.name} className="dist-row">
-                            <span className="name">{t.name}</span>
-                            <span className="count">{t.count}</span>
-                        </div>
-                    ))}
-                    {tagDistribution.length === 0 && <p style={{ color: "#888", fontSize: "0.8rem", letterSpacing: "1px" }}>NO CATEGORIES ARCHIVED</p>}
-                </div>
-
-                {/* RANKING LIVE */}
-                <div className="public-panel">
-                    <h3>Hall of Fame</h3>
-                    {ranking.length > 0 ? ranking.map((u, i) => (
-                        <div key={u.user} className="ranking-row">
-                            <span>
-                                <span className="rank-pos" style={{ 
-                                    color: i === 0 ? "#d4af37" : i === 1 ? "#e2e8f0" : i === 2 ? "#b45309" : "#888" 
-                                }}>#{i + 1}</span> 
-                                <span style={{ color: "#e5e5e5", textTransform: "uppercase", letterSpacing: "1px", fontSize: "0.85rem" }}>
-                                    {u.user}
-                                </span>
-                            </span>
-                            <span className="rank-score">{u.count}</span>
-                        </div>
-                    )) : <p style={{ color: "#888", fontSize: "0.8rem", letterSpacing: "1px" }}>THE VAULTS ARE EMPTY</p>}
-                </div>
-            </div>
-        );
-    } else if (view === "collection") {
-        content = (
-            <div>
-                {/* ITEMS BROWSER */}
-                <div className="public-filters">
-                    <select className="public-select" value={filterTag} onChange={(e) => setFilterTag(e.target.value)}>
-                        <option value="">All Categories</option>
-                        {tags.map(t => <option key={t.id} value={t.name}>{t.name}</option>)}
-                    </select>
-
-                    <select className="public-select" value={filterRarity} onChange={(e) => setFilterRarity(e.target.value)}>
-                        <option value="">All Rarities</option>
-                        {rarities.map(r => <option key={r.id} value={r.name}>{r.name.toUpperCase()}</option>)}
-                    </select>
-                </div>
-
-                <div className="items-grid">
-                    {filteredItems.map(item => (
-                        <div key={item.id}>
-                            <ItemCard item={item} />
-                        </div>
-                    ))}
-                    {filteredItems.length === 0 && <p style={{ color: "#888", fontSize: "0.8rem", letterSpacing: "1px", gridColumn: "1/-1", textAlign: "center" }}>NO ARTIFACTS FOUND</p>}
-                </div>
-            </div>
-        );
-    } else if (view === "achievements") {
-        content = (
-            <div className="public-panel">
-                <h3>Global Milestones</h3>
-                <div className="achievements-grid">
-                    {achievements.length > 0 ? achievements.map(a => (
-                        <div key={a.id} className="public-achievement">
-                            <h4>{a.name}</h4>
-                            <p>{a.description}</p>
-                        </div>
-                    )) : <p style={{ color: "#888", fontSize: "0.8rem", letterSpacing: "1px" }}>NO MILESTONES DEFINED</p>}
-                </div>
-            </div>
-        );
-    }
+    const renderContent = () => {
+        switch (view) {
+            case "overview":
+                return <PublicOverview ranking={ranking} tagDistribution={tagDistribution} />;
+            case "collection":
+                return (
+                    <PublicExhibition 
+                        filteredItems={filteredItems}
+                        tags={tags}
+                        rarities={rarities}
+                        filterTag={filterTag}
+                        filterRarity={filterRarity}
+                        onFilterTagChange={setFilterTag}
+                        onFilterRarityChange={setFilterRarity}
+                    />
+                );
+            case "achievements":
+                return <PublicMilestones achievements={achievements} />;
+            default:
+                return null;
+        }
+    };
 
     return (
         <div className="public-wrapper">
-            {/* HERO */}
-            <header className="hero-section">
-                <h1 className="hero-title">{collectionInfo.name}</h1>
-                <p className="hero-subtitle">
-                    {collectionInfo.description}
-                </p>
-                <button 
-                    className="hero-btn"
-                    onClick={() => navigate('/login')}
-                >
-                    Enter Private Vault
-                </button>
-            </header>
+            <PublicHero 
+                collectionInfo={collectionInfo} 
+                onEnter={() => navigate('/login')} 
+            />
 
-            {/* GLOBAL STATS */}
-            <div className="public-stats">
-                <div className="stat-block">
-                    <h3>{items.length}</h3>
-                    <p>Total Artifacts</p>
-                </div>
-                <div className="stat-block">
-                    <h3>{tags.length}</h3>
-                    <p>Categories</p>
-                </div>
-                <div className="stat-block">
-                    <h3>{achievements.length}</h3>
-                    <p>Milestones</p>
-                </div>
-            </div>
+            <PublicStats 
+                itemsCount={items.length} 
+                tagsCount={tags.length} 
+                achievementsCount={achievements.length} 
+            />
 
-            {/* GLOBAL NAVIGATION MENU */}
-            <nav className="public-nav">
-                <button 
-                    className={`public-tab ${view === "overview" ? "active" : ""}`}
-                    onClick={() => setView("overview")}
-                >
-                    Hall of Fame
-                </button>
-                <button 
-                    className={`public-tab ${view === "collection" ? "active" : ""}`}
-                    onClick={() => setView("collection")}
-                >
-                    Grand Exhibition
-                </button>
-                <button 
-                    className={`public-tab ${view === "achievements" ? "active" : ""}`}
-                    onClick={() => setView("achievements")}
-                >
-                    Milestones
-                </button>
-            </nav>
+            <PublicNav 
+                currentView={view} 
+                onViewChange={setView} 
+            />
 
-            {/* CURRENT VIEW CONTENT */}
             <main className="public-content">
-                {content}
+                {renderContent()}
             </main>
-            
         </div>
     );
 }
