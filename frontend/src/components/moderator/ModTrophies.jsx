@@ -1,4 +1,5 @@
 import React from "react";
+import AchievementCard from "../shared/AchievementCard";
 
 function ModTrophies({ 
     achName, 
@@ -57,14 +58,12 @@ function ModTrophies({
                     <h4 style={{ color: "#888", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "15px" }}>Active System Milestones</h4>
                     <div className="mod-grid">
                         {achievements.map(a => (
-                            <div key={a.id} style={{ background: "rgba(26, 21, 20, 0.9)", padding: "20px", border: "1px solid rgba(255,255,255,0.05)", borderRadius: "2px", position: "relative" }}>
-                                <button onClick={() => handleDeleteTrophy(a.id)} style={{ position: "absolute", top: "10px", right: "10px", background: "none", border: "none", color: "#ef4444", cursor: "pointer" }}>✖</button>
-                                <h4 style={{ color: "#d4af37", margin: "0 0 5px 0", fontFamily: "'Playfair Display', serif" }}>{a.name}</h4>
-                                <p style={{ color: "#a39171", fontSize: "0.8rem", margin: "0 0 10px 0" }}>{a.description}</p>
-                                <div style={{ fontSize: "0.7rem", color: "#888", textTransform: "uppercase", letterSpacing: "1px" }}>
-                                    Rule: {a.condition_type} [{a.condition_value}] {a.condition_extra}
-                                </div>
-                            </div>
+                            <AchievementCard 
+                                key={a.id} 
+                                achievement={a} 
+                                onDelete={handleDeleteTrophy} 
+                                showCondition={true} 
+                            />
                         ))}
                     </div>
                 </div>

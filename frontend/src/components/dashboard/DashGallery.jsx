@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from "react";
-import ItemCard from "../ItemCard";
 import ItemModal from "../ItemModal";
+import CollectionFilters from "../shared/CollectionFilters";
+import ItemGrid from "../shared/ItemGrid";
 import { getRarities } from "../../services/api";
+import { useItemFiltering } from "../../hooks/useItemFiltering";
 
 function DashGallery({ items, tags, onCollect }) {
-    const [filterTag, setFilterTag] = useState("");
-    const [filterRarity, setFilterRarity] = useState("");
     const [selectedItem, setSelectedItem] = useState(null);
     const [rarities, setRarities] = useState([]);
+
+    const {
+        filterTag, setFilterTag,
+        filterRarity, setFilterRarity,
+        filteredItems
+    } = useItemFiltering(items);
 
     useEffect(() => {
         getRarities().then(setRarities).catch(() => {});
@@ -21,39 +27,24 @@ function DashGallery({ items, tags, onCollect }) {
         }
     }, [items, selectedItem]);
 
-    const filteredItems = items.filter(item => {
-        const matchTag = filterTag ? item.tags?.includes(filterTag) : true;
-        const matchRarity = filterRarity ? item.rarity === filterRarity : true;
-
-        return matchTag && matchRarity;
-    });
-
     return (
         <div>
-            <div className="vintage-filters">
-                <select className="vintage-select" onChange={(e) => setFilterTag(e.target.value)}>
-                    <option value="">All Tags</option>
-                    {tags.map(tag => (
-                        <option key={tag} value={tag}>{tag}</option>
-                    ))}
-                </select>
+            <CollectionFilters 
+                tags={tags} 
+                rarities={rarities} 
+                filterTag={filterTag} 
+                filterRarity={filterRarity} 
+                onTagChange={setFilterTag} 
+                onRarityChange={setFilterRarity}
+                className="vintage-filters"
+            />
 
-                <select className="vintage-select" onChange={(e) => setFilterRarity(e.target.value)}>
-                    <option value="">All Rarities</option>
-                    {rarities.map(r => <option key={r.id} value={r.name}>{r.name.toUpperCase()}</option>)}
-                </select>
-            </div>
-
-            <div className="grid">
-                {filteredItems.map(item => (
-                    <ItemCard
-                        key={item.id}
-                        item={item}
-                        onCollect={onCollect}
-                        onClick={() => setSelectedItem(item)}
-                    />
-                ))}
-            </div>
+            <ItemGrid 
+                items={filteredItems} 
+                onItemClick={setSelectedItem}
+                onCollect={onCollect}
+                gridClassName="grid"
+            />
 
             {selectedItem && (
                 <ItemModal

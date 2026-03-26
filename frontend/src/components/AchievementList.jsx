@@ -1,18 +1,16 @@
+import React from "react";
+import AchievementCard from "./shared/AchievementCard";
 import "./AchievementList.css";
 
 function AchievementList({ achievements }) {
     return (
         <div className="achievements">
             <h3>Achievements</h3>
-
-            {achievements.map(a => (
-                <div key={a.id} className="achievement new">
-                    <div className="achievement-bg"></div>
-                    <div className="achievement-content">
-                        🏆 {a.name}
-                    </div>
-                </div>
-            ))}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "20px" }}>
+                {achievements.map(a => (
+                    <AchievementCard key={a.id} achievement={a} className="achievement new" />
+                ))}
+            </div>
         </div>
     );
 }

@@ -1,20 +1,14 @@
 import React from "react";
+import StatBanner from "../shared/StatBanner";
 
 function AdminStats({ stats }) {
-    return (
-        <div className="admin-panel">
-            <h3>Global Metrics</h3>
-            <div className="admin-stat">
-                Active Fans <span>{stats.fans}</span>
-            </div>
-            <div className="admin-stat">
-                Moderators <span>{stats.moderators}</span>
-            </div>
-            <div className="admin-stat" style={{ borderBottom: "none" }}>
-                Archived Items <span>{stats.items}</span>
-            </div>
-        </div>
-    );
+    const bannerStats = {
+        "Active Fans": stats.fans,
+        "Moderators": stats.moderators,
+        "Archived Items": stats.items
+    };
+
+    return <StatBanner stats={bannerStats} className="admin-panel" styles={{ flexWrap: "wrap", justifyContent: "flex-start", gap: "40px" }} />;
 }
 
 export default AdminStats;
