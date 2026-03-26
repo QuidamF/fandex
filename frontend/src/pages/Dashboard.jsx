@@ -1,11 +1,17 @@
 import "./Dashboard.css";
 
 import { useEffect, useState } from "react";
-import { getItems, collectItem, getProgress, getAchievements, getTags, getUserCollection, getCollectionInfo } from "../services/api";
+import { 
+    getItems, collectItem, getProgress, getAchievements, 
+    getTags, getUserCollection, getCollectionInfo 
+} from "../services/api";
 
-import HomeView from "../components/HomeView";
-import ItemsView from "../components/ItemsView";
-import AchievementsView from "../components/AchievementsView";
+// Modular Components
+import DashHero from "../components/dashboard/DashHero";
+import DashNav from "../components/dashboard/DashNav";
+import DashOverview from "../components/dashboard/DashOverview";
+import DashGallery from "../components/dashboard/DashGallery";
+import DashMilestones from "../components/dashboard/DashMilestones";
 import AchievementCelebration from "../components/AchievementCelebration";
 
 function Dashboard({ user, onLogout }) {
@@ -91,59 +97,27 @@ function Dashboard({ user, onLogout }) {
         }));
     };
 
-    let content;
-
-    if (view === "home") {
-        content = <HomeView
-            progress={progress}
-            progressByTag={getProgressByTag()}
-        />;
-    } else if (view === "items") {
-        content = <ItemsView items={items} tags={tags} onCollect={handleCollect} />;
-    } else {
-        content = <AchievementsView achievements={achievements} />;
-    }
+    const renderContent = () => {
+        switch (view) {
+            case "home":
+                return <DashOverview progress={progress} progressByTag={getProgressByTag()} />;
+            case "items":
+                return <DashGallery items={items} tags={tags} onCollect={handleCollect} />;
+            case "achievements":
+                return <DashMilestones achievements={achievements} />;
+            default:
+                return null;
+        }
+    };
 
     return (
         <div className="dashboard-wrapper">
-            <header className="dashboard-header">
-                <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
-                    <div style={{ fontSize: "0.7rem", color: "#d4af37", letterSpacing: "3px", textTransform: "uppercase", border: "1px solid rgba(212, 175, 55, 0.3)", padding: "4px 10px" }}>
-                        ARCHIVIST: <span style={{ color: "#fff" }}>{user?.username.toUpperCase()}</span>
-                    </div>
-                </div>
-                
-                <nav className="dashboard-nav">
-                    <button 
-                        className={`dashboard-tab ${view === "home" ? "active" : ""}`} 
-                        onClick={() => setView("home")}
-                    >Overview
-                    </button>
-                    <button 
-                        className={`dashboard-tab ${view === "items" ? "active" : ""}`} 
-                        onClick={() => setView("items")}
-                    >Collection
-                    </button>
-                    <button 
-                        className={`dashboard-tab ${view === "achievements" ? "active" : ""}`} 
-                        onClick={() => setView("achievements")}
-                    >Milestones
-                    </button>
-                    <button 
-                        className="dashboard-tab" 
-                        onClick={onLogout}
-                        style={{ color: "#888", border: "1px solid rgba(255,255,255,0.1)", padding: "5px 15px", borderRadius: "2px", marginLeft: "10px" }}
-                    >Logout
-                    </button>
-                </nav>
-            </header>
+            <DashNav user={user} view={view} setView={setView} onLogout={onLogout} />
 
             <main className="dashboard-content">
-                <div className="dashboard-hero">
-                    <h1>{collectionInfo.name}</h1>
-                    <p>{collectionInfo.description}</p>
-                </div>
-                {content}
+                <DashHero collectionInfo={collectionInfo} />
+                
+                {renderContent()}
 
                 {celebratingAchievements.length > 0 && (
                     <AchievementCelebration 
