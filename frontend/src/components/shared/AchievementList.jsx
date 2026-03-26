@@ -1,5 +1,5 @@
 import React from "react";
-import AchievementCard from "./shared/AchievementCard";
+import AchievementCard from "./AchievementCard";
 import "./AchievementList.css";
 
 function AchievementList({ achievements }) {

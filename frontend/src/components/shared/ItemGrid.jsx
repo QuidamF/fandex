@@ -1,5 +1,5 @@
 import React from "react";
-import ItemCard from "../ItemCard";
+import ItemCard from "./ItemCard";
 
 /**
  * ItemGrid component renders a grid of ItemCards with a standardized layout and empty state.

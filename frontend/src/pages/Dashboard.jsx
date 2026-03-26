@@ -12,7 +12,7 @@ import DashNav from "../components/dashboard/DashNav";
 import DashOverview from "../components/dashboard/DashOverview";
 import DashGallery from "../components/dashboard/DashGallery";
 import DashMilestones from "../components/dashboard/DashMilestones";
-import AchievementCelebration from "../components/AchievementCelebration";
+import AchievementCelebration from "../components/shared/AchievementCelebration";
 
 function Dashboard({ user, onLogout }) {
     const [items, setItems] = useState([]);

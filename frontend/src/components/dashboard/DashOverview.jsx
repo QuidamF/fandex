@@ -1,5 +1,5 @@
 import React from "react";
-import ProgressBar from "../ProgressBar";
+import ProgressBar from "../shared/ProgressBar";
 
 function DashOverview({ progress, progressByTag }) {
     if (!progress) return null;

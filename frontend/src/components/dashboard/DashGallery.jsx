@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import ItemModal from "../ItemModal";
+import ItemModal from "../shared/ItemModal";
 import CollectionFilters from "../shared/CollectionFilters";
 import ItemGrid from "../shared/ItemGrid";
 import { getRarities } from "../../services/api";

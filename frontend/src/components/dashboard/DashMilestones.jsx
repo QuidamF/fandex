@@ -1,5 +1,5 @@
 import React from "react";
-import AchievementList from "../AchievementList";
+import AchievementList from "../shared/AchievementList";
 
 function DashMilestones({ achievements }) {
     if (achievements.length === 0) {
