@@ -1,12 +1,8 @@
-.achievements {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 25px;
-    margin-top: 10px;
+.achievements-layout {
+    margin-top: 20px;
 }
 
-.achievements h3 {
-    grid-column: 1 / -1;
+.achievements-title {
     font-family: var(--font-serif);
     color: var(--color-gold);
     font-weight: 300;
@@ -14,7 +10,27 @@
     text-transform: uppercase;
     border-bottom: 1px solid var(--color-border-gold);
     padding-bottom: 15px;
-    margin-bottom: 5px;
+    margin-bottom: 30px;
+    width: 100%;
+}
+
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 30px;
+}
+
+@media (max-width: 600px) {
+    .achievements-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .achievements-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .achievement {

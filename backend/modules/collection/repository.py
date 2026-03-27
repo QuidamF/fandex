@@ -23,7 +23,8 @@ def get_user_items(user_id):
             WHERE ui.user_id = ?
             ORDER BY r.tier DESC, i.name ASC
         """, (user_id,))
-        return cursor.fetchall()
+        rows = cursor.fetchall()
+        return [dict(row) for row in rows]
 
 def get_total_items():
     with db_cursor() as cursor:

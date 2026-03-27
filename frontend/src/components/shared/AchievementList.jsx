@@ -4,9 +4,9 @@ import "./AchievementList.css";
 
 function AchievementList({ achievements }) {
     return (
-        <div className="achievements">
-            <h3>Achievements</h3>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "20px" }}>
+        <div className="achievements-layout">
+            <h3 className="achievements-title">Achievements</h3>
+            <div className="achievements-grid">
                 {achievements.map(a => (
                     <AchievementCard key={a.id} achievement={a} className="achievement new" />
                 ))}

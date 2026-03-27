@@ -26,9 +26,8 @@ function DashNav({ user, view, setView, onLogout }) {
                 >Milestones
                 </button>
                 <button 
-                    className="dashboard-tab" 
+                    className="dashboard-tab vintage-tab logout" 
                     onClick={onLogout}
-                    style={{ color: "#888", border: "1px solid rgba(255,255,255,0.1)", padding: "5px 15px", borderRadius: "2px", marginLeft: "10px" }}
                 >Logout
                 </button>
             </nav>

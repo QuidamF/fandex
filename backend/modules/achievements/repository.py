@@ -4,7 +4,8 @@ from db.database import db_cursor
 def get_all_achievements():
     with db_cursor() as cursor:
         cursor.execute("SELECT * FROM achievements")
-        return cursor.fetchall()
+        rows = cursor.fetchall()
+        return [dict(row) for row in rows]
 
 def create_achievement(name, description, condition_type, condition_value, condition_extra):
     with db_cursor() as cursor:
@@ -41,4 +42,5 @@ def get_user_achievements(user_id):
             JOIN user_achievements ua ON a.id = ua.achievement_id
             WHERE ua.user_id = ?
         """, (user_id,))
-        return cursor.fetchall()
+        rows = cursor.fetchall()
+        return [dict(row) for row in rows]

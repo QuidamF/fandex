@@ -81,9 +81,9 @@ function ModeratorView({ user, onLogout }) {
             getRarities().then(setRarities);
         } else if (view === "identity") {
             getCollectionInfo().then(res => {
-                if (res.status) {
-                    setCollectionName(res.data.name);
-                    setCollectionDesc(res.data.description);
+                if (res) {
+                    setCollectionName(res.name);
+                    setCollectionDesc(res.description);
                 }
             });
             getRarities().then(setRarities);
@@ -306,14 +306,14 @@ function ModeratorView({ user, onLogout }) {
                 </h2>
                 
                 <nav className="mod-nav">
-                    <button className={`mod-tab ${view === "minting" ? "active" : ""}`} onClick={() => setView("minting")}>Studio</button>
-                    <button className={`mod-tab ${view === "gallery" ? "active" : ""}`} onClick={() => setView("gallery")}>Gallery</button>
-                    <button className={`mod-tab ${view === "identity" ? "active" : ""}`} onClick={() => setView("identity")}>Identity</button>
-                    <button className={`mod-tab ${view === "trophies" ? "active" : ""}`} onClick={() => setView("trophies")}>Milestones</button>
+                    <button className={`mod-tab vintage-tab ${view === "minting" ? "active" : ""}`} onClick={() => setView("minting")}>Studio</button>
+                    <button className={`mod-tab vintage-tab ${view === "gallery" ? "active" : ""}`} onClick={() => setView("gallery")}>Gallery</button>
+                    <button className={`mod-tab vintage-tab ${view === "identity" ? "active" : ""}`} onClick={() => setView("identity")}>Identity</button>
+                    <button className={`mod-tab vintage-tab ${view === "trophies" ? "active" : ""}`} onClick={() => setView("trophies")}>Milestones</button>
                     <button 
-                        className="mod-tab" 
+                        className="mod-tab vintage-tab logout" 
                         onClick={onLogout}
-                        style={{ color: "#ef4444", border: "1px solid rgba(239,68,68,0.3)", padding: "5px 15px", borderRadius: "2px", marginLeft: "10px" }}
+                        style={{ color: "#ef4444", borderBottom: "1px solid rgba(239,68,68,0.3)" }}
                     >Disconnect</button>
                 </nav>
             </header>

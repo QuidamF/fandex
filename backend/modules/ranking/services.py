@@ -11,4 +11,4 @@ def get_top_users():
             LIMIT 5
         """)
         rows = cursor.fetchall()
-        return [{"user": r["user"], "count": r["count"]} for r in rows]
+        return [dict(r) for r in rows]

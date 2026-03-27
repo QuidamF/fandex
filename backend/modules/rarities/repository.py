@@ -3,7 +3,8 @@ from db.database import db_cursor
 def get_all_rarities():
     with db_cursor() as cursor:
         cursor.execute("SELECT * FROM rarities ORDER BY tier ASC")
-        return cursor.fetchall()
+        rows = cursor.fetchall()
+        return [dict(row) for row in rows]
 
 def create_rarity(name, color_hex, tier):
     with db_cursor() as cursor:

@@ -49,7 +49,7 @@ function Dashboard({ user, onLogout }) {
         setProgress(p);
         setAchievements(a);
         setTags(t.map(tag => tag.name));
-        if (c.status) setCollectionInfo(c.data);
+        if (c) setCollectionInfo(c);
     };
 
     const handleCollect = async (itemId) => {

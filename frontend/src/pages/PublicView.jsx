@@ -36,7 +36,7 @@ function PublicView() {
             .catch(console.error);
         getCollectionInfo()
             .then(res => {
-                if (res.status) setCollectionInfo(res.data);
+                if (res) setCollectionInfo(res);
             })
             .catch(console.error);
     }, []);

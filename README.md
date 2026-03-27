@@ -166,6 +166,16 @@ To transition from a high-fidelity mockup to a production-grade application, the
 
 ---
 
+---
+
+## 📖 Documentation
+
+For a deeper dive into the system's architecture and usage, refer to:
+- **[USER_MANUAL.md](USER_MANUAL.md)**: Detailed guide on roles, views, and operational workflows.
+- **[REFACTOR_WALKTHROUGH.md](REFACTOR_WALKTHROUGH.md)**: Technical audit of the frontend and backend modernization.
+
+---
+
 ## 📦 Project Structure
 
 - `/backend`: Flask API, Database models, and Image processing logic.

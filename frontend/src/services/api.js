@@ -1,6 +1,18 @@
 const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 export const API_URL = `${BASE_URL}/api`;
 
+/**
+ * Helper to handle standardized API responses.
+ * Unwraps the 'data' property if present.
+ */
+async function handleResponse(res) {
+    const json = await res.json();
+    if (json && typeof json === 'object' &&'data' in json) {
+        return json.data;
+    }
+    return json;
+}
+
 export async function login(username, password) {
     const res = await fetch(`${API_URL}/users/login`, {
         method: "POST",
@@ -9,23 +21,22 @@ export async function login(username, password) {
         },
         body: JSON.stringify({ username, password })
     });
-
-    return res.json();
+    return res.json(); // Login needs the whole object (status, token, etc.)
 }
 
 export async function getItems() {
     const res = await fetch(`${API_URL}/items`);
-    return res.json();
+    return handleResponse(res);
 }
 
 export async function getUserCollection(user_id) {
     const res = await fetch(`${API_URL}/collection/${user_id}`);
-    return res.json();
+    return handleResponse(res);
 }
 
 export async function getRanking() {
     const res = await fetch(`${API_URL}/ranking`);
-    return res.json();
+    return handleResponse(res);
 }
 
 export async function collectItem(user_id, item_id) {
@@ -36,18 +47,17 @@ export async function collectItem(user_id, item_id) {
         },
         body: JSON.stringify({ user_id, item_id })
     });
-
     return res.json();
 }
 
 export async function getProgress(user_id) {
     const res = await fetch(`${API_URL}/collection/progress/${user_id}`);
-    return res.json();
+    return handleResponse(res);
 }
 
 export async function getAchievements(user_id) {
     const res = await fetch(`${API_URL}/achievements/${user_id}`);
-    return res.json();
+    return handleResponse(res);
 }
 
 export async function register(username, password) {
@@ -58,7 +68,6 @@ export async function register(username, password) {
         },
         body: JSON.stringify({ username, password })
     });
-
     return res.json();
 }
 
@@ -70,13 +79,12 @@ export async function createItem(data) {
         },
         body: JSON.stringify(data)
     });
-
     return res.json();
 }
 
 export async function getTags() {
     const res = await fetch(`${API_URL}/tags`);
-    return res.json();
+    return handleResponse(res);
 }
 
 export async function createTag(name) {
@@ -87,13 +95,12 @@ export async function createTag(name) {
         },
         body: JSON.stringify({ name })
     });
-
     return res.json();
 }
 
 export async function getStats() {
     const res = await fetch(`${API_URL}/admin/stats`);
-    return res.json();
+    return handleResponse(res);
 }
 
 export async function createModerator(username, password) {
@@ -104,7 +111,6 @@ export async function createModerator(username, password) {
         },
         body: JSON.stringify({ username, password })
     });
-
     return res.json();
 }
 
@@ -138,7 +144,7 @@ export async function deleteTag(id) {
 
 export async function getCollectionInfo() {
     const res = await fetch(`${API_URL}/collection/info`);
-    return res.json();
+    return handleResponse(res);
 }
 
 export async function updateCollectionInfo(name, description) {
@@ -157,7 +163,7 @@ export async function purgeSystem() {
 
 export async function getAllAchievements() {
     const res = await fetch(`${API_URL}/achievements/all`);
-    return res.json();
+    return handleResponse(res);
 }
 
 export async function createAchievement(data) {
@@ -176,7 +182,7 @@ export async function deleteAchievement(id) {
 
 export async function getRarities() {
     const res = await fetch(`${API_URL}/rarities/`);
-    return res.json();
+    return handleResponse(res);
 }
 
 export async function createRarity(name, color_hex, tier) {

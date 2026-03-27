@@ -79,7 +79,7 @@
 /* Override .vintage-tab for Moderator (Teal focus) */
 .mod-tab.active {
     color: var(--color-teal) !important;
-    border-color: var(--color-teal) !important;
+    border-bottom: 1px solid var(--color-teal) !important;
 }
 
 .mod-tab:hover {

@@ -14,7 +14,8 @@ def insert_tag(name):
 def get_tags():
     with db_cursor() as cursor:
         cursor.execute("SELECT * FROM tags")
-        return cursor.fetchall()
+        rows = cursor.fetchall()
+        return [dict(row) for row in rows]
 
 def update_tag_in_db(tag_id, name):
     with db_cursor() as cursor:
