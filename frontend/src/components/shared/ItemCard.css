@@ -29,9 +29,9 @@
 /* Inner Solid Background */
 .card-bg {
     position: absolute;
-    inset: 1px; /* The gap created by inset acts as our 1px border */
-    background: rgba(255, 255, 255, 0.03); /* Faint visible background */
-    border: 1px solid var(--rarity-color, rgba(255,255,255,0.1)); /* Static visible color edge */
+    inset: 1px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--rarity-color, var(--color-border));
     border-radius: 3px;
     z-index: 0;
     transition: all 0.4s ease;
@@ -77,10 +77,10 @@
 }
 
 .card-content h3 {
-    font-family: 'Playfair Display', 'Didot', serif;
+    font-family: var(--font-serif);
     font-weight: 300;
     letter-spacing: 1px;
-    color: #e5e5e5;
+    color: var(--color-text);
     margin: 10px 0 5px;
     font-size: 1.2rem;
 }
@@ -146,7 +146,7 @@
 .card-content button {
     background: transparent;
     border: 1px solid rgba(212, 175, 55, 0.4);
-    color: #d4af37;
+    color: var(--color-gold);
     padding: 8px 15px;
     font-size: 0.75rem;
     letter-spacing: 2px;

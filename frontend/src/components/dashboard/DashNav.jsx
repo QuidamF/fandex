@@ -11,17 +11,17 @@ function DashNav({ user, view, setView, onLogout }) {
             
             <nav className="dashboard-nav">
                 <button 
-                    className={`dashboard-tab ${view === "home" ? "active" : ""}`} 
+                    className={`dashboard-tab vintage-tab ${view === "home" ? "active" : ""}`} 
                     onClick={() => setView("home")}
                 >Overview
                 </button>
                 <button 
-                    className={`dashboard-tab ${view === "items" ? "active" : ""}`} 
+                    className={`dashboard-tab vintage-tab ${view === "items" ? "active" : ""}`} 
                     onClick={() => setView("items")}
                 >Collection
                 </button>
                 <button 
-                    className={`dashboard-tab ${view === "achievements" ? "active" : ""}`} 
+                    className={`dashboard-tab vintage-tab ${view === "achievements" ? "active" : ""}`} 
                     onClick={() => setView("achievements")}
                 >Milestones
                 </button>

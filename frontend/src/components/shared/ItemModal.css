@@ -20,7 +20,7 @@
     isolation: isolate;
     box-shadow: 0 40px 100px rgba(0, 0, 0, 0.9), 0 0 50px var(--rarity-color, transparent);
     animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    color: #e5e5e5;
+    color: var(--color-text);
     text-align: center;
     overflow-y: auto;
     padding: 40px;
@@ -39,7 +39,7 @@
 .modal-bg {
     position: absolute;
     inset: 1px;
-    background: rgba(26, 21, 20, 0.98); 
+    background: var(--bg-surface); 
     border-radius: 3px;
     z-index: 0;
     transition: all 0.4s ease;
@@ -84,7 +84,7 @@
 }
 
 .modal-inner-content h2 {
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-serif);
     font-weight: 300;
     font-size: 2rem;
     margin-bottom: 5px;
@@ -97,7 +97,7 @@
 .modal-inner-content p {
     font-weight: 300;
     line-height: 1.6;
-    color: #a39171;
+    color: var(--color-gold-muted);
     font-size: 0.9rem;
 }
 
@@ -110,7 +110,7 @@
     margin-top: 20px;
     background: transparent;
     border: 1px solid rgba(212, 175, 55, 0.5);
-    color: #d4af37;
+    color: var(--color-gold);
     padding: 12px;
     letter-spacing: 3px;
     text-transform: uppercase;
@@ -137,7 +137,7 @@
     right: -25px;
     background: transparent;
     border: none;
-    color: #888;
+    color: var(--color-subtext);
     font-size: 1.5rem;
     cursor: pointer;
     transition: 0.3s;
@@ -163,7 +163,7 @@
     .modal-content {
         padding: 30px 20px;
         width: 95vw;
-        border: 1px solid rgba(255,255,255,0.1);
+        border: 1px solid var(--color-border);
     }
 
     .close-btn {
