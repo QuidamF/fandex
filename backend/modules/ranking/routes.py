@@ -1,8 +1,9 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint
 from .services import get_top_users
+from core.responses import success_response
 
 ranking_router = Blueprint("ranking", __name__)
 
 @ranking_router.route("", methods=["GET"])
 def ranking():
-    return jsonify(get_top_users())
+    return success_response(data=get_top_users())

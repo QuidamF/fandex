@@ -1,4 +1,4 @@
-from .repository import get_all_items, insert_item, insert_item_tag, update_item_in_db, delete_item_from_db, clear_item_tags
+from .repository import get_all_items, insert_item, insert_item_tag, update_item_in_db, delete_item_from_db, clear_item_tags, get_item_by_id
 from core.image_utils import process_item_image
 
 
@@ -22,6 +22,22 @@ def list_items():
 
     return result
 
+def get_item_media(item_id, kind="image"):
+    item = get_item_by_id(item_id)
+    if not item:
+        return None
+        
+    if kind == "thumb" and item["thumb_filename"]:
+        return {"type": "file", "filename": item["thumb_filename"], "subdir": "thumbs"}
+        
+    if item["image_filename"]:
+        return {"type": "file", "filename": item["image_filename"]}
+        
+    if item["image"]:
+        return {"type": "base64", "data": item["image"]}
+        
+    return None
+
 def create_item(data):
     name = data.get("name")
     rarity = data.get("rarity")
@@ -40,7 +56,6 @@ def create_item(data):
         if proc["success"]:
             image_filename = proc["main_filename"]
             thumb_filename = proc["thumb_filename"]
-            # We clear the Base64 from the DB to save space if processed successfully
             image = "" 
 
     item_id = insert_item(name, rarity, description, image, image_filename, thumb_filename)
@@ -48,7 +63,7 @@ def create_item(data):
     for tag in tags:
         insert_item_tag(item_id, tag)
 
-    return {"status": True, "message": "Item created"}
+    return {"status": True, "message": "Artifact Cataloged"}
 
 def update_item_service(item_id, data):
     name = data.get("name")
@@ -68,16 +83,11 @@ def update_item_service(item_id, data):
         if proc["success"]:
             image_filename = proc["main_filename"]
             thumb_filename = proc["thumb_filename"]
-            # Migrate to file system: clear the Base64 field
             image = ""
             update_item_in_db(item_id, name, rarity, description, image, image_filename, thumb_filename)
         else:
             update_item_in_db(item_id, name, rarity, description, image, None, None)
     else:
-        # If no new image provided, we just update text fields
-        # But we need to keep existing filenames if they exist?
-        # The update_item_in_db currently takes None for filenames in the 'else' branch of services
-        # Let's check how update_item_in_db is implemented.
         update_item_in_db(item_id, name, rarity, description, None, None, None)
 
     clear_item_tags(item_id)

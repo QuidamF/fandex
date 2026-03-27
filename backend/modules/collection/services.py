@@ -7,23 +7,22 @@ def collect_item(data):
     item_id = data.get("item_id")
 
     if not user_id or not item_id:
-        return {"status": False, "message": "Missing data"}
+        return {"status": False, "message": "Missing collection metrics"}
 
     success = add_user_item(user_id, item_id)
 
     if not success:
-        return {"status": False, "message": "Item already collected"}
+        return {"status": False, "message": "Artifact already in collection"}
 
     unlocked_list = evaluate_achievements(user_id)
 
-    return {"status": True, "message": "Item collected", "unlocked": unlocked_list}
+    return {"status": True, "message": "Artifact Collected", "unlocked": unlocked_list}
 
 
 def list_user_collection(user_id):
     items = get_user_items(user_id)
 
     result = []
-
     for item in items:
         result.append({
             "id": item["id"],
@@ -38,9 +37,8 @@ def get_progress(user_id):
     total = get_total_items()
     collected = get_user_collected_count(user_id)
 
-    if total == 0:
-        percentage = 0
-    else:
+    percentage = 0
+    if total > 0:
         percentage = int((collected / total) * 100)
 
     return {
@@ -56,6 +54,8 @@ def fetch_collection_info():
 def modify_collection_info(data):
     name = data.get("name")
     desc = data.get("description", "")
-    if not name: return {"status": False, "message": "Name required"}
+    if not name: 
+        return {"status": False, "message": "Catalog name required"}
+        
     update_collection_info(name, desc)
     return {"status": True, "message": "Collection metadata updated"}

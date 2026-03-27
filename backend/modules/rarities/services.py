@@ -1,7 +1,8 @@
 from .repository import get_all_rarities, create_rarity, delete_rarity
 
 def list_rarities():
-    return get_all_rarities()
+    rarities = get_all_rarities()
+    return [dict(r) for r in rarities]
 
 def add_rarity(data):
     name = data.get("name")
@@ -9,7 +10,7 @@ def add_rarity(data):
     tier = int(data.get("tier", 0))
     
     if not name or not color_hex:
-        return {"status": False, "message": "Missing name or color"}
+        return {"status": False, "message": "Missing tier metrics"}
         
     success = create_rarity(name.lower(), color_hex, tier)
     if success:

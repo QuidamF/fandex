@@ -7,16 +7,15 @@ def register_user(data):
     password = data.get("password")
 
     if not username or not password:
-        return {"status": False, "message": "Missing fields"}
+        return {"status": False, "message": "Missing credentials"}
 
     hashed = hash_password(password)
-
     success = create_user(username, hashed)
 
     if not success:
-        return {"status": False, "message": "User already exists"}
+        return {"status": False, "message": "Citizen identifier already in use"}
 
-    return {"status": True, "message": "User created"}
+    return {"status": True, "message": "Citizen Registered"}
 
 
 def login_user(data):
@@ -26,36 +25,39 @@ def login_user(data):
     user = get_user_by_username(username)
 
     if not user:
-        return {"status": False, "message": "User not found"}
+        return {"status": False, "message": "Identity Not Found"}
 
     hashed = hash_password(password)
 
     if user["password"] != hashed:
-        return {"status": False, "message": "Invalid credentials"}
+        return {"status": False, "message": "Authentication Failed"}
 
     token = generate_token(username)
 
     return {
-    "status": True,
-    "token": token,
-    "username": username,
-    "role_id": user["role_id"],
-    "id": user["id"]
-}
+        "status": True,
+        "token": token,
+        "username": username,
+        "role_id": user["role_id"],
+        "id": user["id"]
+    }
 
 
 def create_moderator(data, current_user):
-    if current_user["role_id"] != 1:
-        return {"status": False, "message": "Unauthorized"}
+    # This check should ideally be in middleware, but keeping here for now as per original
+    if current_user.get("role_id") != 1:
+        return {"status": False, "message": "Permission Denied"}
 
     username = data.get("username")
     password = data.get("password")
 
-    hashed = hash_password(password)
+    if not username or not password:
+         return {"status": False, "message": "Missing credentials"}
 
+    hashed = hash_password(password)
     success = create_user(username, hashed, role_id=2)
 
     if not success:
-        return {"status": False, "message": "User exists"}
+        return {"status": False, "message": "Identity already exists"}
 
-    return {"status": True, "message": "Moderator created"}
+    return {"status": True, "message": "Moderator Appointed"}

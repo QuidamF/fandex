@@ -1,33 +1,22 @@
-from db.database import get_connection
+from db.database import db_cursor
 
 
 def create_user(username, password, role_id=3):
-    conn = get_connection()
-    cursor = conn.cursor()
-
-    try:
-        cursor.execute(
-            "INSERT INTO users (username, password, role_id) VALUES (?, ?, ?)",
-            (username, password, role_id)
-        )
-        conn.commit()
-        return True
-    except:
-        return False
-    finally:
-        conn.close()
+    with db_cursor() as cursor:
+        try:
+            cursor.execute(
+                "INSERT INTO users (username, password, role_id) VALUES (?, ?, ?)",
+                (username, password, role_id)
+            )
+            return True
+        except:
+            return False
 
 
 def get_user_by_username(username):
-    conn = get_connection()
-    cursor = conn.cursor()
-
-    cursor.execute(
-        "SELECT * FROM users WHERE username = ?",
-        (username,)
-    )
-
-    user = cursor.fetchone()
-    conn.close()
-
-    return user
+    with db_cursor() as cursor:
+        cursor.execute(
+            "SELECT * FROM users WHERE username = ?",
+            (username,)
+        )
+        return cursor.fetchone()

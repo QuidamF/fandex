@@ -1,6 +1,6 @@
-from flask import Blueprint, jsonify, request, Response, send_from_directory
-from .services import list_items, create_item, update_item_service, delete_item_service
-from db.database import get_connection
+from flask import Blueprint, request, Response, send_from_directory
+from .services import list_items, create_item, update_item_service, delete_item_service, get_item_media
+from core.responses import success_response, error_response
 import base64
 import os
 
@@ -11,61 +11,54 @@ IMAGE_DIR = os.path.join(os.getcwd(), "static/images")
 
 @item_router.route("/", methods=["GET"])
 def get_items():
-    return jsonify(list_items())
+    return success_response(data=list_items())
 
 @item_router.route("", methods=["POST"])
 def create():
-    data = request.json
-    return jsonify(create_item(data))
+    res = create_item(request.json)
+    if res["status"]:
+        return success_response(message=res["message"])
+    return error_response(message=res["message"])
 
 @item_router.route("/<int:item_id>", methods=["PUT"])
 def update(item_id):
-    return jsonify(update_item_service(item_id, request.json))
+    res = update_item_service(item_id, request.json)
+    if res["status"]:
+        return success_response(message=res["message"])
+    return error_response(message=res["message"])
 
 @item_router.route("/<int:item_id>", methods=["DELETE"])
 def delete(item_id):
-    return jsonify(delete_item_service(item_id))
+    res = delete_item_service(item_id)
+    return success_response(message=res["message"])
 
 @item_router.route('/<int:item_id>/image')
 def serve_image(item_id):
-    conn = get_connection()
-    c = conn.cursor()
-    c.execute("SELECT image, image_filename FROM items WHERE id=?", (item_id,))
-    row = c.fetchone()
-    conn.close()
-
-    if not row:
-        return "Not found", 404
-
-    # Try File System first
-    if row["image_filename"]:
-        return send_from_directory(IMAGE_DIR, row["image_filename"])
-    
-    # Fallback to Base64
-    if row["image"]:
-        img_data = row["image"]
-        if "," in img_data:
-            header, encoded = img_data.split(",", 1)
-            mime_type = header.split(":")[1].split(";")[0]
-            raw_bytes = base64.b64decode(encoded)
-            return Response(raw_bytes, mimetype=mime_type)
+    media = get_item_media(item_id, kind="image")
+    if not media:
+        return error_response("Not found", 404)
         
-    return "No image", 404
+    if media["type"] == "file":
+        return send_from_directory(IMAGE_DIR, media["filename"])
+        
+    if media["type"] == "base64":
+        img_data = media["data"]
+        header, encoded = img_data.split(",", 1)
+        mime_type = header.split(":")[1].split(";")[0]
+        raw_bytes = base64.b64decode(encoded)
+        return Response(raw_bytes, mimetype=mime_type)
+        
+    return error_response("No image", 404)
 
 @item_router.route('/<int:item_id>/thumb')
 def serve_thumb(item_id):
-    conn = get_connection()
-    c = conn.cursor()
-    c.execute("SELECT image, thumb_filename FROM items WHERE id=?", (item_id,))
-    row = c.fetchone()
-    conn.close()
-
-    if not row:
-        return "Not found", 404
-
-    # Try Thumb File
-    if row["thumb_filename"]:
-        return send_from_directory(os.path.join(IMAGE_DIR, "thumbs"), row["thumb_filename"])
-    
-    # Fallback to main image proxy (which will handle file or base64)
+    media = get_item_media(item_id, kind="thumb")
+    if not media:
+        return error_response("Not found", 404)
+        
+    if media["type"] == "file":
+        subdir = media.get("subdir", "")
+        path = os.path.join(IMAGE_DIR, subdir) if subdir else IMAGE_DIR
+        return send_from_directory(path, media["filename"])
+        
     return serve_image(item_id)
