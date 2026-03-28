@@ -177,12 +177,15 @@ graph TD
     end
 ```
 
-#### Backend Process (PM2)
+#### Backend Process (PM2 + Venv)
 ```bash
 cd backend
+python3 -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
 pm2 start ecosystem.config.js
 ```
+The `ecosystem.config.js` is pre-configured to use the `./venv/bin/gunicorn` executable.
 
 #### Frontend Static Serving (Nginx)
 1. Build the production assets:
