@@ -15,13 +15,7 @@ init_db()
 
 app = Flask(__name__)
 
-CORS(app)
-
-CORS(app, resources={
-    r"/" : {
-        "origins" : "*"
-    }
-})
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 app.register_blueprint(user_router, url_prefix="/api/users")
 app.register_blueprint(item_router, url_prefix="/api/items")
