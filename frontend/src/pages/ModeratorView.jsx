@@ -3,7 +3,8 @@ import {
     createItem, getTags, createTag, getItems, getStats, 
     updateItem, deleteItem, deleteTag, getCollectionInfo, 
     updateCollectionInfo, getAllAchievements, createAchievement, 
-    deleteAchievement, getRarities, createRarity, deleteRarity 
+    deleteAchievement, getRarities, createRarity, deleteRarity,
+    BASE_URL
 } from "../services/api";
 
 // Modular Components
@@ -127,7 +128,7 @@ function ModeratorView({ user, onLogout }) {
         setName(item.name);
         setRarity(item.rarity);
         setDescription(item.description || "");
-        setImage(item.has_image ? `http://localhost:5000/api/items/${item.id}/image` : "");
+        setImage(item.has_image ? `${BASE_URL}/api/items/${item.id}/image` : "");
         setTag(item.tags.length > 0 ? item.tags[0] : "");
         setView("minting");
     };

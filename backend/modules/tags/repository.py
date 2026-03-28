@@ -27,3 +27,8 @@ def delete_tag_from_db(tag_id):
         cursor.execute("DELETE FROM item_tags WHERE tag_id=?", (tag_id,))
         cursor.execute("DELETE FROM tags WHERE id=?", (tag_id,))
         return True
+def get_total_tag_count():
+    with db_cursor() as cursor:
+        cursor.execute("SELECT COUNT(*) as total FROM tags")
+        row = cursor.fetchone()
+        return row["total"] if row else 0

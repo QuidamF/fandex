@@ -1,7 +1,8 @@
 from flask import Blueprint, request
 from .services import list_user_achievements
-from .repository import get_all_achievements, create_achievement, delete_achievement
+from .repository import get_all_achievements, create_achievement, delete_achievement, get_total_achievement_count
 from core.responses import success_response, error_response
+from core.config import MAX_ACHIEVEMENTS
 
 achievement_router = Blueprint("achievements", __name__)
 
@@ -16,6 +17,8 @@ def get_all():
 
 @achievement_router.route("/", methods=["POST"])
 def create():
+    if get_total_achievement_count() >= MAX_ACHIEVEMENTS:
+        return error_response(message=f"Limit reached for this demo ({MAX_ACHIEVEMENTS}). Preserve the collection by recycling existing trophies.")
     data = request.json
     create_achievement(
         data.get("name"), 

@@ -1,6 +1,10 @@
-from .repository import insert_tag, get_tags, update_tag_in_db, delete_tag_from_db
+from .repository import insert_tag, get_tags, update_tag_in_db, delete_tag_from_db, get_total_tag_count
+from core.config import MAX_TAGS
 
 def create_tag(data):
+    if get_total_tag_count() >= MAX_TAGS:
+        return {"status": False, "message": f"Limit reached for this demo ({MAX_TAGS}). Preserve the collection by recycling existing tags."}
+        
     name = data.get("name")
     if not name:
         return {"status": False, "message": "Identifier required"}

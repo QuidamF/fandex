@@ -18,3 +18,9 @@ def delete_rarity(r_id):
     with db_cursor() as cursor:
         cursor.execute("DELETE FROM rarities WHERE id = ?", (r_id,))
         return True
+
+def get_total_rarity_count():
+    with db_cursor() as cursor:
+        cursor.execute("SELECT COUNT(*) as total FROM rarities")
+        row = cursor.fetchone()
+        return row["total"] if row else 0

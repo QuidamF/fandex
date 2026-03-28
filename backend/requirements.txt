@@ -12,3 +12,4 @@ python-dotenv==1.2.2
 vcversioner==2.16.0.0
 Werkzeug==3.1.6
 zope.interface==8.2
+gunicorn==23.0.0

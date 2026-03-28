@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { BASE_URL } from "../../services/api";
 import "./ItemCard.css";
 
 function ItemCard({ item, onCollect, onClick }) {
@@ -30,7 +31,7 @@ function ItemCard({ item, onCollect, onClick }) {
                 {item.has_image && (
                     <div style={{ background: "rgba(0,0,0,0.5)", borderRadius: "2px", marginBottom: "10px", padding: "5px" }}>
                         <img 
-                            src={item.id === "preview" ? item.image : `http://localhost:5000${item.thumb_url}`} 
+                            src={item.id === "preview" ? item.image : `${BASE_URL}${item.thumb_url}`} 
                             alt={item.name} 
                             style={{ width: "100%", height: "180px", objectFit: "contain" }} 
                             loading="lazy"

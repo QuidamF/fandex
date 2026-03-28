@@ -1,6 +1,7 @@
 from flask import Blueprint
 from .services import get_stats, purge_database
 from core.responses import success_response, error_response
+from core.config import ENABLE_PURGE
 
 admin_router = Blueprint("admin", __name__)
 
@@ -10,6 +11,8 @@ def stats():
 
 @admin_router.route("/purge", methods=["DELETE"])
 def purge():
+    if not ENABLE_PURGE:
+        return error_response(message="This administration tool has been disabled to preserve the demo integrity.")
     res = purge_database()
     if res["status"]:
         return success_response(message=res["message"])

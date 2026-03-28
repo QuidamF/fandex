@@ -1,5 +1,6 @@
-from .repository import get_all_items, insert_item, insert_item_tag, update_item_in_db, delete_item_from_db, clear_item_tags, get_item_by_id
+from .repository import get_all_items, insert_item, insert_item_tag, update_item_in_db, delete_item_from_db, clear_item_tags, get_item_by_id, get_total_item_count
 from core.image_utils import process_item_image
+from core.config import MAX_ITEMS
 
 
 def list_items():
@@ -39,6 +40,8 @@ def get_item_media(item_id, kind="image"):
     return None
 
 def create_item(data):
+    if get_total_item_count() >= MAX_ITEMS:
+        return {"status": False, "message": f"Maximum artifact capacity reached ({MAX_ITEMS}). Please remove some to continue."}
     name = data.get("name")
     rarity = data.get("rarity")
     description = data.get("description", "")

@@ -15,6 +15,13 @@ def get_all_items():
         return [dict(row) for row in rows]
 
 
+def get_total_item_count():
+    with db_cursor() as cursor:
+        cursor.execute("SELECT COUNT(*) as total FROM items")
+        row = cursor.fetchone()
+        return row["total"] if row else 0
+
+
 def get_item_by_id(item_id):
     with db_cursor() as cursor:
         cursor.execute("SELECT * FROM items WHERE id = ?", (item_id,))

@@ -1,8 +1,13 @@
-from .repository import create_user, get_user_by_username
+from .repository import create_user, get_user_by_username, get_user_count_by_role
 from core.security import hash_password, generate_token
+from core.config import MAX_FANS, MAX_MODERATORS
 
+...
 
 def register_user(data):
+    if get_user_count_by_role(3) >= MAX_FANS:
+        return {"status": False, "message": "Maximum citizen capacity reached for this demo vault."}
+        
     username = data.get("username")
     password = data.get("password")
 
@@ -54,6 +59,9 @@ def create_moderator(data, current_user):
     if not username or not password:
          return {"status": False, "message": "Missing credentials"}
 
+    if get_user_count_by_role(2) >= MAX_MODERATORS:
+        return {"status": False, "message": "Maximum moderator capacity reached for this demo vault."}
+        
     hashed = hash_password(password)
     success = create_user(username, hashed, role_id=2)
 

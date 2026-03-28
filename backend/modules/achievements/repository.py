@@ -21,6 +21,12 @@ def delete_achievement(achievement_id):
         cursor.execute("DELETE FROM achievements WHERE id = ?", (achievement_id,))
         return True
 
+def get_total_achievement_count():
+    with db_cursor() as cursor:
+        cursor.execute("SELECT COUNT(*) as total FROM achievements")
+        row = cursor.fetchone()
+        return row["total"] if row else 0
+
 
 def unlock_achievement(user_id, achievement_id):
     with db_cursor() as cursor:
