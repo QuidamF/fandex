@@ -311,6 +311,7 @@ function ModeratorView({ user, onLogout }) {
                     <button className={`mod-tab vintage-tab ${view === "gallery" ? "active" : ""}`} onClick={() => setView("gallery")}>Gallery</button>
                     <button className={`mod-tab vintage-tab ${view === "identity" ? "active" : ""}`} onClick={() => setView("identity")}>Identity</button>
                     <button className={`mod-tab vintage-tab ${view === "trophies" ? "active" : ""}`} onClick={() => setView("trophies")}>Milestones</button>
+                    <button className="mod-tab vintage-tab" onClick={() => window.location.href = "/"}>Portal Home</button>
                     <button 
                         className="mod-tab vintage-tab logout" 
                         onClick={onLogout}

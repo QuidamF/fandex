@@ -26,6 +26,11 @@ function DashNav({ user, view, setView, onLogout }) {
                 >Milestones
                 </button>
                 <button 
+                    className="dashboard-tab vintage-tab" 
+                    onClick={() => window.location.href = "/"}
+                >Home
+                </button>
+                <button 
                     className="dashboard-tab vintage-tab logout" 
                     onClick={onLogout}
                 >Logout
