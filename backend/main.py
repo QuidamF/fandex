@@ -10,12 +10,13 @@ from modules.tags.routes import tag_router
 from modules.admin.routers import admin_router
 from modules.ranking.routes import ranking_router
 from modules.rarities.routes import rarity_router
+from core.config import ALLOWED_ORIGINS
 
 init_db()
 
 app = Flask(__name__)
 
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app, resources={r"/*": {"origins": ALLOWED_ORIGINS}})
 
 app.register_blueprint(user_router, url_prefix="/api/users")
 app.register_blueprint(item_router, url_prefix="/api/items")
