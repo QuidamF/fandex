@@ -5,7 +5,7 @@ from core.responses import success_response, error_response
 collection_router = Blueprint("collection", __name__)
 
 
-@collection_router.route("/", methods=["POST"])
+@collection_router.route("", methods=["POST"], strict_slashes=False)
 def collect():
     res = collect_item(request.json)
     if res["status"]:

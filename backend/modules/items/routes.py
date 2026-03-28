@@ -9,7 +9,7 @@ item_router = Blueprint("items", __name__)
 # Config
 IMAGE_DIR = os.path.join(os.getcwd(), "static/images")
 
-@item_router.route("/", methods=["GET"])
+@item_router.route("", methods=["GET"], strict_slashes=False)
 def get_items():
     return success_response(data=list_items())
 

@@ -5,7 +5,7 @@ from core.responses import success_response, error_response
 user_router = Blueprint("users", __name__)
 
 
-@user_router.route("/", methods=["POST"])
+@user_router.route("", methods=["POST"], strict_slashes=False)
 def register():
     res = register_user(request.json)
     if res["status"]:

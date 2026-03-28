@@ -4,11 +4,11 @@ from core.responses import success_response, error_response
 
 rarity_router = Blueprint("rarities", __name__)
 
-@rarity_router.route("/", methods=["GET"])
+@rarity_router.route("", methods=["GET"], strict_slashes=False)
 def fetch():
     return success_response(data=list_rarities())
 
-@rarity_router.route("/", methods=["POST"])
+@rarity_router.route("", methods=["POST"], strict_slashes=False)
 def create():
     res = add_rarity(request.json)
     if res["status"]:

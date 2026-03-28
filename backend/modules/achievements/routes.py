@@ -15,7 +15,7 @@ def get_achievements(user_id):
 def get_all():
     return success_response(data=get_all_achievements())
 
-@achievement_router.route("/", methods=["POST"])
+@achievement_router.route("", methods=["POST"], strict_slashes=False)
 def create():
     if get_total_achievement_count() >= MAX_ACHIEVEMENTS:
         return error_response(message=f"Limit reached for this demo ({MAX_ACHIEVEMENTS}). Preserve the collection by recycling existing trophies.")

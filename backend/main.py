@@ -12,9 +12,13 @@ from modules.ranking.routes import ranking_router
 from modules.rarities.routes import rarity_router
 from core.config import ALLOWED_ORIGINS
 
+from werkzeug.middleware.proxy_fix import ProxyFix
+
 init_db()
 
 app = Flask(__name__)
+# Handle proxy headers for HTTPS redirects
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
 CORS(app, resources={r"/*": {"origins": ALLOWED_ORIGINS}})
 
