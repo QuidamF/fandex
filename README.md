@@ -191,7 +191,10 @@ The `ecosystem.config.js` is pre-configured to use the `./venv/bin/gunicorn` exe
 1. Build the production assets:
    ```bash
    cd frontend
-   npm install && npm run build
+   npm install
+   npm run build  # Usar .env.production (por defecto)
+   # O si prefieres usar .env.development específicamente:
+   npm run build:dev
    ```
 2. Configure Nginx using the provided template in `nginx/fandex.conf`.
 3. Enable the site and restart Nginx:
@@ -254,7 +257,6 @@ To transition from a high-fidelity mockup to a production-grade application, the
 | **Moderator** | `mod1` | `1234` |
 | **Fan** | `edgar` | `1234` |
 
----
 
 ---
 
