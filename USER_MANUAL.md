@@ -1,122 +1,218 @@
-# 🏺 FanDex - User manual & Flow Architecture
+# 📘 FanDex - Manual de Usuario
 
-Welcome to the **FanDex**, a premium digital museum for artifact curators. This manual details the operational architecture, user workflows, and state-machine transitions that power the platform.
-
----
-
-## 🏛️ Personas & Views
-
-FanDex employs a role-based viewing system (RBAC) to ensure a tailored experience for every visitor.
-
-### 1. Public Exhibition (Guest)
-- **Museum Hall**: Entry point showcasing global museum statistics and the "Hall of Fame".
-- **Grand Exhibition**: A public gallery of artifacts with advanced filtering (Categories/Rarity).
-
-> ![Public View - Museum Hall](docs/images/public_museum.png)
-> ![Public View - Grand Exhibition](docs/images/public_exhibition.png)
-
-### 2. Login & Identity Hall
-- **Secure Authentication**: Traditional login portal with vintage aesthetics.
-- **Session Persistence**: Automated redirection to the appropriate vault based on role.
-
-> ![Login Page](docs/images/login_page.png)
-
-### 3. Fan Dashboard (Personal Vault)
-*Locked for authenticated Fans.*
-- **Collection Progress**: A dynamic progress bar showing how much of the total archive has been collected.
-- **Category Mastery**: Breakdown of progress across different artifact types.
-- **Achievement List**: Specialized badges unlocked based on collection milestones.
-
-> ![Fan Dashboard](docs/images/fan_dashboard.png)
-> ![Fan Collection Management](docs/images/fan_collection.png)
-
-### 4. Moderator Studio (Curator Desk)
-*Locked for authenticated Moderators.*
-- **Item Minting**: Upload and index new artifacts (Base64 -> WebP conversion).
-- **Tagging & Categories**: Real-time management of artifact metadata.
-- **Visual Studio**: Tweak CSS variables and rarity color schemes on the fly.
-
-> ![Moderator Studio / Curator Desk](docs/images/moderator_studio.png)
-
-### 5. Admin Control Center (The Director)
-*Locked for Super Admins.*
-- **System Statistics**: High-level overview of users, items, and server health.
-- **Role Management**: Promotion of Guests to Managers/Moderators.
-- **System Purge**: One-click database reset for prototype cleanups.
-
-> ![Admin Control Center](docs/images/admin_control.png)
+Este documento describe cómo utilizar FanDex desde la perspectiva de cada tipo de usuario.
 
 ---
 
-## ⚙️ State Machine Architecture (Navigation Flow)
+## 🧠 ¿Qué es FanDex?
 
-The application logic follows a strict state-transition model to handle authentication and role-based access.
+FanDex es una plataforma de coleccionismo digital donde los usuarios pueden:
 
-```mermaid
-stateDiagram-v2
-    [*] --> PublicView : "Guest Access"
-    
-    PublicView --> LoginView : "Click Enter Vault"
-    
-    state LoginView {
-        [*] --> EnteringCredentials
-        EnteringCredentials --> Authenticating : "Submit"
-        Authenticating --> Error : "Invalid"
-        Error --> EnteringCredentials
-        Authenticating --> TokenStored : "Success"
-    }
-    
-    TokenStored --> RoleRouter
-    
-    state RoleRouter <<choice>>
-    RoleRouter --> FanDashboard : "Role: Fan"
-    RoleRouter --> ModeratorStudio : "Role: Moderator"
-    RoleRouter --> AdminControl : "Role: Admin"
-    
-    FanDashboard --> CollectionView
-    FanDashboard --> MilestonesView
-    
-    ModeratorStudio --> ItemCreator
-    ModeratorStudio --> CategoryManager
-    ModeratorStudio --> RarityStudio
-    
-    AdminControl --> SystemStats
-    AdminControl --> PurgeAction
-    
-    CollectionView --> PublicView : "Logout"
-    ItemCreator --> PublicView : "Logout"
-    SystemStats --> PublicView : "Logout"
-```
+* Explorar colecciones
+* Marcar ítems como conseguidos
+* Seguir su progreso
+* Desbloquear logros automáticamente
+
+El sistema está basado en roles, donde cada usuario tiene diferentes capacidades.
 
 ---
 
-## 🛤️ User Workflows
+## 👥 Tipos de usuario
 
-### A. The Collector's Journey (Fan)
-1. **Discover**: Browse the **Grand Exhibition** as a Guest.
-2. **Identity**: Login via the **Identity Hall**.
-3. **Curate**: Navigate to the **Grand Exhibition** (authenticated version) and click **"Collect"** on desired items.
-4. **Ascend**: Check your **Dash Overview** to see your collection percentage grow and unlock **Milestones**.
+FanDex cuenta con 3 roles principales:
 
-### B. The Curator's Maintenance (Moderator)
-1. **Minting**: Access the **Studio**, upload an image, select a rarity, and click **"Save Artifact"**.
-2. **Categorizing**: Use the **Category Desk** to add new tags (e.g., "Human", "Medical", "War").
-3. **Refining**: Adjust the **Rarity Tiers** to change the visual aura of artifacts in the gallery.
+* **Administrador**
+* **Moderador**
+* **Fan (coleccionador)**
 
 ---
 
-## 🛠️ Operational Logic (Refactored Backend)
+## 🔐 Acceso al sistema
 
-All operations now follow the **Repository-Service-Route** pattern:
-- **Repositories**: Standardized SQL querying with `sqlite3.Row` to `dict` conversion.
-- **Services**: Domain logic (Image optimization, achievement evaluation).
-- **Routes**: Standardized JSON responses using `success_response` and `error_response` helpers.
+1. Ingresar a la aplicación
+2. Introducir usuario y contraseña
+3. El sistema redirige automáticamente según el rol
 
-**Schema Standard**:
-```json
-{
-  "status": true,
-  "message": "Artifact Cataloged",
-  "data": { "id": 123, "name": "Excalibur", ... }
-}
-```
+---
+
+## 🏠 Vista pública (sin login)
+
+Desde la página principal se puede:
+
+* Ver todos los ítems de la colección
+* Consultar el ranking global de fans
+* Explorar categorías y rarezas
+
+👉 Esta vista permite entender la colección sin necesidad de registrarse.
+
+---
+
+## 👤 Fan (coleccionador)
+
+El fan es el usuario principal del sistema.
+
+### 📊 Dashboard
+
+* Muestra el progreso total de la colección
+* Indica porcentaje completado
+* Resume actividad reciente
+
+---
+
+### 🗂️ Colección
+
+* Lista completa de ítems
+* Permite marcar ítems como “conseguidos”
+* Filtros por categoría y rareza
+
+👉 Al marcar un ítem:
+
+* Se actualiza el progreso
+* Se evalúan logros automáticamente
+
+---
+
+### 🏆 Trofeos
+
+* Lista de logros desbloqueados
+* Visualización del progreso en la colección
+
+👉 Cuando se cumple una condición:
+
+* Se muestra una animación en pantalla completa
+
+---
+
+## 🛡️ Moderador
+
+El moderador es responsable de construir y mantener la colección.
+
+---
+
+### 🧩 Gestión de ítems
+
+* Crear nuevos ítems con:
+
+  * Imagen
+  * Nombre
+  * Descripción
+  * Rareza
+  * Tags
+
+* Editar ítems existentes
+
+* Eliminar ítems
+
+---
+
+### 🏷️ Tags (categorías)
+
+* Crear categorías personalizadas
+* Usarlas para clasificar ítems
+* Permiten filtrado en la colección
+
+Ejemplo:
+
+* Álbum
+* Año
+* Evento
+* Tipo
+
+---
+
+### 💎 Rarezas
+
+* Definir niveles de rareza
+* Asignar color visual
+* Determinar jerarquía
+
+👉 Las rarezas afectan la visualización del ítem.
+
+---
+
+### 🏆 Trofeos (logros)
+
+El moderador define las condiciones para desbloquear logros:
+
+* Por cantidad de ítems
+* Por rareza
+* Por tags
+* Por porcentaje de colección
+
+---
+
+### 🆔 Identidad de la colección
+
+* Nombre de la colección
+* Descripción visible para los fans
+
+---
+
+## ⚙️ Administrador
+
+El administrador gestiona el sistema a nivel general.
+
+---
+
+### 📊 Métricas
+
+* Número de fans
+* Número de moderadores
+* Total de ítems
+
+---
+
+### 👤 Gestión de moderadores
+
+* Crear nuevos moderadores
+* Controlar acceso al sistema
+
+---
+
+### ⚠️ Reinicio del sistema (modo demo)
+
+* Permite limpiar la base de datos
+* Mantiene estructura base
+
+👉 Uso recomendado solo en pruebas.
+
+---
+
+## 🔁 Navegación
+
+* Se puede regresar a la vista pública en cualquier momento
+* El sistema adapta las opciones según el rol
+* Navegación superior permite cambiar entre secciones
+
+---
+
+## 🧠 Lógica del sistema
+
+* Los fans consumen contenido
+* Los moderadores crean y definen el contenido
+* El administrador gestiona el sistema
+
+👉 Este modelo permite que la colección sea definida por la comunidad.
+
+---
+
+## 📌 Notas
+
+* La colección del demo es ficticia
+* El sistema está diseñado para adaptarse a cualquier tipo de colección real
+* Este proyecto es un prototipo funcional
+
+---
+
+## 🚀 Flujo recomendado para demo
+
+1. Entrar como usuario público
+2. Explorar colección
+3. Iniciar sesión como fan
+4. Marcar un ítem como conseguido
+5. Mostrar desbloqueo de trofeo
+6. Cambiar a moderador
+7. Mostrar creación de ítem
+8. Mostrar panel de administrador
+
+👉 Este flujo permite mostrar todas las capacidades del sistema en pocos minutos.

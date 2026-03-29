@@ -1,278 +1,289 @@
-# 🏛️ FanDex - Digital Museum & Artifact Collection
+# 🚀 FanDex
 
-FanDex is a premium, mobile-first platform designed for collectors and curators to exhibit digital artifacts. It features a dynamic rarity system, automated trophy evaluation, and an optimized image delivery engine.
+## 🧠 ¿Qué es FanDex?
 
-## 🎯 Vision & Purpose
+FanDex es una plataforma de coleccionismo digital donde los fans pueden completar colecciones, seguir su progreso y desbloquear logros conforme avanzan.
 
-FanDex is conceived as a community-driven ecosystem where fans can catalog their passion, track their collection progress, and celebrate milestones. The core objective is to provide a visually stunning, frictionless experience for fans to interact with their "Private Vaults" and share their evolution within the museum.
-
-## 🏛️ Architecture Decisions (Agile Mockup)
-
-This version of FanDex is an **Agile Mockup (Maqueta)** designed for quick deployment and high-fidelity interaction. To prioritize rapid iteration and demonstration, the following architectural choices were made:
-
-- **Minimalist Deployment**: Built with Flask + SQLite to ensure the entire system can be up and running in minutes without complex infrastructure.
-- **Client-Side Permission Layer**: Role-based rendering and navigation are managed via `localStorage` and React state for agility, serving as a functional demonstration of the UI/UX rather than a hardened security layer.
-- **Fast-Track Authentication**: The focus is on session persistence and UX flow, favoring speed of showcase over production-level protocols (like JWT/OAuth) which are slated for full-scale development.
-
-```mermaid
-graph LR
-    A[Agile Goal] --> D[Demo-Ready Flow]
-    A --> S[Simple Deployment]
-    A --> V[Visual Excellence]
-```
-
-## 🏗️ System Architecture
-
-```mermaid
-graph TD
-    subgraph Frontend [React + Vite]
-        UI[User Interface]
-        API_C[API Client / Services]
-    end
-
-    subgraph Backend [Flask API]
-        R[Routes / Controllers]
-        S[Business Services]
-        P[Pillow Image Processor]
-    end
-
-    subgraph Storage
-        DB[(SQLite Database)]
-        FS[Filesystem /static/images]
-    end
-
-    UI --> API_C
-    API_C -- REST/JSON --> R
-    R --> S
-    S --> P
-    S --> DB
-    P --> FS
-```
-
-## 🛤️ User Flow & Navigation
-
-```mermaid
-graph LR
-    P[Public Landing] --> L[Login]
-    L --> V{Role?}
-    V -- Fan --> FD[Fan Dashboard]
-    V -- Moderator --> CS[Curator Studio]
-    V -- Admin --> AC[Admin Control]
-
-    subgraph Fan_Views [Fan]
-        FD --> FO[Overview]
-        FD --> FC[Collection]
-        FD --> FM[Milestones]
-    end
-
-    subgraph Mod_Views [Moderator]
-        CS --> MG[Gallery]
-        CS --> MS[Studio]
-        CS --> MT[Trophies]
-    end
-```
-
-## 💎 Image Optimization Flow
-
-```mermaid
-sequenceDiagram
-    participant U as Curator (UI)
-    participant A as Flask API
-    participant P as Pillow Utility
-    participant S as Storage
-
-    U->>A: POST /items (Base64 Image)
-    A->>P: process_item_image(base64)
-    P->>P: Convert to WebP
-    P->>P: Generate 300px Thumbnail
-    P->>S: Save optimized files
-    P-->>A: Return filenames
-    A->>A: Update SQL (clear base64)
-    A-->>U: 201 Created (URLs)
-```
-
-## 🛡️ Role-based Permissions
-
-| Action | Admin | Moderator | Fan | Public |
-| :--- | :---: | :---: | :---: | :---: |
-| **View Gallery** | ✅ | ✅ | ✅ | ✅ |
-| **Collect Items** | ✅ | ✅ | ✅ | ❌ |
-| **Mint Artifacts** | ✅ | ✅ | ❌ | ❌ |
-| **Create Milestones** | ✅ | ✅ | ❌ | ❌ |
-| **Manage Users** | ✅ | ❌ | ❌ | ❌ |
-| **Purge System** | ✅ | ❌ | ❌ | ❌ |
-
-## ✨ Features
-
-- **📱 Mobile-First Design**: Fully responsive UI across all roles (Fan, Moderator, Admin, Public).
-- **🖼️ Image Optimization**: Automatic WebP conversion and thumbnail generation for high-performance browsing.
-- **💎 Rarity Studio**: Real-time customization of rarity tiers, colors, and visual effects.
-- **🏆 Achievement Engine**: Automated evaluation of collection milestones and trophies.
-- **🔒 Secure Configuration**: Environment-based API URLs and protected credentials.
-
-## 🛠️ Tech Stack
-
-- **Backend**: Python / Flask / SQLite
-- **Frontend**: React / Vite / Vanilla CSS
-- **Image Processing**: Pillow (Optimized WebP)
+El sistema está diseñado para ser simple, visual y fácil de entender en pocos segundos.
 
 ---
 
-## 🚀 Quick Start
+## 💡 Idea principal
 
-### 1. Prerrequisites
-- Python 3.10+
-- Node.js 18+
+A diferencia de otros sistemas:
 
-### 2. Backend Setup
-```bash
-cd backend
-pip install -r requirements.txt
-cp .env.example .env  # Configure your admin credentials
-python main.py
-```
-*The server will run on `http://localhost:5000`*
+> El contenido de la colección no lo define el administrador, sino la comunidad (moderadores).
 
-### 3. Frontend Setup
-```bash
-cd frontend
-npm install
-cp .env.example .env.development # Configure your VITE_API_URL
-npm run dev
-```
-*The app will run on `http://localhost:5173`*
+Esto permite crear colecciones más ricas, especializadas y alineadas con los intereses reales de los fans.
 
-### 4. Docker Deployment (Recommended for CubePath)
-Ensure you have Docker and Docker Compose installed.
+---
 
-```bash
-# Start the entire ecosystem
-docker-compose up --build
-```
-*   **Backend**: `http://localhost:5000`
-*   **Frontend**: `http://localhost:5173`
+## 🎨 Contenido del demo
 
-### 5. VPS Basic Deployment (Optimized for CubePath)
-For a practical, low-consumption deployment on a standard VPS, we use a classic stack that ensures stability and visual performance without the overhead of containerization.
+La colección mostrada en esta aplicación fue creada exclusivamente para este demo.
 
-- **Nginx**: High-performance reverse proxy for static files and API routing.
-- **PM2**: Advanced process manager to keep the Flask backend active and auto-restart on crashes.
-- **Certbot**: Automated SSL certificate management for secure HTTPS "firma".
+Se utilizaron ilustraciones y nombres ficticios con el objetivo de:
+- evitar el uso de propiedad intelectual externa  
+- mantener un entorno controlado de prueba  
+- enfocarse en la experiencia de usuario  
+
+El sistema está diseñado para adaptarse a cualquier tipo de colección real.
+
+---
+
+## 🎨 Experiencia de usuario
+
+FanDex está pensado para una interacción rápida y clara:
+
+* Explorar la colección
+* Marcar ítems como conseguidos
+* Ver progreso en tiempo real
+* Desbloquear trofeos automáticamente
+* Consultar ranking global
+
+---
+
+## 🛤️ Flujo de usuario
 
 ```mermaid
-graph TD
-    User([User/Browser]) -- HTTPS (Port 443) --> Nginx[Nginx Reverse Proxy]
-    Certbot[Certbot/SSL] -- Manage --> Nginx
+graph LR
+    A[Home público] --> B[Login]
+    B --> C{Rol}
+    C -->|Fan| D[Dashboard Fan]
+    C -->|Moderador| E[Panel Moderador]
+    C -->|Admin| F[Panel Admin]
 
-    subgraph "VPS Server"
-        Nginx -- 1. Serve Static --> Frontend[Frontend Dist]
-        Nginx -- 2. Proxy /api --> Gunicorn[Gunicorn / Flask]
-        
-        subgraph "PM2 Management"
-            Gunicorn -- Managed by --> PM2[PM2 Process Manager]
-        end
-        
-        Gunicorn -- Read/Write --> SQLite[(SQLite DB)]
-        Gunicorn -- Save/Load --> FS[Filesystem /static/images]
-    end
+    D --> G[Explorar colección]
+    G --> H[Marcar ítems]
+    H --> I[Desbloquear trofeos]
 ```
 
-#### Backend Process (PM2 + Venv)
+---
+
+## 👥 Roles
+
+### ⚙️ Administrador
+
+* Visualiza métricas generales (usuarios, ítems)
+* Gestiona moderadores
+* Puede reiniciar la base de datos (modo demo)
+
+### 🛡️ Moderador
+
+* Crear ítems (imagen, nombre, descripción)
+* Definir rarezas y tags
+* Crear trofeos (condiciones de progreso)
+* Configurar identidad de la colección
+
+### 👤 Fan
+
+* Marcar ítems como conseguidos
+* Ver progreso
+* Desbloquear trofeos
+* Consultar ranking
+
+---
+
+## 🖼️ Vistas de la aplicación
+
+## 🖼️ Vistas de la aplicación
+
+### 🌐 Vista pública (Home / Exploración)
+
+![Public View - Museum Hall](docs/images/public_museum.png)
+![Public View - Grand Exhibition](docs/images/public_exhibition.png)
+
+- Exploración de la colección completa  
+- Ranking global (Hall of Fame)  
+- Filtros por categoría y rareza  
+
+---
+
+### 🔐 Login
+
+![Login Page](docs/images/login_page.png)
+
+- Acceso al sistema por rol  
+- Redirección automática según tipo de usuario  
+
+---
+
+### 👤 Fan (coleccionador)
+
+![Fan Dashboard](docs/images/fan_dashboard.png)
+![Fan Collection](docs/images/fan_collection.png)
+
+- Dashboard con progreso  
+- Colección personal  
+- Desbloqueo de trofeos  
+
+---
+
+### 🛡️ Moderador
+
+![Moderator Studio](docs/images/moderator_studio.png)
+
+- Creación de ítems  
+- Gestión de categorías y rarezas  
+- Configuración de logros  
+
+---
+
+### ⚙️ Administrador
+
+![Admin Control](docs/images/admin_control.png)
+
+- Métricas del sistema  
+- Gestión de moderadores  
+- Reinicio de base de datos (demo)  
+
+---
+
+## 🖼️ Procesamiento de imágenes
+
+Cuando un moderador crea un ítem:
+
+1. Imagen en base64
+2. Procesamiento en backend (Pillow)
+3. Generación de:
+
+   * WebP optimizado
+   * Thumbnail
+4. Eliminación del base64
+
+```mermaid
+sequenceDiagram
+    participant UI
+    participant API
+    participant Processor
+    participant Storage
+
+    UI->>API: Upload (base64)
+    API->>Processor: Convert image
+    Processor->>Storage: Save WebP + thumbnail
+    API-->>UI: Return URLs
+```
+
+---
+
+## 💾 Almacenamiento
+
+* Imágenes guardadas en filesystem del VPS
+* Optimizado para MVP
+
+**Futuro:**
+
+* Cloud storage
+* Manejo temporal de evidencias de usuario
+
+---
+
+## ⚙️ Decisiones técnicas
+
+### Backend
+
+* Flask + SQLite (sin ORM)
+* Ligero y rápido
+
+### Frontend
+
+* React + Vite + JS + CSS
+* Control visual total
+
+### Autenticación
+
+* Sistema simple (sin JWT)
+* Enfocado en demo funcional
+
+### Deploy
+
+* VPS (CubePath)
+* Nginx + PM2 + Certbot
+
+---
+
+## 🚀 Demo
+
+🔗 https://fandex.kodaforge.net/
+
+### 🔐 Credenciales
+
+| Rol       | Usuario | Password |
+| --------- | ------- | -------- |
+| Admin     | admin   | admin123 |
+| Moderador | mod1    | 1234     |
+| Fan       | edgar   | 1234     |
+
+---
+
+## 🚀 Despliegue
+
+### Backend
+
 ```bash
 cd backend
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-pm2 start ecosystem.config.js
+python main.py
 ```
-The `ecosystem.config.js` is pre-configured to use the `./venv/bin/gunicorn` executable.
 
-#### Frontend Static Serving (Nginx)
-1. Build the production assets:
-   ```bash
-   cd frontend
-   npm install
-   npm run build  # Usar .env.production (por defecto)
-   # O si prefieres usar .env.development específicamente:
-   npm run build:dev
-   ```
-2. Configure Nginx using the provided template in `nginx/fandex.conf`.
-3. Enable the site and restart Nginx:
-   ```bash
-   sudo ln -s /etc/nginx/sites-available/fandex.conf /etc/nginx/sites-enabled/
-   sudo nginx -t && sudo systemctl restart nginx
-   ```
+### Frontend
 
-#### Security & SSL (Certbot)
 ```bash
-sudo certbot --nginx -d yourdomain.com
+cd frontend
+npm install
+npm run dev
 ```
 
-### 🛡️ Demo Safety Limits
-To preserve the integrity of the public demo and prevent resource exhaustion, the following limits and safety measures are active:
+---
 
-- **Administration (Purge)**: The database reset endpoint is disabled by default via the `ENABLE_PURGE` toggle.
-- **Entity Capacity**:
-  - **Moderators**: Max 5.
-  - **Fans (Citizens)**: Max 20.
-  - **Artifacts (Items)**: Max 70.
-  - **Metadata (Tags, Rarities, Trophies)**: Limits apply (Max 20/10).
+### Producción (CubePath)
 
-When a limit is reached, the system will return a "demo-friendly" alert message. These limits can be adjusted in `backend/core/config.py` or via environment variables in `.env`.
+```mermaid
+graph TD
+    User --> Nginx
+    Nginx --> Frontend
+    Nginx --> Backend
+    Backend --> SQLite
+    Backend --> Images
+```
 
 ---
 
-## 🚀 Hackatón CubePath 2026 Readiness
+## ☁️ Uso de CubePath
 
-FanDex was refactored and audited to excel in all evaluation criteria for the Hackatón CubePath 2026.
-
-### ⚖️ Evaluation Scorecard
-
-| Criterion | Points | Evidence |
-| :--- | :---: | :--- |
-| **🎨 User Experience** | **10/10** | **Premium "Vintage" aesthetic**, state-machine navigation, and a fully fixed responsive achievement grid. High-fidelity glassmorphism across all 4 user roles. |
-| **💡 Creativity** | **9/10** | Original concept of a **"Digital Artifact Museum"**. Includes "Live Projection" minting and private "Fan Vaults" with automated badge unlocking. |
-| **🔧 Utility** | **9/10** | Comprehensive **Curator Management System** (CRUD for items, categories, rarities, and achievements) combined with a collector gamification layer. |
-| **⚙️ Technical Quality** | **10/10** | **Layered Repository-Service-Route** backend. Automated **WebP Image Factory** (B64 -> WebP + Thumbs). **VPS (PM2/Nginx) & Docker Ready** for instant CubePath deployment. |
+* VPS ligero
+* Nginx como proxy
+* PM2 para backend
+* Certbot para HTTPS
+* Subdominios para organización
 
 ---
 
-## 🚀 Roadmap (Future Production Ready)
+## 🧪 Enfoque
 
-To transition from a high-fidelity mockup to a production-grade application, the following enhancements are envisioned:
-
-- **Backend Security**: Migration to JWT-based authentication and Server-Side Role-Based Access Control (RBAC).
-- **ORM & Database Scalability**: Transition from raw SQL to an ORM (like SQLAlchemy or Peewee) and from SQLite to PostgreSQL/MySQL for production workloads.
-- **Improved State Management**: Implementation of **Zustand** or similar libraries for more robust and scalable frontend state handling.
-- **Cloud Asset Management**: Integration with standardized **External Storage Services** (Cloud Buckets or VPS-attached storage) for professional and scalable file handling.
-- **API Documentation**: Integration of **Swagger/OpenAPI** for a standardized and interactive developer reference.
-- **Social Features**: Community boards, trading requests, and public profile sharing.
-- **Gamification**: Advanced unlocking animations and real-time community challenges.
-
-## 🎨 Role Credentials (Demo)
-
-| Role | Username | Password |
-| :--- | :--- | :--- |
-| **Admin** | `admin` | `admin123` |
-| **Moderator** | `mod1` | `1234` |
-| **Fan** | `edgar` | `1234` |
-
+* Simplicidad > complejidad
+* UX > sobreingeniería
+* Demo funcional > features innecesarias
 
 ---
 
-## 📖 Documentation
+## 📦 Estructura
 
-For a deeper dive into the system's architecture and usage, refer to:
-- **[USER_MANUAL.md](USER_MANUAL.md)**: Detailed guide on roles, views, and operational workflows.
-- **[REFACTOR_WALKTHROUGH.md](REFACTOR_WALKTHROUGH.md)**: Technical audit of the frontend and backend modernization.
-
----
-
-## 📦 Project Structure
-
-- `/backend`: Flask API, Database models, and Image processing logic.
-- `/frontend`: React components, custom hooks, and museum styles.
-- `/backend/static/images`: Optimized artifact assets (Ignored by Git).
+* `/backend` → API
+* `/frontend` → React app
+* `/static/images` → imágenes
 
 ---
 
+## 📖 Documentación
+
+- [Manual de Usuario](USER_MANUAL.md) — guía completa de uso por rol  
+
+---
+
+## 📌 Nota
+
+Prototipo funcional enfocado en demostración.
+Escalable a arquitectura productiva.
