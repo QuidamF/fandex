@@ -40,7 +40,8 @@ function AchievementCard({
                 color: "#d4af37", 
                 margin: "0 0 5px 0", 
                 fontFamily: "'Playfair Display', serif",
-                fontSize: "1.1rem"
+                fontSize: "1.1rem",
+                paddingRight: "30px"
             }}>
                 🏆 {achievement.name}
             </h4>
