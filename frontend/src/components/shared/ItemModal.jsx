@@ -2,6 +2,15 @@ import { BASE_URL } from "../../services/api";
 import "./ItemModal.css";
 
 function ItemModal({ item, onClose, onCollect, onEdit }) {
+    React.useEffect(() => {
+        if (item) {
+            document.body.style.overflow = "hidden";
+        }
+        return () => {
+            document.body.style.overflow = "unset";
+        };
+    }, [item]);
+
     if (!item) return null;
 
     const imageUrl = item.id === "preview" 
