@@ -82,7 +82,14 @@
     letter-spacing: 1px;
     color: var(--color-text);
     margin: 10px 0 5px;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3;
+    height: 2.8rem; /* Keeps layout consistent */
 }
 
 .card.visible:hover::before {
