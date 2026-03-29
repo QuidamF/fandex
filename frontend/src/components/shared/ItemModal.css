@@ -22,13 +22,11 @@
     animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     color: var(--color-text);
     text-align: center;
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: hidden;
     padding: 30px;
     display: flex;
     flex-direction: column;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+    height: auto;
 }
 
 .modal-content::-webkit-scrollbar {

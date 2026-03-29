@@ -43,7 +43,7 @@ function ItemModal({ item, onClose, onCollect, onEdit }) {
                                 alt={item.name} 
                                 style={{ 
                                     width: "100%", 
-                                    maxHeight: "40vh", 
+                                    maxHeight: "35vh", 
                                     objectFit: "contain" 
                                 }} 
                             />
@@ -52,10 +52,10 @@ function ItemModal({ item, onClose, onCollect, onEdit }) {
 
                     <h2 style={{ color: item.rarity_color || "#e5e5e5" }}>{item.name}</h2>
                     <div style={{ height: "1px", background: item.rarity_color || "rgba(255,255,255,0.1)", margin: "15px 0", opacity: 0.5, boxShadow: `0 0 5px ${item.rarity_color || "transparent"}` }}></div>
-                    <p><strong style={{ color: item.rarity_color || "#9ca3af", letterSpacing: "2px", marginRight: "10px"}}>RARITY:</strong> <span style={{ color: item.rarity_color || "#e5e5e5" }}>{item.rarity.toUpperCase()}</span></p>
+                    <p style={{ margin: "5px 0 15px" }}><strong style={{ color: item.rarity_color || "#9ca3af", letterSpacing: "2px", marginRight: "10px"}}>RARITY:</strong> <span style={{ color: item.rarity_color || "#e5e5e5" }}>{item.rarity.toUpperCase()}</span></p>
                     
-                    <div style={{ maxHeight: "150px", overflowY: "auto", margin: "15px 0", padding: "0 10px", textAlign: "left" }}>
-                        <p style={{ margin: 0 }}>{item.description || "No description available for this artifact."}</p>
+                    <div style={{ flex: 1, minHeight: 0, overflowY: "auto", margin: "10px 0", padding: "0 10px", textAlign: "left", scrollbarWidth: "none" }}>
+                        <p style={{ margin: 0, fontSize: "0.9rem", color: "#ccc", lineHeight: "1.5" }}>{item.description || "No description available for this artifact."}</p>
                     </div>
 
                     <div style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
