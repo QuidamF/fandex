@@ -281,7 +281,8 @@
 .mod-minting-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 50px;
+    gap: 40px;
+    width: 100%;
 }
 
 @media (max-width: 768px) {
@@ -301,6 +302,10 @@
         margin: 20px auto;
         gap: 20px;
         grid-template-columns: 1fr;
+        padding: 0 15px;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
     }
 
     .mod-nav {
@@ -316,6 +321,8 @@
 
     .mod-panel {
         padding: 20px 15px;
+        width: 100%;
+        margin: 0;
     }
 
     .mod-btn {
@@ -326,18 +333,20 @@
 
     .mod-minting-grid {
         grid-template-columns: 1fr;
-        gap: 40px;
+        gap: 30px;
+        width: 100%;
     }
 
     .mod-minting-grid > div:last-child {
         border-left: none !important;
         border-top: 1px dashed rgba(255,255,255,0.1);
-        padding-top: 40px;
+        padding-top: 30px;
     }
 
     .mod-stats-banner {
         flex-direction: column;
         gap: 20px;
+        width: 100%;
     }
 
     .mod-grid {
@@ -347,6 +356,21 @@
     
     .mod-stats-banner span {
         font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .mod-title {
+        font-size: 1.2rem;
+    }
+
+    .mod-minting-grid {
+        gap: 20px;
+    }
+    
+    .mod-panel h3 {
+        font-size: 1rem;
+        letter-spacing: 1px;
     }
 }
 
