@@ -47,25 +47,20 @@
     vertical-align: middle;
 }
 
-.admin-logout {
-    color: var(--color-subtext);
+.admin-tab {
+    padding: 0 0 5px 0;
+    border: none;
     background: transparent;
-    border: 1px solid var(--color-border);
-    padding: 8px 20px;
-    border-radius: 2px;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-family: var(--font-sans);
+    font-size: 0.85rem;
 }
 
-.admin-logout:hover {
-    color: #ef4444;
-    background: rgba(239, 68, 68, 0.05);
-    border-color: rgba(239, 68, 68, 0.4);
-    box-shadow: 0 0 15px rgba(239, 68, 68, 0.1);
+.admin-tab:hover, .admin-tab.active {
+    color: #ef4444 !important;
+    border-bottom: 1px solid #ef4444 !important;
+}
+
+.admin-tab.logout {
+    color: rgba(239, 68, 68, 0.6);
 }
 
 /* Content Container */

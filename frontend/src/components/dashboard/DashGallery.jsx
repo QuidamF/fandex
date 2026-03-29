@@ -36,7 +36,7 @@ function DashGallery({ items, tags, onCollect }) {
                 filterRarity={filterRarity} 
                 onTagChange={setFilterTag} 
                 onRarityChange={setFilterRarity}
-                className="vintage-filters"
+                className="vintage-filters shared-filters"
             />
 
             <ItemGrid 

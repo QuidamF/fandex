@@ -24,7 +24,7 @@ function PublicExhibition({
                 filterRarity={filterRarity} 
                 onTagChange={onFilterTagChange} 
                 onRarityChange={onFilterRarityChange}
-                className="public-filters"
+                className="public-filters shared-filters"
             />
 
             <ItemGrid 
