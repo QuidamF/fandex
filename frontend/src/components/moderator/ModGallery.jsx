@@ -1,7 +1,4 @@
-import React from "react";
-import StatBanner from "../shared/StatBanner";
-import CollectionFilters from "../shared/CollectionFilters";
-import ItemGrid from "../shared/ItemGrid";
+import ItemModal from "../shared/ItemModal";
 
 function ModGallery({ 
     stats, 
@@ -14,6 +11,8 @@ function ModGallery({
     filteredItems, 
     handleEditItemClick 
 }) {
+    const [selectedItem, setSelectedItem] = React.useState(null);
+
     const bannerStats = stats ? {
         "Active Collectors": stats.fans,
         "Total Artifacts": stats.items,
@@ -24,7 +23,7 @@ function ModGallery({
         <div className="mod-catalogue" style={{ marginTop: 0 }}>
             <h3 style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 LIVE SYSTEM DATABASE
-                <span style={{ fontSize: "0.6rem", color: "#888", letterSpacing: "1px" }}>*CLICK ARTIFACTS TO ENTER EDIT MODE</span>
+                <span style={{ fontSize: "0.6rem", color: "#888", letterSpacing: "1px" }}>*CLICK ARTIFACTS FOR FULL PROJECTION</span>
             </h3>
             
             <StatBanner stats={bannerStats} className="mod-stats-banner" />
@@ -41,9 +40,17 @@ function ModGallery({
 
             <ItemGrid 
                 items={filteredItems} 
-                onItemClick={handleEditItemClick}
+                onItemClick={setSelectedItem}
                 gridClassName="mod-grid"
             />
+
+            {selectedItem && (
+                <ItemModal 
+                    item={selectedItem}
+                    onClose={() => setSelectedItem(null)}
+                    onEdit={handleEditItemClick}
+                />
+            )}
         </div>
     );
 }

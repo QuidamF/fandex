@@ -1,6 +1,4 @@
-import React from "react";
-import CollectionFilters from "../shared/CollectionFilters";
-import ItemGrid from "../shared/ItemGrid";
+import ItemModal from "../shared/ItemModal";
 
 function PublicExhibition({ 
     filteredItems, 
@@ -11,6 +9,8 @@ function PublicExhibition({
     onFilterTagChange, 
     onFilterRarityChange 
 }) {
+    const [selectedItem, setSelectedItem] = React.useState(null);
+
     return (
         <div>
             {/* ITEMS BROWSER */}
@@ -27,7 +27,15 @@ function PublicExhibition({
             <ItemGrid 
                 items={filteredItems} 
                 gridClassName="items-grid"
+                onItemClick={setSelectedItem}
             />
+
+            {selectedItem && (
+                <ItemModal 
+                    item={selectedItem}
+                    onClose={() => setSelectedItem(null)}
+                />
+            )}
         </div>
     );
 }
