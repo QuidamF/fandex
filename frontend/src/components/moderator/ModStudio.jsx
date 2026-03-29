@@ -55,8 +55,8 @@ function ModStudio({
                     <input className="mod-input" placeholder="ARTIFACT DESCRIPTION" value={description} onChange={(e) => setDescription(e.target.value)} disabled={tags.length === 0 || rarities.length === 0} />
                     <input ref={fileInputRef} className="mod-file" type="file" onChange={handleFile} accept="image/*" disabled={tags.length === 0 || rarities.length === 0} />
                     
-                    <div style={{ display: "flex", gap: "10px", marginTop: "auto" }}>
-                        <button className="mod-btn" onClick={handleSaveItem} style={{ color: "#d4af37", borderColor: "rgba(212, 175, 55, 0.4)", flex: 1 }} disabled={tags.length === 0 || rarities.length === 0}>
+                    <div style={{ display: "flex", gap: "10px", marginTop: "auto", flexWrap: "wrap" }}>
+                        <button className="mod-btn" onClick={handleSaveItem} style={{ color: "#d4af37", borderColor: "rgba(212, 175, 55, 0.4)", flex: "1 1 auto", minWidth: "120px" }} disabled={tags.length === 0 || rarities.length === 0}>
                             {editItemId ? "Update Artifact" : "Mint Artifact"}
                         </button>
                         
