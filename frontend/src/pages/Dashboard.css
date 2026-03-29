@@ -25,6 +25,14 @@
     gap: 15px;
 }
 
+@media (max-width: 600px) {
+    .dashboard-header {
+        flex-direction: column;
+        text-align: center;
+        padding: 1.5rem 20px;
+    }
+}
+
 .dashboard-title {
     font-family: var(--font-serif);
     font-size: 1.8rem;
@@ -51,7 +59,9 @@
     overflow-x: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    padding-bottom: 5px;
+    padding: 5px 10px;
+    width: 100%;
+    justify-content: center;
 }
 
 .dashboard-nav::-webkit-scrollbar {
@@ -141,6 +151,18 @@
 
     .dashboard-hero p {
         font-size: 0.95rem;
+        padding: 0 10px;
+    }
+
+    .dashboard-nav {
+        justify-content: flex-start;
+        gap: 10px;
+    }
+
+    .vintage-tab {
+        font-size: 0.75rem;
+        padding: 6px 12px;
+        white-space: nowrap;
     }
 
     .grid {

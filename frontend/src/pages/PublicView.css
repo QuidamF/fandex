@@ -26,6 +26,7 @@
     letter-spacing: 5px;
     text-transform: uppercase;
     text-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+    word-break: break-word;
 }
 
 .hero-subtitle {
@@ -248,6 +249,7 @@
     .hero-title {
         font-size: 2.2rem !important;
         letter-spacing: 2px;
+        line-height: 1.2;
     }
 
     .hero-section {
@@ -282,16 +284,22 @@
     }
 
     .public-nav {
-        gap: 20px;
-        padding: 10px 20px;
+        gap: 10px;
+        padding: 10px 10px;
         overflow-x: auto;
         justify-content: flex-start;
         -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+    
+    .public-nav::-webkit-scrollbar {
+        display: none;
     }
 
-    .public-tab {
+    .vintage-tab {
         white-space: nowrap;
-        font-size: 0.8rem;
-        letter-spacing: 2px;
+        font-size: 0.75rem;
+        letter-spacing: 1px;
+        padding: 8px 15px;
     }
 }

@@ -25,6 +25,14 @@
     gap: 15px;
 }
 
+@media (max-width: 768px) {
+    .mod-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+}
+
 .mod-title {
     font-family: var(--font-serif);
     font-size: 1.8rem;
@@ -70,6 +78,7 @@
     overflow-x: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
+    width: 100%;
 }
 
 .mod-nav::-webkit-scrollbar {
@@ -291,6 +300,18 @@
     .mod-content {
         margin: 20px auto;
         gap: 20px;
+        grid-template-columns: 1fr;
+    }
+
+    .mod-nav {
+        justify-content: flex-start;
+        gap: 10px;
+        padding: 5px 0;
+    }
+    
+    .mod-tab {
+        white-space: nowrap;
+        font-size: 0.75rem;
     }
 
     .mod-panel {
