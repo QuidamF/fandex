@@ -13,12 +13,18 @@ function CollectionFilters({
     className = "shared-filters" 
 }) {
     return (
-        <div className={className} style={{ display: "flex", gap: "20px", marginBottom: "30px" }}>
+        <div className={className} style={{ 
+            display: "flex", 
+            gap: "15px", 
+            marginBottom: "30px", 
+            flexWrap: "wrap",
+            width: "100%" 
+        }}>
             <select 
                 className="vintage-select" 
                 value={filterTag} 
                 onChange={(e) => onTagChange(e.target.value)}
-                style={{ flex: 1 }}
+                style={{ flex: "1 1 180px", minWidth: 0 }}
             >
                 <option value="">All Categories</option>
                 {tags.map(t => (
@@ -27,12 +33,12 @@ function CollectionFilters({
                     </option>
                 ))}
             </select>
-
+ 
             <select 
                 className="vintage-select" 
                 value={filterRarity} 
                 onChange={(e) => onRarityChange(e.target.value)}
-                style={{ flex: 1 }}
+                style={{ flex: "1 1 180px", minWidth: 0 }}
             >
                 <option value="">All Rarities</option>
                 {rarities.map(r => (
