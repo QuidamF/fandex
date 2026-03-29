@@ -1,3 +1,7 @@
+import React from "react";
+import StatBanner from "../shared/StatBanner";
+import CollectionFilters from "../shared/CollectionFilters";
+import ItemGrid from "../shared/ItemGrid";
 import ItemModal from "../shared/ItemModal";
 
 function ModGallery({ 
