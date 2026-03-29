@@ -52,16 +52,30 @@ function ModStudio({
                         ))}
                     </select>
 
-                    <input className="mod-input" placeholder="ARTIFACT DESCRIPTION" value={description} onChange={(e) => setDescription(e.target.value)} disabled={tags.length === 0 || rarities.length === 0} />
-                    <input ref={fileInputRef} className="mod-file" type="file" onChange={handleFile} accept="image/*" disabled={tags.length === 0 || rarities.length === 0} />
+                    <input 
+                        ref={fileInputRef} 
+                        style={{ display: "none" }} 
+                        type="file" 
+                        onChange={handleFile} 
+                        accept="image/*" 
+                    />
                     
-                    <div style={{ display: "flex", gap: "10px", marginTop: "auto", flexWrap: "wrap" }}>
-                        <button className="mod-btn" onClick={handleSaveItem} style={{ color: "#d4af37", borderColor: "rgba(212, 175, 55, 0.4)", flex: "1 1 auto", minWidth: "120px" }} disabled={tags.length === 0 || rarities.length === 0}>
+                    <button 
+                        className="mod-btn" 
+                        onClick={() => fileInputRef.current?.click()} 
+                        style={{ marginBottom: "25px", color: "var(--color-teal)", borderColor: "rgba(20, 184, 166, 0.3)" }}
+                        disabled={tags.length === 0 || rarities.length === 0}
+                    >
+                        {image ? "Change Artifact Image" : "Upload Artifact Image"}
+                    </button>
+                    
+                    <div style={{ display: "flex", gap: "10px", marginTop: "auto", flexWrap: "wrap", justifyContent: "center" }}>
+                        <button className="mod-btn" onClick={handleSaveItem} style={{ color: "#d4af37", borderColor: "rgba(212, 175, 55, 0.4)", flex: "1 1 150px" }} disabled={tags.length === 0 || rarities.length === 0}>
                             {editItemId ? "Update Artifact" : "Mint Artifact"}
                         </button>
                         
-                        <button className="mod-btn" onClick={handleClearForm} style={{ color: "#888", borderColor: "rgba(255,255,255,0.2)", flex: 0.4 }}>
-                            {editItemId ? "Cancel" : "Clear"}
+                        <button className="mod-btn" onClick={handleClearForm} style={{ color: "#888", borderColor: "rgba(255,255,255,0.2)", flex: "1 1 100px" }}>
+                            {editItemId ? "Cancel" : "Clear Form"}
                         </button>
 
                         {editItemId && (
