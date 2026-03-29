@@ -7,8 +7,8 @@ function AdminHeader({ onLogout }) {
                 SYSTEM DIRECTOR <span>/// ROOT ACCESS</span>
             </h2>
             <div style={{ display: "flex", gap: "10px" }}>
-                <button className="admin-logout" style={{ background: "rgba(255,255,255,0.05)" }} onClick={() => window.location.href = "/"}>Home</button>
-                <button className="admin-logout" onClick={onLogout}>Disconnect</button>
+                <button className="admin-logout" onClick={() => window.location.href = "/"}>Home</button>
+                <button className="admin-logout" onClick={onLogout} style={{ color: "#ef4444", borderColor: "rgba(239, 68, 68, 0.3)" }}>Disconnect</button>
             </div>
         </header>
     );

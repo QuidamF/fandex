@@ -51,19 +51,21 @@
     color: var(--color-subtext);
     background: transparent;
     border: 1px solid var(--color-border);
-    padding: 8px 15px;
+    padding: 8px 20px;
     border-radius: 2px;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: all 0.3s ease;
+    font-family: var(--font-sans);
 }
 
 .admin-logout:hover {
     color: #ef4444;
-    background: rgba(239, 68, 68, 0.1);
+    background: rgba(239, 68, 68, 0.05);
     border-color: rgba(239, 68, 68, 0.4);
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.1);
 }
 
 /* Content Container */
